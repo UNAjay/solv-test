@@ -1,0 +1,14 @@
+name = Field collection item weights (migration to Multiple-Value Field Weights)
+description = "DEPRECATED; use Multiple-Value Field Weights and disable this. This module is kept to prevent sites breaking. Change the order in which individual items of multiple-value field collection fields are displayed."
+package = Fields
+core = 7.x
+
+dependencies[] = field_weight
+
+
+; Information added by Drupal.org packaging script on 2014-04-10
+version = "7.x-2.0-beta1+11-dev"
+core = "7.x"
+project = "field_weight"
+datestamp = "1397145253"
+

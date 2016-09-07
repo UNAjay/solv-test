@@ -1,0 +1,13 @@
+name = Apache Solr Indexer for Taxonomy
+description = Indexer for reading taxonomy entity types into a solr core.
+dependencies[] = apachesolr
+package = Search Toolkit
+core = 7.x
+
+
+; Information added by drush on 2016-03-23
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "apachesolr_term"
+datestamp = "1458729886"
+

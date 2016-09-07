@@ -1,0 +1,127 @@
+<?php
+
+/**
+ * @file
+ * Provides integration between Collapse Text and Wysiwyg API.
+ */
+
+/**
+ * Implements hook_wysiwyg_plugin().
+ */
+function icons_wysiwyg_wysiwyg_plugin($editor) {
+  if ($editor == 'ckeditor') {
+    // Provide support for strings translation: keep them out of plugin file.
+    drupal_add_js(array(
+      'icons' => array(
+        'pluginStrings' => array(
+          'buttonLabel' => t('Insert icon'),
+          'windowLabel' => t('Icon settings'),
+          'titleLabel' => t('Icon title'),
+          'titleValidateError' => t('Icon title should be provided.'),
+          'typeLabel' => t('Icon type'),
+          'typeValidateError' => t('Icon type should be provided.'),
+        ),
+      ),
+    ), 'setting');
+
+    return array(
+      'icons' => array(
+        // A URL to the plugin's homepage.
+        // 'url' => 'http://drupal.org/project/collapse_text',
+        // The full path to the native editor plugin, no trailing slash.
+        'path' => drupal_get_path('module', 'icons_wysiwyg') . '/ckeditor-plugins/icons/',
+        // A list of buttons provided by this native plugin.
+        'buttons' => array(
+          'icons' => t('Insert custom icon.'),
+        ),
+        // Boolean whether the editor needs to load this plugin.
+        'load' => TRUE,
+      ),
+    );
+  }
+}
+
+
+/**
+ * Implementation of hook_filter_info().
+ */
+function icons_wysiwyg_filter_info() {
+  $filters['icons_wysiwyg'] = array(
+    'title' => t('Insert icons'),
+    'description' => t('Inserts custom icons using [icon:type=title] tags.'),
+    'process callback' => '_icons_wysiwyg',
+    'tips callback' => '_icons_wysiwyg_tips',
+    'cache' => FALSE,
+  );
+  return $filters;
+}
+
+function _icons_wysiwyg($text, $filter, $format) {
+  if (preg_match_all("/\[icon:([^=\]]+)=?([^=\]]+)?=?([^\]]*)?\]/i", $text, $match)) {
+    foreach ($match[0] as $key => $value) {
+      $type = $match[1][$key];
+      $title = $match[2][$key];
+      $classes = explode(',', $type);
+      $type = $classes[0];
+      $position = $classes[1];
+
+      $output = '<span class="icon-wrapper ' . $position . '">';
+      $output .= '<span class="icon ' . $type . '"></span>';
+      $output .= '<span class="icon-title">' . $title . '</span>';
+      $output .= '</span>';
+
+      $search[] = $value;
+      $replace[] = !empty($output) ? $output : '';
+    }
+    return str_replace($search, $replace, $text);
+  }
+
+  return $text;
+}
+
+
+function _icons_wysiwyg_tips($filter, $format, $long = FALSE) {
+
+  $output = '';
+
+  // Get all entity instances of this type.
+  // $query = new EntityFieldQuery();
+  // $query
+  // ->entityCondition('entity_type', 'ee', '=');
+  // $results = $query->execute();
+  // if (!empty($results)) {
+  //   $entities = entity_load('ee', array_keys($results['ee']));
+
+  //   foreach ($entities as $entity) {
+
+  //       $title = entity_label('ee', $entity);
+  //       $key = '[embed:' . str_replace('embed_', '', $entity->type) . '='. $entity->id . ']';
+  //       $rows[] = array($title, $key);
+
+  //   }
+  //   // $data['#attributes'] = array('class' => array('block-list'));
+  //   // $data['items'] = $block_list;
+
+  //   $table_data = array(
+  //     'header'     => array('Title', 'Key'),
+  //     'rows'       => $rows,
+  //     'sticky'     => FALSE,
+  //     'empty'      => 'No results found',
+  //     'attributes' => array(),
+  //     'colgroups'  => array(),
+  //     'caption'    => NULL
+  //   );
+
+
+  //   $output .= t('You may use [entity:<em>type</em>=<em>ID</em>] tags to display the contents of entity.');
+
+  //   // $output .= theme('item_list', $data);
+  //   $output .= theme_table($table_data);
+  // }
+
+  return $output;
+}
+
+
+
+

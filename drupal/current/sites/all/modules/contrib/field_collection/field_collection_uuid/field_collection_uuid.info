@@ -1,0 +1,14 @@
+name = Field Collection UUID
+core = 7.x
+package = Fields
+dependencies[] = field_collection
+dependencies[] = uuid
+files[] = controllers/UUIDFieldCollectionItemEntity.inc
+
+
+; Information added by drush on 2016-03-23
+version = "7.x-1.0-beta6+8-dev"
+core = "7.x"
+project = "field_collection"
+datestamp = "1458729873"
+

@@ -1,0 +1,144 @@
+<?php
+/**
+ * @file
+ * Formatter to add icons to social links.
+ */
+
+/**
+ * Implements hook_field_formatter_info().
+ *
+ * Adds formatter to display videoes on Derfor RUC
+ */
+function socialmedia_link_formatter_field_formatter_info() {
+  return array(
+    // The key must be unique, so it's best to prefix with your module's name.
+    'socialmedia_link_formatter' => array(
+      // the label is is what is displayed in the select box in the UI.
+      'label' => t('Social Media Link formatter'),
+      // Field types is the important bit!! List the field types your formatter is for.
+      'field types' => array('link_field'),
+      // You can usually leave 'multiple values' as follows:
+      'multiple values' => FIELD_BEHAVIOR_DEFAULT,
+      // Array of the settings we'll create.
+      'settings'  => array(
+        // Give a default value for when the form is first loaded.
+        'pic_size' => 'small',
+      ),
+    ),
+  );
+}
+
+
+
+/**
+ * Implements hook_field_formatter_settings_form().
+ */
+function socialmedia_link_formatter_formatter_settings_form($field, $instance, $view_mode, $form, &$form_state) {
+  //This gets the view_mode where our settings are stored
+  $display = $instance['display'][$view_mode];
+  //This gets the actual settings
+  $settings = $display['settings'];
+  //Initialize the element variable
+  $element = array();
+  //Add your select box
+  $element['pic_size'] = array(
+    '#type'           => 'select',                // Use a select box widget
+    '#title'          => t('Button Size'),        // Widget label
+    '#description'    => t('Select button size'), // Helper text
+    '#default_value'  => $settings['pic_size'],   // Get the value if it's already been set
+    '#options'        => array(
+      'small'  => 'Small',
+      'medium' => 'Medium',
+      'large'  => 'Large',
+    ),
+  );
+  return $element;
+}
+
+/**
+ * Implements hook_field_formatter_settings_summary().
+ */
+function socialmedia_link_formatter_field_formatter_settings_summary($field, $instance, $view_mode) {
+  $display = $instance['display'][$view_mode];
+  $settings = $display['settings'];
+  // We use t() for translation and placeholders to guard against attacks.
+  $summary = t('Use a @size for the social media button', array(
+    '@size' => $settings['pic_size'],
+  ));
+  return $summary;
+}
+
+/**
+ * Implements hook_field_formatter_view(). 
+ * This code just passes straight through to a theme function, MYMODULE_formatter_FORMATTER
+ * (e.g. MYMODULE_formatter_MYMODULE_absolute_url).
+ */
+function socialmedia_link_formatter_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
+  $element = array();
+  $settings = $display['settings'];
+  $size = $settings['pic_size'];
+
+  foreach ($items as $delta => $item) {    
+    // Getting the actual value.
+    $raw_url = $item['url'];
+
+    // HERE WE NEED TO FIGURE OUT WHAT SOCIAL MEDIA
+    
+    $url = parse_url($raw_url);
+
+    if ($url === false) {
+      return '';
+    }
+ 
+    if (!empty($url['host'])) {
+      $host = check_plain($url['host']);
+    }
+
+    switch ($host) {
+      case 'linkedin.com':
+        $socialmedia = 'linkedin';
+      break;
+
+      case 'www.facebook.com':
+      case 'facebook.com':
+          $socialmedia = 'facebook';
+        break;
+
+      case 'www.twitter.com':
+      case 'twitter.com':
+          $socialmedia = 'twitter';
+          break;
+      case 'plus.google.com':
+          $socialmedia = 'google';
+          break;
+       case 'drupal.org':
+          $socialmedia = 'drupal';
+          break;
+      default:
+        $socialmedia = 'link';
+      break;
+    }
+    
+    // END FIGURING OUT WHAT SOCIAL MEDIA
+    
+    // Create the image - Note that I'm storing the images in our module but they could be anywhere.
+    $image = theme('image', array('alt' => ucfirst($socialmedia) . ' link', 'path' => base_path() . drupal_get_path('module', 'socialmedia_link_formatter') .'/icons/'. $socialmedia . '.png'));
+    
+    $options = array(
+      // This tells Drupal that we're sending HTML, not plain text, otherwise it would encode it.
+      'html' => TRUE, 
+      'attributes'  => array(
+        'title' => $item['title'],
+        'target' => '_blank',
+      ),
+    );
+    if (isset($url)) {
+      // Create the Link.
+      $link = l($image, $raw_url, $options);
+      // Assign it to the #markup of the element.
+      $element[$delta]['#markup'] = $link;
+    }
+  }
+  return $element;
+}
+

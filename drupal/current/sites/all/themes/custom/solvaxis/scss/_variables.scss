@@ -1,0 +1,58 @@
+//-----------------------------------------
+// susy settings
+//-----------------------------------------
+// this is the default number of columns
+// $total-columns: 12;
+$total-columns: 12;
+// width of each column
+// $column-width: 65px;
+$column-width: 4.642857142857143em;
+
+// space between columns
+//$gutter-width: 20px;
+$gutter-width: 1.4285714285714286em;
+// space on the right and left of the grid
+$grid-padding: 0;
+
+// breakpoints
+$bp-small: 24em;
+$bp-small-2: 29.75em;
+$bp-small-3: 39.8em;
+$bp-med: 46.8em;
+$bp-med-2: 48em;
+$bp-large: 50em;
+$bp-large-2: 54.5em;
+$bp-xl: 60em;
+$bp-xl-2: 67em;
+
+
+//-----------------------------------------
+// general variables
+//-----------------------------------------
+$footerHeightMobile: 170px;
+$footerHeightDesktop: 287px;
+$paragraphColor: #404040;
+
+$black: #000;
+$white: #fff;
+
+$gray-dark: #3C3F42;
+$gray: #73797C;
+$gray-light: #CCC;
+$gray-lighter: #F2F2F2;
+$crimson: #E30043;
+$crimson-darker: #C70038;
+
+$twitter: #55acee;
+$facebook: #3b5998;
+$linkedin: #007bb6;
+$xing: #006567;
+$rss: #f26522;
+
+$base-background-color: $gray-lighter;
+$link-color: $crimson;
+$link-color-hover: $black;
+
+// fonts
+$sans-font-family:         'Raleway', Helvetica, Arial, sans-serif;
+$serif-font-family:       Georgia, "Times New Roman", Times, serif;

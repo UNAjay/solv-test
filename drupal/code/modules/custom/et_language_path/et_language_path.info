@@ -1,0 +1,7 @@
+name = Entity Translation Language Path
+description = "When Entity Translation translation fallback is enabled and active, there are no URL aliases retuned for non-active languages. URL alias language needs to be neutral."
+core = 7.x
+dependencies[] = path
+dependencies[] = pathauto
+dependencies[] = entity_translation
+

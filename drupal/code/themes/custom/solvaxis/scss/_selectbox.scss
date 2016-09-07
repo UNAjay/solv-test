@@ -1,0 +1,388 @@
+@CHARSET "UTF-8";
+.region-content select,
+ #colorbox select,
+#block-lang-dropdown-language select{
+  display: block !important;
+  visibility: hidden !important;
+  -webkit-appearance: none;
+}
+.sbHolder{
+  background-color: $white;
+  border: 1px solid transparent;
+  font-size: 12px;
+  font-weight: normal;
+  height: 20px;
+  position: relative;
+}
+.sbHolder:focus .sbSelector{
+  outline: none;
+}
+.sbHolder:focus {
+  outline: none;
+}
+.sbSelector {
+  display: block;
+  height: 20px;
+  left: 0;
+  line-height: 18px;
+  outline: none;
+  overflow: hidden;
+  position: absolute;
+  text-indent: 4px;
+  top: 0;
+  //width: 100%;
+  width: auto;
+}
+.sbSelector:link, .sbSelector:visited, .sbSelector:hover {
+  color: $gray-dark;
+  outline: none;
+  text-decoration: none !important;
+}
+.sbSelector:hover,
+.sbSelector:focus {
+  color: $gray;
+}
+.sbToggle{
+  //background: url(../img/bg-select.png) no-repeat;
+  background: $gray-lighter;
+  display: block;
+  height: 20px;
+  outline: none;
+  position: absolute;
+  right: -1px;
+  top: -1px;
+  width: 20px;
+
+  &:before {
+    content: '\e806';
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 5px;
+    font-family: 'solvaxis-icn';
+    font-size: 14px;
+    font-weight: normal;
+    color: $gray-dark;
+  }
+}
+.not-front .sbToggle{
+  background: $gray-light;
+}
+.sbToggle:hover,
+.sbToggleOpen,
+.sbToggleOpen:hover {
+  background: $gray;
+  &:before {
+    color: $gray-lighter;
+  }
+}
+.sbHolderDisabled{
+  background-color: #3C3C3C;
+  border: solid 1px #515151;
+}
+.sbHolderDisabled .sbHolder{
+}
+.sbHolderDisabled .sbToggle{
+}
+.sbOptions{
+  background: $white;
+  border: 1px solid transparent;
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  list-style: none;
+  left: -1px;
+  margin: 0;
+  padding: 0 0 1px;
+  position: absolute;
+  top: 19px !important;
+  width: 100%;
+  z-index: 1;
+  overflow-y: auto;
+}
+.sbOptions li {
+  // height: 20px;
+  padding: 0 4px 1px;
+}
+.sbOptions li a {
+  padding: 0;
+  border-bottom: 1px solid transparent;
+  &:hover,
+  &.hover {
+    border-bottom: 1px solid $gray-dark;
+    background-color: $gray-lighter;
+  }
+}
+.sbOptions a {
+  display: block;
+  outline: none;
+  padding: 0;
+}
+.sbOptions a:link, .sbOptions a:visited {
+  color: $gray-dark;
+  text-decoration: none;
+}
+.sbOptions a:hover,
+.sbOptions a:focus,
+.sbOptions a.sbFocus{
+  background: transparent;
+  color: $gray-dark;
+}
+.sbOptions li.last a {
+  border-bottom: none;
+}
+.sbOptions .sbDisabled{
+  border-bottom: dotted 1px #515151;
+  color: #999;
+  display: block;
+  padding: 7px 0 7px 3px;
+}
+.sbOptions .sbGroup{
+  color: #707070;
+  display: block;
+  font-style: italic;
+  font-weight: bold;
+  padding: 7px 0 7px 3px;
+}
+.sbOptions .sbSub{
+  padding-left: 17px;
+}
+
+
+
+
+/*Selectbox in language dropdown - mobile*/
+#block-lang-dropdown-language {
+  overflow: hidden;
+  height: 40px;
+  padding: 0;
+  .sbSelector {
+    display: none;
+  }
+}
+#block-lang-dropdown-language .sbHolder{
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  height: 40px;
+  margin: 0;
+}
+#block-lang-dropdown-language .sbOptions{
+  width: 200px;
+  height: 40px;
+  top: 0 !important;
+  display: block!important;
+  padding-left: 40px;
+  background: transparent;
+  box-shadow: none;
+
+  li {
+    float: left;
+    display: inline-block;
+    height: auto;
+    padding: 0;
+
+    &:first-child {
+      padding-left: 0;
+    }
+    a {
+      @include font-size(18);
+      line-height: 40px;
+      color: $black;
+      &:link,
+      &:visited {
+        color: $black;
+      }
+      &:focus,
+      &:active,
+      &.sbFocus {
+        background: transparent;
+        color: $black;
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+/*Selectbox in language dropdown - desktop*/
+@include at-breakpoint($bp-xl) {
+  #block-lang-dropdown-language {
+    overflow: visible;
+    height: auto;
+    position: absolute;
+    right: 20px;
+    //top: 69px;
+    height: auto;
+  }
+  #block-lang-dropdown-language .sbHolder{
+    width: auto;
+    position: relative;
+    height: auto;
+    margin: 0;
+  }
+  #block-lang-dropdown-language .sbOptions{
+    height: auto;
+    overflow: visible;
+    display: block!important;
+    visibility: hidden;
+    position: absolute;
+    left: -42px;
+    border-top: 0 none;
+    border-bottom: 0 none;
+    width: 50px;
+    margin-top: 0;
+    background: transparent;
+    z-index: 1;
+    background: transparent;
+    border: 1px solid transparent;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    list-style: none;
+    margin: 0;
+    position: absolute;
+    top: 17px !important;
+    padding: 18px 2px 15px 0;
+    z-index: 1;
+    li {
+      display: block;
+      width: auto;
+      min-width: 40px;
+      background: $white;
+      -moz-box-shadow: 2px 2px 0 rgba(0,0,0,0.1);
+      -webkit-box-shadow: 2px 2px 0 rgba(0,0,0,0.1);
+      box-shadow: 2px 2px 0 rgba(0,0,0,0.1);
+      height: auto;
+      padding: 4px 15px 6px;
+      clear: both;
+      &:first-child {
+        padding: 11px 15px 6px;
+          &:before {
+            display: block;
+            content: "";
+            position: absolute;
+            top: 7px;
+            right: -20px;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 13px 13px 13px;
+            border-color: transparent transparent rgba(0,0,0,0.1) transparent;
+            z-index: -1;
+          }
+      }
+      a {
+        @include font-size(14);
+        line-height: normal;
+        &:focus,
+        &:active,
+        &.sbFocus {
+          text-decoration: none;
+        }
+      }
+    }
+    &:before {
+      display: block;
+      content: "";
+      position: absolute;
+      top: 7px;
+      right: -18px;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 0 12px 12px 12px;
+      border-color: transparent transparent $white transparent;
+    }
+  }
+
+  #block-lang-dropdown-language {
+    &:hover {
+        .sbOptions{
+          visibility: visible;
+        }
+      }
+    }
+
+ #block-lang-dropdown-language select{
+    width: 30px !important;
+  }
+
+  #block-lang-dropdown-language .sbHolder {
+    background-color: transparent;
+    border: 0 none;
+    height: auto;
+    color: #9FA09F;
+
+    padding-right: 0;
+
+    .sbSelector {
+      display: inline-block;
+    }
+  }
+
+  #block-lang-dropdown-language .sbToggle{
+  display: none;
+    &:before {
+      display: none;
+    }
+  }
+  #block-lang-dropdown-language .sbSelector{
+    color: #9FA09F;
+    font-size: 1.2rem;
+    padding-right: 0;
+    position: relative;
+    text-indent: 0;
+	  padding: 0;
+    background: none;
+    color: $black;
+    text-decoration: none;
+
+	  &:hover {
+      &:after {
+        display: block;
+        content: "";
+        height: 1px;
+        width: 100%;
+        background: $black;
+        position: absolute;
+        bottom: -5px;
+      }
+    }
+  }
+  #block-lang-dropdown-language .sbOptions li {
+    height: 20px;
+    padding: 4px 15px 6px;
+  }
+  #block-lang-dropdown-language .sbOptions li a {
+    padding: 0;
+    border-bottom: 1px solid transparent;
+    &:hover {
+      border-bottom: 1px solid $gray-dark;
+    }
+  }
+  #block-lang-dropdown-language .sbOptions a {
+    display: block;
+    outline: none;
+    padding: 0;
+  }
+  #block-lang-dropdown-language .sbOptions a:link,
+  #block-lang-dropdown-language .sbOptions a:visited {
+    color: $black;
+    text-decoration: none;
+  }
+  #block-lang-dropdown-language .sbOptions a:hover,
+  #block-lang-dropdown-language .sbOptions a:focus,
+  #block-lang-dropdown-language .sbOptions a.sbFocus{
+    background: transparent;
+    color: $black;
+  }
+  #block-lang-dropdown-language .sbOptions li.last a {
+    border-bottom: none;
+  }
+}

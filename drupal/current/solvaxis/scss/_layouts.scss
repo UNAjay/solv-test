@@ -1,0 +1,179 @@
+//-----------------------------------------
+// layouts
+//-----------------------------------------
+#page:not(.with-promos) {
+  #leader {
+    display: none;
+  }
+}
+
+#leader .flexslider {
+  @include container;
+	margin: 0 auto;
+	max-width: 1000px;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+#content {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+#page:not(.with-promos) #content {
+  //margin-top: 100px;
+  margin-top: 81px;
+  //@include at-breakpoint($bp-med-2) {
+//    margin-top: 195px;
+//  }
+@include at-breakpoint($bp-large) {
+  margin-top: 84px;
+}
+  @include at-breakpoint($bp-xl-2) {
+    margin-top: 110px;
+  }
+}
+
+#page:not(.with-promos) {
+  &.not-front {
+    #content {
+      margin-top: 110px;
+    }
+  }
+ }
+ 
+.node-type-product {
+  #page:not(.with-promos) {
+     #content {
+       //margin-top: 81px;
+       @include at-breakpoint($bp-large) {
+         margin-top: 84px;
+       }
+       @include at-breakpoint($bp-xl-2) {
+         margin-top: 265px;
+       }
+     }
+  }
+}
+
+
+// internal page 2 column layout
+.ds-2col {
+  .group-left {
+    @include full-width;
+    //padding: 0 35px;
+    margin-bottom: 40px;
+    @include at-breakpoint($bp-med-2) {
+      @include span-columns(8,12);
+     // padding: 0 0 0 35px;
+      margin-bottom: 0;
+    }
+    @include at-breakpoint($bp-xl-2) {
+      padding: 0;
+    }
+    .section-title {
+      //margin: 0 0 42px;
+      margin: 0 0 47px;
+    }
+    .image {
+      padding-top: 4px;
+      img {
+        @extend %full-width-image;
+      }
+    }
+  }
+  .group-right {
+     @include full-width;
+    // padding: 0 35px;
+     @include at-breakpoint($bp-med-2) {
+       @include span-columns(4 omega,12);
+       padding: 81px 0 0 10px;
+     }
+     @include at-breakpoint($bp-xl-2) {
+       padding: 81px 0 0 20px;
+     }
+     .logo {
+       img {
+         @extend %full-width-image;
+       }
+     }
+   }
+  .node-section & {
+    .group-left,
+    .group-right {
+      padding: 0;
+    }
+  }
+
+  &.full {
+    & > .region-holder {
+      padding: 28px 35px;
+      @include at-breakpoint($bp-xl-2) {
+        padding: 83px 0 28px;
+      }
+    }
+    .with-promos & {
+      & > .region-holder {
+        padding: 28px 35px;
+        @include at-breakpoint($bp-xl-2) {
+          padding: 28px 0;
+        }
+      }
+    }
+    .front & {
+      & > .region-holder {
+        padding: 0 35px;
+        @include at-breakpoint($bp-xl-2) {
+          padding: 0;
+        }
+      }
+    }
+    //.group-right {
+//      @include at-breakpoint($bp-med-2) {
+//        padding: 0 0 0 20px;
+//      }
+//      @include at-breakpoint($bp-xl-2) {
+//        padding: 0 0 0 20px;
+//      }
+//    }
+  }
+
+  &.node-office {
+    .group-left {
+      @include at-breakpoint($bp-med-2) {
+        @include span-columns(6,12);
+        //padding: 0;
+        margin-bottom: 0;
+      }
+    }
+    .group-right {
+      @include at-breakpoint($bp-med-2) {
+        @include span-columns(6 omega,12);
+        padding: 0;
+      }
+    }
+  }
+
+//  &.node-customer {
+//
+//  }
+
+  &.node-step {
+    .group-left {
+      @include at-breakpoint($bp-med-2) {
+        @include span-columns(5,12);
+        //padding: 0;
+        margin-bottom: 0;
+      }
+    }
+    .group-right {
+      @include at-breakpoint($bp-med-2) {
+        @include span-columns(7 omega,12);
+        padding: 0;
+      }
+    }
+  }
+}
+
+
+

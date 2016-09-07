@@ -1,0 +1,38 @@
+<?php
+
+/**
+ * Implements hook_filter_info().
+ */
+function intlink_langprefix_filter_info() {
+  $filters['intlinklangprefix title'] = array(
+    'title' => t('Internal links language prefix'),
+    'description' => t('Add language prefix of current language to internal /node/XXXX links.'),
+    'process callback' => 'intlink_langprefix_filter_process',
+    'cache' => FALSE, // might be big penalty for performance, but we have to filter it every time
+
+    //'prepare callback' => 'intlink_langprefix_filter_prepare',
+    //'tips callback'  => 'intlink_langprefix_filter_tips',
+
+  );
+  return $filters;
+}
+
+function intlink_langprefix_filter_process($text) {
+
+  $pattern = '#href=\"(.*?)\"#';
+  return preg_replace_callback($pattern, '_intlink_langprefix_process_link', $text);
+
+}
+
+function _intlink_langprefix_process_link($matches) {
+
+  global $language;
+
+  $return = $matches[0];
+
+  // replace /node/ with /lang/node/
+  $return = str_replace('href="/node/', 'href="/'.$language->language.'/node/', $return);
+  $return = str_replace('href=\'/node/', 'href=\'/'.$language->language.'/node/', $return);
+
+  return $return;
+}

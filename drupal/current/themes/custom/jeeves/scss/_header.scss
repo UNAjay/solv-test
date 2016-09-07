@@ -1,0 +1,326 @@
+//-----------------------------------------
+// top menu
+//-----------------------------------------
+.header-primary {
+	background: #000;
+	color: #9FA09F;
+	padding: 3px 15px;
+  @include font-size(12);
+
+  @include at-breakpoint($second) {
+		background: url('../images/bg-top-menu.png') repeat;
+		padding: 0 10px;
+  }
+
+	.content a {
+		color: #9FA09F;
+    @include font-size(12);
+
+	  &:hover {
+	  	color: #fff;
+	  }
+	}
+
+	.menu {
+		li {
+			float: left;
+
+			&.first {
+				margin-right: 40px;
+
+			  @include at-breakpoint($first) {
+			  	margin-right: 20px;
+			  }
+			  @include at-breakpoint($second) {
+			  	margin-right: 20px;
+			  }
+			  @include at-breakpoint($third) {
+			  	margin-right: 40px;
+			  }
+			}
+		}
+	}
+
+	.region-header-primary {
+		.block-menu-block {
+		  float: left;
+			padding: 0;
+
+		  @include at-breakpoint($second) {
+		  	padding: 8px 0;
+		  }
+		}
+	}
+}
+
+// todo: add unique class to these blocks
+#block-jeeveserp-layout-jeeveserp-layout-phone {
+  float: left;
+}
+#block-jeeveserp-layout-jeeveserp-layout-chat,
+#block-jeeveserp-layout-jeeveserp-layout-username,
+.block-menu-block .menu-name-menu-top-menu {
+	float: left;
+	display: none;
+
+  @include at-breakpoint($first) {
+  	display: block;
+  }
+}
+#block-jeeveserp-layout-jeeveserp-layout-username {
+  @include at-breakpoint($second) {
+  	padding: 8px 0;
+  }
+}
+#block-jeeveserp-layout-jeeveserp-layout-phone,
+#block-jeeveserp-layout-jeeveserp-layout-chat,
+.block-menu-block .menu-name-menu-top-men {
+	margin-right: 40px;
+
+  @include at-breakpoint($first) {
+  	margin-right: 20px;
+  }
+  @include at-breakpoint($second) {
+  	margin-right: 20px;
+		padding: 8px 0;
+  }
+  @include at-breakpoint($third) {
+  	margin-right: 40px;
+  }
+}
+
+#block-lang-dropdown-language {
+	float: right;
+
+  @include at-breakpoint($second) {
+  	padding: 7px 0;
+  }
+
+	h2,
+	.content {
+		display: inline-block;
+	}
+	h2 {
+		margin-right: 5px;
+	}
+  span.title {
+    margin-right: 5px;
+  }
+	.form-type-select {
+    // background: url('../images/bg-language-arrow.png') no-repeat right 8px transparent;
+	}
+	select {
+		width: auto !important;
+		padding-right: 5px;
+    color: #9FA09F;
+	}
+	.sbOptions {
+	  background: #000;
+	  width: 105px;
+
+	  @include at-breakpoint($second) {
+	    background: #484848;
+	    width: 120px;
+	  }
+	}
+}
+
+//-----------------------------------------
+// search-block in desktop
+//-----------------------------------------
+.header-primary #block-search-form {
+	display: none;
+	float: right;
+
+  @include at-breakpoint($second) {
+  	display: block;
+  	margin-left: 40px;
+		padding: 4px 0;
+  }
+
+	input[type="text"] {
+		background: #484848;
+		border: none;
+		border-top: 1px solid #121212;
+		color: #9FA09F;
+		padding: 4px;
+	}
+	input[type="submit"] {
+		background: url('../images/icon-search.png') no-repeat;
+		border: none;
+		text-indent: -999em;
+		margin-left: 3px;
+		width: 18px;
+		cursor: pointer;
+	}
+}
+.container-inline div {
+	display: inline;
+}
+
+//-----------------------------------------
+// search-block in mobile
+//-----------------------------------------
+.header-secondary #block-search-form {
+  display: none;
+	background: #ECECEC;
+	border-bottom: 1px solid #B3B3B3;
+	padding: 15px;
+  @include full-width;
+
+	input[type="text"] {
+    @extend %textfield-textarea;
+  	@include full-width;
+	}
+	input[type="submit"] {
+		display: none;
+	}
+}
+
+//-----------------------------------------
+// main menu
+//-----------------------------------------
+.header-secondary {
+  @include at-breakpoint(0 $second - 1) {
+		background: url('../images/bg-mobile-menu.png') repeat-x;
+  }
+  @include at-breakpoint($second) {
+		background: url('../images/bg-main-menu.png') repeat-x;
+		padding: 0 10px;
+  }
+
+  #logo {
+    float: left;
+    margin-top: 13px;
+    padding: 0 15px;
+
+	  @include at-breakpoint($second) {
+    	margin-top: 23px;
+    	padding: 0;
+	  }
+
+    img {
+    	width: 68px;
+
+		  @include at-breakpoint($second) {
+		  	width: 89px;
+		  }
+    }
+  }
+
+  // buttons
+	.navigate,
+	.search-button {
+	  @include at-breakpoint(0 $second - 1) {
+			border-left: 1px solid #AFAFAF;
+			float: right;
+			padding: 11px 15px 10px;
+			cursor: pointer;
+	    @include font-size(18, 22);
+	  }
+	  @include at-breakpoint($second) {
+			display: none;
+	  }
+
+	  span {
+	    display: block;
+	    float: right;
+	    width: 20px;
+	    height: 20px;
+	  }
+	}
+	.navigate {
+	  span {
+			background: url('../images/icon-menu.png') no-repeat;
+	    margin: 3px 0 0 10px;
+	  }
+	}
+	.search-button {
+	  span {
+			background: url('../images/icon-search-mobile.png') no-repeat;
+	    margin-top: 2px;
+	  }
+	}
+
+	.menu {
+		display: none;
+
+	  @include at-breakpoint(0 $second - 1) {
+	  	@include full-width;
+	  }
+	  @include at-breakpoint($second) {
+			display: block;
+			float: right;
+			max-height: 68px;
+			overflow: hidden;
+	  }
+	  @include at-breakpoint($second) {
+			max-width: 667px;
+	  }
+	  @include at-breakpoint($second + 80px) {
+			max-width: 752px;
+	  }
+	  @include at-breakpoint($third + 12px) {
+			max-width: 898px;
+	  }
+	}
+	li {
+	  @include at-breakpoint($second) {
+			float: left;
+	  }
+
+	  &.last a {
+		  @include at-breakpoint(0 $second - 1) {
+	  		border-bottom: 1px solid #989898;
+		  }
+	  }
+	}
+	.content a {
+		color: #252525;
+		display: block;
+
+	  @include at-breakpoint(0 $second -1) {
+			background: #ECECEC;
+			border-bottom: 1px solid #CBCBCB;
+			padding: 8px 3px;
+	  }
+	  @include at-breakpoint($second) {
+			padding: 25px 5px;
+    	@include font-size(13, 18);
+	  }
+	  @include at-breakpoint($second + 100px) {
+			padding: 25px 10px;
+	  }
+	  @include at-breakpoint($third + 12px) {
+			padding: 25px 14px;
+    	@include font-size(14, 18);
+	  }
+
+	  &.active,
+	  &.active-trail,
+	  &:hover {
+	  	background: #fff;
+	  	color: $jeevesRed;
+	  }
+	}
+}
+
+// remove sticky menu in mobile view
+.node-type-full-page,
+.not-front {
+  #header-secondary-float {
+    display: none !important;
+
+    @include at-breakpoint($second) {
+  	  display: block !important;
+ 	  }
+  }
+}
+
+#header-secondary-float {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  border-bottom: 1px solid #ddd;
+}

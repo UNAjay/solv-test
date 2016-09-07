@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Attachments feature.
+ */
+
+include_once 'attachments.features.inc';

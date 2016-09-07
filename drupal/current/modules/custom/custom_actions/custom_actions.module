@@ -1,0 +1,961 @@
+<?php
+
+// not the best way to link form with files
+define('WEBFORM_EVENTS_NEWSLETTER_CONTACT_ID', 62); // node id for events newsletter contact form
+define('WEBFORM_NEWS_NEWSLETTER_CONTACT_ID', 61);   // node id for news newsletter contact form
+define('WEBFORM_IPQ_CONTACT_ID', 60);               // node id for IPQ contact form
+define('WEBFORM_VIDEOS_CONTACT_ID', 59);            // node id for videos contact form
+define('WEBFORM_FILES_CONTACT_ID', 58);             // node id for files contact form
+define('WEBFORM_DEEPER_CONTACT_ID', 28);            // contact form node id
+define('WEBFORM_CONTACT_ID', 27);                   // contact form node id
+
+define('ACTON_CONTACT_FORM_URL', 'http://marketing.jeeves.se/acton/eform/4567/0085/d-ext-0002');
+define('ACTON_DEEPER_CONTACT_FORM_URL', 'http://marketing.jeeves.se/acton/eform/4567/0085/d-ext-0002');
+define('ACTON_FILE_CONTACT_FORM_URL', 'http://marketing.jeeves.se/acton/eform/4567/0085/d-ext-0001'); // ?
+define('ACTON_VIDEO_CONTACT_FORM_URL', 'http://marketing.jeeves.se/acton/eform/4567/0085/d-ext-0001'); // ?
+define('ACTON_IPQ_CONTACT_FORM_URL', 'http://marketing.jeeves.se/acton/eform/4567/0089/d-ext-0001');
+define('ACTON_NEWS_NEWSLETTER_CONTACT_FORM_URL', 'http://marketing.jeeves.se/acton/eform/4567/008a/d-ext-0001');
+define('ACTON_EVENTS_NEWSLETTER_CONTACT_FORM_URL', 'http://marketing.jeeves.se/acton/eform/4567/008a/d-ext-0001'); // ?
+
+/**
+ * Implements hook_menu().
+ */
+function custom_actions_menu(){
+  $items = array();
+
+  $items['download-file'] = array(
+    'page callback' => 'custom_actions_download_file',
+    'page arguments' => array(1),
+    'type' => MENU_CALLBACK,
+    'access arguments' => array('access content'),
+  );
+
+  $items['view-video'] = array(
+    'page callback' => 'custom_actions_view_video',
+    'page arguments' => array(1),
+    'type' => MENU_CALLBACK,
+    'access arguments' => array('access content'),
+  );
+
+  $items['remove-fr-translations-4bDsFpfH7yox'] = array(
+    'page callback' => 'custom_actions_remove_fr_translations',
+    'page arguments' => array(),
+    'type' => MENU_CALLBACK,
+    'access arguments' => array('administer content'),
+  );
+
+  return $items;
+}
+
+function custom_actions_remove_fr_translations() {
+
+  db_query("DELETE FROM {field_data_body} WHERE entity_type='node' AND language IN ('fr') AND entity_id NOT IN (1135, 1122, 1123, 1125, 140, 279, 143, 136, 100, 101, 102, 104, 163, 318)");
+
+  db_query("DELETE FROM {field_revision_body} WHERE entity_type='node' AND language IN ('fr') AND entity_id NOT IN (1135, 1122, 1123, 1125, 140, 279, 143, 136, 100, 101, 102, 104, 163, 318)");
+
+  db_query("DELETE FROM {field_data_title_field} WHERE entity_type='node' AND language IN ('fr') AND entity_id NOT IN (1135, 1122, 1123, 1125, 140, 279, 143, 136, 100, 101, 102, 104, 163, 318)");
+
+  db_query("DELETE FROM {field_revision_title_field} WHERE entity_type='node' AND language IN ('fr') AND entity_id NOT IN (1135, 1122, 1123, 1125, 140, 279, 143, 136, 100, 101, 102, 104, 163, 318)");
+
+  db_query("DELETE FROM {field_data_field_sidebar_text} WHERE entity_type='node' AND language IN ('fr') AND entity_id NOT IN (1135, 1122, 1123, 1125, 140, 279, 143, 136, 100, 101, 102, 104, 163, 318)");
+
+  db_query("DELETE FROM {field_revision_field_sidebar_text} WHERE entity_type='node' AND language IN ('fr') AND entity_id NOT IN (1135, 1122, 1123, 1125, 140, 279, 143, 136, 100, 101, 102, 104, 163, 318)");
+
+  return 'done';
+}
+
+/**
+ * Function to get rid of 'Plain-text' option into format dropdown
+ * @param type $form
+ * @return type
+ */
+function all_editors_node_form_after_build($form) {
+  // We want this on a specific field
+  $language = $form['body']['#language'];
+
+  if (isset($form['body'][$language]['0']['format']['format']['#options']['plain_text'])) {
+    unset($form['body'][$language]['0']['format']['format']['#options']['plain_text']);
+  }
+  return $form;
+}
+
+/**
+ * Function to get rid of 'Plain-text' option into format dropdown
+ * @param type $form
+ * @return type
+ */
+function all_editors_taxonomy_form_after_build($form) {
+  // We want this on a specific field
+  $language = $form['description_field']['#language'];
+
+  if (isset($form['description_field'][$language]['0']['format']['format']['#options']['plain_text'])) {
+    unset($form['description_field'][$language]['0']['format']['format']['#options']['plain_text']);
+  }
+
+  return $form;
+}
+
+/**
+ * Function to get rid of 'Plain-text' option into format dropdown
+ * @param type $form
+ * @return type
+ */
+function user_profile_form_after_build($form) {
+  // We want this on a specific field
+  $language = $form['field_additional_information']['#language'];
+
+  if (isset($form['field_additional_information'][$language]['0']['format']['format']['#options']['plain_text'])) {
+    unset($form['field_additional_information'][$language]['0']['format']['format']['#options']['plain_text']);
+  }
+
+  return $form;
+}
+
+/**
+ * Function, to display countries that have been used somewere
+ * @param type $form
+ * @param type $form_state
+ * @param type $form_id
+ */
+function jeeves_form_alter(&$form, &$form_state, $form_id) {
+  if (strpos($form_id, '_node_form')) {
+    $form['#after_build'][] = 'all_editors_node_form_after_build';
+  }
+
+  if ($form_id == 'taxonomy_form_term') {
+    $form['#after_build'][] = 'all_editors_taxonomy_form_after_build';
+    if (isset($form_state['term']) && !$form_state['term']->tid) {
+      $form['#submit'][] = 'jeeves_add_term_redirect';
+    }
+  }
+
+  if ($form_id == 'user_profile_form') {
+    $form['#after_build'][] = 'user_profile_form_after_build';
+  }
+
+  // EDIT: not in use anymore
+  // if ($form_id == 'views_exposed_form' /*&& $form['#id'] == 'views-exposed-form-Customers-block-1'*/ && isset($form['name_list'])) {
+  //   $output = '';
+  //   $output = cache_get('views-exposed-form-Customers-page', 'cache');
+  //   if (empty($output)) {
+  //     $result = db_query("SELECT DISTINCT iso2, name from {field_data_field_country} f LEFT JOIN {countries_country} c ON f.field_country_iso2 = c.iso2 WHERE f.bundle = 'customer' ORDER BY name ASC");
+  //     $defaultoptions = array('All'=>'- Any -');
+  //     $output = $defaultoptions + $result->fetchAllKeyed();
+  //     $form['name_list']['#options'] = $output;
+  //     cache_set('views-exposed-form-Customers-page', $output, 'cache');
+  //   }else{
+  //     $form['name_list']['#options'] = $output->data;
+  //   }
+  // }
+
+  // placeholders for contact form
+  $placeholders_forms = array(
+      "webform_client_form_".WEBFORM_CONTACT_ID,
+      "webform_client_form_".WEBFORM_VIDEOS_CONTACT_ID,
+      "webform_client_form_".WEBFORM_FILES_CONTACT_ID,
+      "webform_client_form_".WEBFORM_IPQ_CONTACT_ID,
+      "webform_client_form_".WEBFORM_NEWS_NEWSLETTER_CONTACT_ID,
+      "webform_client_form_".WEBFORM_EVENTS_NEWSLETTER_CONTACT_ID,
+      "webform_client_form_".WEBFORM_DEEPER_CONTACT_ID,
+    );
+
+  if (in_array($form_id, $placeholders_forms)) {
+    foreach ($form['submitted'] as $key => $value) {
+      if (isset($form['submitted'][$key])) {
+        $types = array('textfield', 'webform_email', 'textarea');
+
+        if (isset($value['#type']) && in_array($value['#type'], $types)) {
+          $form['submitted'][$key]['#attributes']['placeholder'] = t($value['#title']);
+        }
+      }
+    }
+  }
+
+  // Custom submit code for ActOn forms - for Contact form
+  if ($form_id == 'webform_client_form_'.WEBFORM_CONTACT_ID) {
+    $form['#submit'][] = 'acton_contact_form_submit';
+
+    $form['#validate'][] = 'acton_forms_validate';
+  }
+
+  // Custom submit code for ActOn forms - for Files Contact form
+  if ($form_id == 'webform_client_form_'.WEBFORM_FILES_CONTACT_ID) {
+    $form['#submit'][] = 'acton_files_contact_form_submit';
+
+    $form['#validate'][] = 'acton_forms_validate';
+
+    $form['submitted']['country']['#pre_render'][] = 'pre_render_webform_element';
+  }
+
+  // Custom submit code for ActOn forms - for Videos Contact form
+  if ($form_id == 'webform_client_form_'.WEBFORM_VIDEOS_CONTACT_ID) {
+    $form['#submit'][] = 'acton_videos_contact_form_submit';
+
+    $form['#validate'][] = 'acton_forms_validate';
+
+    $form['submitted']['country']['#pre_render'][] = 'pre_render_webform_element';
+  }
+
+  // Custom submit code for ActOn forms - for IPQ Contact form
+  if ($form_id == 'webform_client_form_'.WEBFORM_IPQ_CONTACT_ID) {
+    $form['#submit'][] = 'acton_ipq_contact_form_submit';
+
+    $form['#validate'][] = 'acton_forms_validate';
+
+    $form['submitted']['country']['#pre_render'][] = 'pre_render_webform_element';
+    $form['submitted']['type']['#pre_render'][] = 'pre_render_webform_element';
+  }
+
+  // Custom submit code for ActOn forms - for News Newsletter Contact form
+  if ($form_id == 'webform_client_form_'.WEBFORM_NEWS_NEWSLETTER_CONTACT_ID) {
+    $form['#submit'][] = 'acton_news_newsletter_contact_form_submit';
+
+    $form['#validate'][] = 'acton_forms_validate';
+  }
+
+  // Custom submit code for ActOn forms - for Events Newsletter Contact form
+  if ($form_id == 'webform_client_form_'.WEBFORM_EVENTS_NEWSLETTER_CONTACT_ID) {
+    $form['#submit'][] = 'acton_events_newsletter_contact_form_submit';
+
+    $form['#validate'][] = 'acton_forms_validate';
+  }
+
+  // Custom submit code for ActOn forms - for Events Newsletter Contact form
+  if ($form_id == 'webform_client_form_'.WEBFORM_DEEPER_CONTACT_ID) {
+    $form['#submit'][] = 'acton_deeper_contact_form_submit';
+
+    $form['#validate'][] = 'acton_forms_validate';
+
+    $form['submitted']['country']['#pre_render'][] = 'pre_render_webform_element';
+  }
+
+  // functionality moved to custom_actions_form_views_exposed_form_alter
+  // rewrites customer selectbox default values
+  // if (in_array($form['#id'], array('views-exposed-form-Customers-block-1', 'views-exposed-form-Customers-block-2'))) {
+
+  //   if (isset($form['tid'])) $form['tid']['#options']['All'] = $form['#info']['filter-tid']['label'];
+  //   if (isset($form['term_node_tid_depth'])) $form['term_node_tid_depth']['#options']['All'] = $form['#info']['filter-term_node_tid_depth']['label'];
+  //   if (isset($form['term_node_tid_depth_1'])) $form['term_node_tid_depth_1']['#options']['All'] = $form['#info']['filter-term_node_tid_depth_1']['label'];
+
+  //   // EDIT: i'm guessing this is obsolete?
+  //   //if (isset($form['name_list'])) $form['name_list']['#options']['All'] = $form['#info']['filter-name_list']['label'];
+  // }
+
+  // webinar form labels rewrite
+  if ($form['#id'] == 'views-exposed-form-webinars-block') {
+    if (isset($form['field_event_type_value'])) $form['field_event_type_value']['#options']['All'] = $form['#info']['filter-field_event_type_value']['label'];
+    if (isset($form['field_event_location_tid'])) $form['field_event_location_tid']['#options']['All'] = $form['#info']['filter-field_event_location_tid']['label'];
+  }
+
+  // partners exposed filters - Location default value cant be changed..
+  if ($form['#id'] == 'views-exposed-form-partner-block-1') {
+
+    if (isset($form['field_partner_type_tid'])) $form['field_partner_type_tid']['#options']['All'] = $form['#info']['filter-field_partner_type_tid']['label'];
+  }
+}
+
+
+function jeeves_add_term_redirect($form, $form_state) {
+  $redirect = 'admin/structure/taxonomy/' . $form_state['values']['vocabulary_machine_name'];
+  $form_state['redirect'] = $redirect;
+  drupal_goto($redirect);
+}
+
+
+/**
+ * Function that rewrite webform selectbox first element content
+ * @param array $element
+ * @return type
+ */
+function pre_render_webform_element($element) {
+  $element['#options'][NULL] = $element['#title'];
+
+  return $element;
+}
+
+/**
+ * Function to custom validation of ActOn contact forms
+ * @param type $form
+ * @param type $form_state
+ */
+function acton_forms_validate($form, &$form_state) {
+  // Test for existing form errors
+
+  if (form_get_errors()) {
+    // Save errors
+    $form_errors = form_get_errors();
+    $drupal_errors = drupal_get_messages('error');
+
+    drupal_set_message( t('Please fill all required fields.'), 'error');
+  }
+}
+
+/**
+ * Function to rewrite apps links if defined external link
+ * @param type $variables
+ */
+function custom_actions_preprocess_node(&$variables) {
+  global $base_url;
+
+  $app_url = "";
+  $app_url_title = "";
+
+  if ($variables['type'] == "apps") {
+    if ($variables['view_mode'] == 'teaser') {
+      // custom url link
+      if (isset($variables['field_app_url']) && isset($variables['field_app_url']['und'][0]['url'])) {
+        $app_url = $variables['field_app_url']['und'][0]['url'];
+      }
+
+      // custom url title
+      if (isset($variables['field_app_url']) && isset($variables['field_app_url']['und'][0]['title'])) {
+        $app_url_title = $variables['field_app_url']['und'][0]['title'];
+      }
+
+      if ($app_url) {
+        $variables['content']['field_app_picture'][0]['#path']['path'] = $app_url;
+        $variables['content']['links']['node']['#links']['node-readmore']['href'] = $app_url;
+
+        $variables['node_url'] = $app_url;
+      }
+
+      if ($app_url_title) {
+        $variables['title'] = $app_url_title;
+      }
+    }
+  }
+
+  if ($variables['type'] == "video") {
+    $current_path = current_path();
+
+    $node_path = "node/".$variables['nid'];
+    $webform_node_path = "node/".WEBFORM_VIDEOS_CONTACT_ID;
+
+    // if cookie not filled, then ask to fill contact form data
+    if (!isset($_COOKIE['Drupal_visitor_videos_contact_form'])) {
+      $link_prefix = '<a title="'.t('Open video').'" class="colorbox-inline colorbox-node" href="'.$base_url."/".$webform_node_path.'?backlink='.$base_url.'/'.$node_path.'&width=455&height=610">';
+    } else {
+      $url = $base_url."/view-video?url=".$base_url."/".$node_path;
+      $link_prefix = '<a title="'.t('Open video').'" href="'.$url.'">';
+    }
+
+    $variables['content']['field_video'][0]['file']['#prefix'] = $link_prefix;
+    $variables['content']['field_video'][0]['file']['#suffix'] = '</a>';
+  }
+}
+
+
+/**
+ * Function to rewrite promo slideshow view "Readmore" link title and url if needed
+ * @param type $vars
+ */
+function custom_actions_preprocess_views_view_fields(&$vars) {
+  // $view = $vars['view'];
+  // if($view->name == "promo_slideshow") {
+  //     foreach ($vars['fields'] as $id => $field) {
+
+  //       if ($id == 'field_promo_link') {
+  //           $custom_link = $vars['fields'][$id]->content;
+
+  //           if ($custom_link) {
+  //             // if fully defined link, then replace read-more link with it
+  //             if (strpos($custom_link, "<a")!==FALSE) {
+  //               $vars['fields']['view_node']->content = $custom_link;
+  //             } else {
+  //               // if defined only title, create new readmore link with this title
+
+  //               $regexp = "<a\s[^>]*href=(\"??)([^\" >]*?)\\1[^>]*>(.*)<\/a>";
+  //               if(preg_match_all("/$regexp/siU", $vars['fields']['view_node']->content, $matches)) {
+  //                 if ($matches[2][0]) {
+  //                   $vars['fields']['view_node']->content = '<a href="'.$matches[2][0].'">'.$custom_link.'</a>';
+  //                 }
+  //             }
+  //           }
+  //         }
+  //       $vars['fields'][$id]->content = '';
+  //     }
+  //   }
+  // }
+}
+
+/**
+ * Function to procees data send to ActOn
+ * @param type $variables_url - variable array, concatenated with &
+ * @param type $form_url - form url
+ * @return type
+ */
+function send_to_action($variables_url, $form_url) {
+  watchdog('ready_to_acton', $variables_url);
+  return; // TODO need to be uncommented!!!
+
+  if (!$form_url) {
+    drupal_set_message("ActOn form need to send url", "error");
+    return;
+  }
+
+  if (!function_exists('curl_init')) {
+    drupal_set_message("Curl is not setup on this PHP server and is required for this script", "error");
+  } else {
+    // Post to Act-On form
+    $ch2 = curl_init();
+    if (curl_error($ch2) != "") { echo "Error: $error\n";}
+
+    // Point to Act-On External Post URL
+    curl_setopt($ch2, CURLOPT_URL, $form_url);
+
+    // Set the method to POST
+    curl_setopt($ch2, CURLOPT_POST, 1);
+
+    // Pass POST data
+    curl_setopt($ch2, CURLOPT_USERAGENT, getenv("HTTP_USER_AGENT"));
+    curl_setopt($ch2, CURLOPT_POSTFIELDS, $variables_url);
+    $result = curl_exec($ch2); // Post to site
+    if ($result) {
+      curl_close($ch2); // close cURL resource
+    }
+  }
+}
+
+/**
+ * Function to customize 'Contact form' submit to ActOn server
+ * @param type $form
+ * @param type $form_state
+ */
+function acton_contact_form_submit($form, $form_state) {
+  $first_name = isset($form_state['input']['submitted']['first_name']) ? $form_state['input']['submitted']['first_name'] : NULL;
+  $last_name = isset($form_state['input']['submitted']['last_name']) ? $form_state['input']['submitted']['last_name'] : NULL;
+  $e_mail = isset($form_state['input']['submitted']['e_mail']) ? $form_state['input']['submitted']['e_mail'] : NULL;
+  $phone_number = isset($form_state['input']['submitted']['phone_number']) ? $form_state['input']['submitted']['phone_number'] : NULL;
+  $message = isset($form_state['input']['submitted']['message']) ? $form_state['input']['submitted']['message'] : NULL;
+
+  // build variable array
+  $row_arr = array();
+  $row_arr["First Name"] = stripslashes($first_name);
+  $row_arr["Last Name"] = stripslashes($last_name);
+  $row_arr["Email Address"] = stripslashes($e_mail);
+  $row_arr["Office Phone"] = stripslashes($e_mail);
+  $row_arr["Message"] = stripslashes($message);
+
+  // concat variables
+  $variables_url = http_build_query($row_arr, '', '&');
+  send_to_action($variables_url, ACTON_CONTACT_FORM_URL);
+}
+
+/**
+ * Function to customize 'Contact form' submit to ActOn server
+ * @param type $form
+ * @param type $form_state
+ */
+function acton_deeper_contact_form_submit($form, $form_state) {
+  $first_name = isset($form_state['input']['submitted']['first_name']) ? $form_state['input']['submitted']['first_name'] : NULL;
+  $last_name = isset($form_state['input']['submitted']['last_name']) ? $form_state['input']['submitted']['last_name'] : NULL;
+  $e_mail = isset($form_state['input']['submitted']['e_mail']) ? $form_state['input']['submitted']['e_mail'] : NULL;
+  $phone_number = isset($form_state['input']['submitted']['phone_number']) ? $form_state['input']['submitted']['phone_number'] : NULL;
+  $message = isset($form_state['input']['submitted']['message']) ? $form_state['input']['submitted']['message'] : NULL;
+  $company = isset($form_state['input']['submitted']['company']) ? $form_state['input']['submitted']['company'] : NULL;
+  $position = isset($form_state['input']['submitted']['position']) ? $form_state['input']['submitted']['position'] : NULL;
+  $country = isset($form_state['input']['submitted']['country']) ? $form_state['input']['submitted']['country'] : NULL;
+
+  // build variable array
+  $row_arr = array();
+  $row_arr["First Name"] = stripslashes($first_name);
+  $row_arr["Last Name"] = stripslashes($last_name);
+  $row_arr["Email Address"] = stripslashes($e_mail);
+  $row_arr["Office Phone"] = stripslashes($e_mail);
+  $row_arr["Message"] = stripslashes($message);
+
+  $row_arr["Account Name"] = stripslashes($company);
+  $row_arr["Title"] = stripslashes($position);
+  $row_arr["Primary Address Country"] = stripslashes($country);
+
+  // concat variables
+  $variables_url = http_build_query($row_arr, '', '&');
+  send_to_action($variables_url, ACTON_DEEPER_CONTACT_FORM_URL);
+}
+
+/**
+ * Function that send contact information to ActOn - after form submit
+ * @param type $form
+ * @param type $form_state
+ */
+function acton_files_contact_form_submit($form, $form_state) {
+  $first_name = isset($form_state['input']['submitted']['first_name']) ? $form_state['input']['submitted']['first_name'] : NULL;
+  $last_name = isset($form_state['input']['submitted']['last_name']) ? $form_state['input']['submitted']['last_name'] : NULL;
+  $e_mail = isset($form_state['input']['submitted']['e_mail']) ? $form_state['input']['submitted']['e_mail'] : NULL;
+  $phone_number = isset($form_state['input']['submitted']['phone_number']) ? $form_state['input']['submitted']['phone_number'] : NULL;
+  $message = isset($form_state['input']['submitted']['message']) ? $form_state['input']['submitted']['message'] : NULL;
+  $company = isset($form_state['input']['submitted']['company']) ? $form_state['input']['submitted']['company'] : NULL;
+  $position = isset($form_state['input']['submitted']['position']) ? $form_state['input']['submitted']['position'] : NULL;
+  $country = isset($form_state['input']['submitted']['country']) ? $form_state['input']['submitted']['country'] : NULL;
+
+  $sender = isset($form_state['input']['submitted']['sender']) ? $form_state['input']['submitted']['sender'] : NULL;
+
+  // send information to ActOn form
+  // build variable array
+  $row_arr = array();
+  $row_arr["First Name"] = stripslashes($first_name);
+  $row_arr["Last Name"] = stripslashes($last_name);
+  $row_arr["Email Address"] = stripslashes($e_mail);
+  $row_arr["Office Phone"] = stripslashes($e_mail);
+  $row_arr["Message"] = stripslashes($message);
+  $row_arr["Company"] = stripslashes($company);
+  $row_arr["Position"] = stripslashes($position);
+  $row_arr["Country"] = stripslashes($country);
+
+  // concat variables
+  $variables_url = http_build_query($row_arr, '', '&');
+  send_to_action($variables_url, ACTON_FILE_CONTACT_FORM_URL);
+
+  // TODO - this is commented out just for testing purposes, everything is working fine :)
+
+  // Save the anonymous user information to a cookie for reuse.
+  if (user_is_anonymous()) {
+    user_cookie_save(array('files_contact_form' => $variables_url));
+  }
+}
+
+/**
+ * Function that send contact information to ActOn - after form submit
+ * @param type $form
+ * @param type $form_state
+ */
+function acton_videos_contact_form_submit($form, $form_state) {
+  $first_name = isset($form_state['input']['submitted']['first_name']) ? $form_state['input']['submitted']['first_name'] : NULL;
+  $last_name = isset($form_state['input']['submitted']['last_name']) ? $form_state['input']['submitted']['last_name'] : NULL;
+  $e_mail = isset($form_state['input']['submitted']['e_mail']) ? $form_state['input']['submitted']['e_mail'] : NULL;
+  $phone_number = isset($form_state['input']['submitted']['phone_number']) ? $form_state['input']['submitted']['phone_number'] : NULL;
+  $message = isset($form_state['input']['submitted']['message']) ? $form_state['input']['submitted']['message'] : NULL;
+  $company = isset($form_state['input']['submitted']['company']) ? $form_state['input']['submitted']['company'] : NULL;
+  $position = isset($form_state['input']['submitted']['position']) ? $form_state['input']['submitted']['position'] : NULL;
+  $country = isset($form_state['input']['submitted']['country']) ? $form_state['input']['submitted']['country'] : NULL;
+
+  $sender = isset($form_state['input']['submitted']['sender']) ? $form_state['input']['submitted']['sender'] : NULL;
+
+  // send information to ActOn form
+  // build variable array
+  $row_arr = array();
+  $row_arr["First Name"] = stripslashes($first_name);
+  $row_arr["Last Name"] = stripslashes($last_name);
+  $row_arr["Email Address"] = stripslashes($e_mail);
+  $row_arr["Office Phone"] = stripslashes($e_mail);
+  $row_arr["Message"] = stripslashes($message);
+  $row_arr["Company"] = stripslashes($company);
+  $row_arr["Position"] = stripslashes($position);
+  $row_arr["Country"] = stripslashes($country);
+
+  // concat variables
+  $variables_url = http_build_query($row_arr, '', '&');
+  send_to_action($variables_url, ACTON_VIDEO_CONTACT_FORM_URL);
+
+  // TODO - this is commented out just for testing purposes, everything is working fine :)
+
+  // Save the anonymous user information to a cookie for reuse.
+  if (user_is_anonymous()) {
+    user_cookie_save(array('videos_contact_form' => $variables_url));
+  }
+}
+
+/**
+ * Function that send contact information to ActOn - after form submit
+ * @param type $form
+ * @param type $form_state
+ */
+function acton_ipq_contact_form_submit($form, $form_state) {
+  $first_name = isset($form_state['input']['submitted']['first_name']) ? $form_state['input']['submitted']['first_name'] : NULL;
+  $last_name = isset($form_state['input']['submitted']['last_name']) ? $form_state['input']['submitted']['last_name'] : NULL;
+  $e_mail = isset($form_state['input']['submitted']['e_mail']) ? $form_state['input']['submitted']['e_mail'] : NULL;
+  $phone_number = isset($form_state['input']['submitted']['phone_number']) ? $form_state['input']['submitted']['phone_number'] : NULL;
+  $message = isset($form_state['input']['submitted']['message']) ? $form_state['input']['submitted']['message'] : NULL;
+  $company = isset($form_state['input']['submitted']['company']) ? $form_state['input']['submitted']['company'] : NULL;
+  $position = isset($form_state['input']['submitted']['position']) ? $form_state['input']['submitted']['position'] : NULL;
+  $country = isset($form_state['input']['submitted']['country']) ? $form_state['input']['submitted']['country'] : NULL;
+  $type = isset($form_state['input']['submitted']['type']) ? $form_state['input']['submitted']['type'] : NULL;
+
+  // send information to ActOn form
+  // build variable array
+  $row_arr = array();
+  $row_arr["First Name"] = stripslashes($first_name);
+  $row_arr["Last Name"] = stripslashes($last_name);
+  $row_arr["Email Address"] = stripslashes($e_mail);
+  $row_arr["Office Phone"] = stripslashes($e_mail);
+  $row_arr["Message"] = stripslashes($message);
+  $row_arr["Company"] = stripslashes($company);
+  $row_arr["Position"] = stripslashes($position);
+  $row_arr["Country"] = stripslashes($country);
+  $row_arr["Campaign"] = stripslashes($type);
+
+  // concat variables
+  $variables_url = http_build_query($row_arr, '', '&');
+  send_to_action($variables_url, ACTON_IPQ_CONTACT_FORM_URL);
+}
+
+/**
+ * Function that send contact information to ActOn - after form submit
+ * @param type $form
+ * @param type $form_state
+ */
+function acton_news_newsletter_contact_form_submit($form, $form_state) {
+  $name = isset($form_state['input']['submitted']['name']) ? $form_state['input']['submitted']['name'] : NULL;
+  $e_mail = isset($form_state['input']['submitted']['e_mail']) ? $form_state['input']['submitted']['e_mail'] : NULL;
+
+  // send information to ActOn form
+  // build variable array
+  $row_arr = array();
+  $row_arr["Name"] = stripslashes($name);
+  $row_arr["Email Address"] = stripslashes($e_mail);
+
+  // concat variables
+  $variables_url = http_build_query($row_arr, '', '&');
+  send_to_action($variables_url, ACTON_NEWS_NEWSLETTER_CONTACT_FORM_URL);
+}
+
+/**
+ * Function that send contact information to ActOn - after form submit
+ * @param type $form
+ * @param type $form_state
+ */
+function acton_events_newsletter_contact_form_submit($form, $form_state) {
+  $name = isset($form_state['input']['submitted']['name']) ? $form_state['input']['submitted']['name'] : NULL;
+  $e_mail = isset($form_state['input']['submitted']['e_mail']) ? $form_state['input']['submitted']['e_mail'] : NULL;
+  $type = isset($form_state['input']['submitted']['type']) ? $form_state['input']['submitted']['type'] : NULL;
+
+  // send information to ActOn form
+  // build variable array
+  $row_arr = array();
+  $row_arr["Name"] = stripslashes($name);
+  $row_arr["Email Address"] = stripslashes($e_mail);
+
+  $type_url_variables = "";
+  if ($type && is_array($type)) {
+    foreach($type as $val) {
+      $type_url_variables .= '&Event Type[]='.stripslashes($val);
+    }
+  }
+
+  // concat variables
+  $variables_url = http_build_query($row_arr, '', '&').$type_url_variables;
+  send_to_action($variables_url, ACTON_EVENTS_NEWSLETTER_CONTACT_FORM_URL);
+}
+
+/**
+ * Function to customize files download
+ * @param type $variables
+ * @return string
+ */
+function jeeves_download_file_direct_download_icon_item($variables) {
+  global $base_url;
+
+  $file = $variables['file'];
+
+  // Views may call this function with a NULL value, return an empty string.
+  if (empty($file->fid)) {
+    return '';
+  }
+
+  $url     = download_file_path($file->fid);
+  $icon    = theme('file_icon', array('file' => $file));
+  $options = array();
+
+  // Use the description or the title as the link text if available.
+  if (empty($file->description) && empty($file->title)) {
+    $link_text = $file->filename;
+  }
+  else {
+    if (!empty($file->description)) {
+      $link_text = $file->description;
+    }
+    else if (!empty($file->title)) {
+      $link_text = $file->title;
+    }
+
+    $options['attributes']['title'] = $file->filename;
+  }
+  $options['external'] = TRUE;
+
+
+  // TODO - this is commented out just for testing purposes, everything is working fine :)
+
+  // if not already filled information form, then ask to fill
+  //if (!isset($_COOKIE['Drupal_visitor_files_contact_form'])) {
+    $options['attributes']['class'] = array('colorbox-inline', 'colorbox-node');
+
+    $current_path = current_path();
+    $url = "/node/".WEBFORM_FILES_CONTACT_ID."?width=455&height=580&backlink=".$base_url."/".$current_path."&downlink=".$base_url."/".$url; // TODO - need to define form id somewhere else
+/*  } else {
+    $url = $base_url."/download-file?url=".$base_url."/".$url;
+  }*/
+
+  return '<div class="download-file clear-block">' . $icon . l($link_text, $url, $options) . '</div>';
+}
+
+/**
+ * Function to handle custom redirect and send file contact info to ActOn
+ */
+function custom_actions_download_file() {
+  // send info to acton
+  if (isset($_COOKIE['Drupal_visitor_files_contact_form'])) {
+    send_to_action($_COOKIE['Drupal_visitor_files_contact_form'], ACTON_FILE_CONTACT_FORM_URL);
+  }
+
+  if (isset($_REQUEST['url'])) {
+     // proceed download
+     header("Location: ".$_REQUEST['url'], TRUE, 301);
+  }
+}
+
+/**
+ * Function to handle custom redirect and send file contact info to ActOn
+ */
+function custom_actions_view_video() {
+  // send info to acton
+  if (isset($_COOKIE['Drupal_visitor_videos_contact_form'])) {
+    send_to_action($_COOKIE['Drupal_visitor_videos_contact_form'], ACTON_VIDEO_CONTACT_FORM_URL);
+  }
+
+  if (isset($_REQUEST['url'])) {
+     header("Location: ".$_REQUEST['url'], TRUE, 301);
+  }
+}
+
+/**
+ * Function to do custom order of filter selectboxes
+ * @param type $form
+ * @param type $form_state
+ * @return type
+ */
+function custom_actions_form_views_exposed_form_alter(&$form, $form_state) {
+  $simple_field_names = Array('field_event_type_value');
+  $hie_field_names = Array('term_node_tid_depth', 'term_node_tid_depth_1', 'term_node_tid_depth_2', 'tid', 'tid_1');
+
+  foreach ($form_state['view']->filter as $field => $filter) {
+    if ($filter->options['exposed']) {
+      $field_id = $form['#info']["filter-$field"]['value'];
+
+
+      // simple ordering
+      if (in_array($field, $simple_field_names)) {
+        asort($form[$field_id]['#options']);
+      }
+
+      // hierachical selectbox ordering
+      if (in_array($field, $hie_field_names)) {
+
+        $filter_name = $field;
+        $vocabulary = $form_state['view']->display_handler->handlers['filter'][$filter_name]->options['vocabulary'];
+
+        $filter_field =& $form[$filter_name];
+        $options =& $filter_field['#options'];
+
+        // Load first level taxonomy terms.
+        $taxonomy = taxonomy_vocabulary_machine_name_load($vocabulary);
+
+        // If the taxonomy does not exist, default to original options array.
+        if (!$taxonomy) {
+          return;
+        }
+
+        $vid = $taxonomy->vid;
+        // $depth = 1;
+        // $terms = taxonomy_get_tree($vid, 0, $depth, TRUE);
+
+
+        $query = new EntityFieldQuery();
+        $query->entityCondition('entity_type', 'taxonomy_term')
+          ->propertyOrderBy('vid') // Equivalent of sorting by vocab name, per EFQ docs.
+          ->propertyOrderBy('weight')
+          ->propertyOrderBy('name')
+          ->addTag('taxtag'); // See bellow custom_actions_query_taxtag_alter(). Used to add depth 1 option.
+        $query->entityCondition('bundle', $vocabulary);
+        $result = $query->execute();
+
+        $nested_options = array();
+        $nested_options_childs = array();
+
+        if (!empty($result['taxonomy_term'])) {
+          $terms = entity_load('taxonomy_term', array_keys($result['taxonomy_term']));
+          foreach ($terms as $term) {
+            $options[$term->tid] = entity_label('taxonomy_term', $term);
+          }
+
+          // Create new options array based on chosen taxonomy structure.
+          foreach ($terms as $tid => $term) {
+            // Add option to see all terms within the current parent term.
+            // $nested_options[$term->tid] = $term->name;
+            $nested_options[$term->tid] = entity_label('taxonomy_term', $term);
+
+
+            // Nest child terms within parent term.
+            $children = taxonomy_get_children($term->tid, $vid);
+            foreach ($children as $child) {
+              // $nested_options_childs[$term->tid][$child->tid] = $child->name;
+              $nested_options_childs[$term->tid][$child->tid] = entity_label('taxonomy_term', $child);
+            }
+          }
+        }
+
+        if (!empty($nested_options)) {
+          // Set options array to new, nested values.
+          $options = array('All' => '- Any -');
+
+          // sorting parents
+          asort($nested_options);
+
+          // exception for partner listing location field
+          if (($field == 'term_node_tid_depth') && ($form['#id'] == 'views-exposed-form-partner-block-1')) {
+            // sorting childs
+            foreach ($nested_options as $tid => $term_name) {
+
+              $options[$term_name][$tid] = t("All from @lvl1", array('@lvl1' => $term_name));
+
+              if (isset($nested_options_childs[$tid])) {
+
+                asort($nested_options_childs[$tid]);
+
+                foreach ($nested_options_childs[$tid] as $child_tid => $child_term_name) {
+                  $options[$term_name][$child_tid] = "  ".$child_term_name;
+                }
+              }
+
+            }
+
+          }
+          else {
+            // sorting childs
+            foreach ($nested_options as $tid => $term_name) {
+
+              $options[$tid] = $term_name;
+              if (isset($nested_options_childs[$tid])) {
+                asort($nested_options_childs[$tid]);
+
+                foreach ($nested_options_childs[$tid] as $child_tid => $child_term_name) {
+                  $options[$child_tid] = "-".$child_term_name;
+                }
+              }
+            }
+          }
+
+        }
+
+        // Set drop down value for first item.
+        $filter_field['#default_value'] = $options['All'];
+
+        if (isset($form[$field_id])) $form[$field_id]['#options']['All'] = t($form['#info']['filter-'.$field]['label']);
+      }
+    }
+  }
+}
+
+
+/**
+ * Used to add depth 1 option for EntityFieldQuery in custom_actions_form_views_exposed_form_alter.
+ */
+function custom_actions_query_taxtag_alter(QueryAlterableInterface $query) {
+  $query->join('taxonomy_term_hierarchy', 'tth', 'tth.tid = taxonomy_term_data.tid');
+  $query->condition('tth.parent', '0', '=');
+}
+
+
+/**
+ * Function to define custom links for tags taxonomy only
+ * @param type $term
+ * @return type
+ */
+function custom_actions_taxonomy_term_uri($term) {
+  // if ($term->vocabulary_machine_name == 'tags') {
+  //   return array(
+  //     'path' => 'blogs/tag/' . str_replace(" ", "-", strtolower($term->name)),
+  //   );
+  // }
+
+  return taxonomy_term_uri($term);
+}
+
+/**
+ * Function to define custom uri callback for taxonomies links
+ * @param array $entity_info
+ */
+function custom_actions_entity_info_alter(&$entity_info){
+  $entity_info['taxonomy_term']['uri callback'] = 'custom_actions_taxonomy_term_uri';
+}
+
+/**
+ * Function for custom file download from search results
+ * @global type $base_url
+ * @param type $variables
+ */
+function custom_actions_preprocess_search_result(&$variables) {
+  global $base_url;
+
+  if ($variables['result']['type'] == 'Attachments') {
+    $node = node_load($variables['result']['node']->entity_id);
+
+    $lang = $node->language;
+    $fid = 0;
+    if (isset($node->field_file[$lang][0]['fid'])) {
+      $fid = (int) $node->field_file[$lang][0]['fid'];
+    }
+
+    $url = download_file_path($fid);
+
+    // if not already filled information form, then ask to fill
+    if (!isset($_COOKIE['Drupal_visitor_files_contact_form'])) {
+      // variable to theming part - to know when need open link into colorbox
+      $variables['info_split']['colorbox'] = TRUE;
+
+      $current_path = current_path();
+      $url = "/node/".WEBFORM_FILES_CONTACT_ID."?width=455&height=580&backlink=".$base_url."/".$current_path."&downlink=".$base_url."/".$url; // TODO - need to define form id somewhere else
+    } else {
+      $url = $base_url."/download-file?url=".$base_url."/".$url;
+    }
+
+    $variables['url'] = $url;
+  }
+}
+
+function custom_actions_block_view_alter(&$data, $block) {
+  $bbb=1;
+}
+
+function custom_actions_block_view($delta = '') {
+  $aaa = 1;
+}
+
+function custom_actions_menu_alter(&$items) {
+  unset($items['node']);
+}
+
+/*
+  Fixing menu_position issue for sidebar menus. Apparently DS + Menu Block + Menu Position  = no go because
+  Menu position rules get initalized only after the blocks for DS have been generated already. So I put the initialization function in hook_init and it works. Wondering what breaks though.
+*/
+function custom_actions_init() {
+  if (module_exists('menu_position')) {
+    menu_position_page_delivery_callback_alter();
+  }
+}
+
+
+/**
+* Implements hook_field_attach_view_alter().
+*
+* Hide label of display suite fields if field content is empty.
+*/
+function custom_actions_field_attach_view_alter(&$output, $context) {
+  foreach ($output as $field_name => $field) {
+    if (!empty($field['#label_display'])) {
+      if(isset($field[0]['#markup']) && empty($field[0]['#markup']) && ($field[0]['#markup'] !== 0)) {
+        $output[$field_name]['#label_display'] = 'hidden';
+      }
+      elseif (isset($field['#items'][0]) && count($field['#items']) == 1) {
+        $keys = array_keys($field['#items'][0]);
+        $first_key = reset($keys);
+        if (empty($field['#items'][0][$first_key])){
+          $output[$field_name]['#label_display'] = 'hidden';
+        }
+      }
+    }
+  }
+}
+
+
+

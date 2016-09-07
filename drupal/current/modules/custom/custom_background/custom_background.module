@@ -1,0 +1,205 @@
+<?php
+
+define('UPLOAD_LOCATION', 'public://page_background_images/');
+
+/**
+ * Function to create settings form for each menu item
+ * @return type
+ */
+function custom_background_admin() {
+  $form = array();
+
+  // default image for background
+  $form['menu-image-default'] = array(
+    '#title' => t('Default image for background'),
+    '#type' => 'managed_file',
+    '#default_value' => variable_get('menu-image-default', ''),
+    '#upload_location' => UPLOAD_LOCATION,
+  );
+
+  $menus = menu_get_menus();
+
+  ksort($menus);
+
+  if (!empty($menus)) {
+    foreach ($menus as $menu_name => $menu_title) {
+      $form[$menu_name] = array(
+        '#type' => 'fieldset',
+        '#title' => $menu_title,
+        '#weight' => 5,
+        '#collapsible' => TRUE,
+        '#collapsed' => TRUE,
+        '#description' => t('Upload image for every menu item.'),
+      );
+
+      $router_item = menu_tree_all_data($menu_name);
+      if (!empty($router_item)) {
+        foreach($router_item as $ritem) {
+          // Use the #managed_file FAPI element to upload an image file.
+          $form[$menu_name]['menu-image-'.$ritem['link']['mlid']] = array(
+            '#title' => $ritem['link']['link_title'],
+            '#type' => 'managed_file',
+            '#default_value' => variable_get('menu-image-'.$ritem['link']['mlid'], ''),
+            '#upload_location' => UPLOAD_LOCATION,
+          );
+        }
+      }
+    }
+  }
+
+  return system_settings_form($form);
+}
+
+/**
+ * Function for admin menu item define
+ * @return string
+ */
+function custom_background_menu() {
+  $items = array();
+
+  $items['admin/config/custom_background'] = array(
+    'title' => 'Custom page background',
+    'description' => 'Define custom background per every menu item',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('custom_background_admin'),
+    'access arguments' => array('administer theme backgrounds'),
+    'type' => MENU_NORMAL_ITEM,
+   );
+
+  return $items;
+}
+
+/*
+  Implements hook_permission.
+*/
+function custom_background_permission() {
+  return array(
+    'administer theme backgrounds' => array(
+      'title' => t('Administer theme backgrounds'),
+      'description' => t('Set custom backgrounds for jeeves theme'),
+    ),
+  );
+}
+
+
+/**
+ * Function to actual background set, if defined
+ * @param type $page
+ */
+function custom_background_page_alter(&$page) {
+  global $user, $theme_info;
+
+  // for logged in users do not change background
+  // the problem was - drupal_add_css with 'inline' option conflicts with drupal cache
+  /*if (isset($user) && $user->uid > 0) {
+    return;
+  }*/
+
+  $active_trail = menu_get_active_trail();
+  $mlid = NULL;
+
+  if (!empty($active_trail)) {
+    foreach (array_reverse($active_trail) as $item) {
+     // if (!(bool) ($item['mlid'] & $item['type'] & MENU_IS_LOCAL_TASK)) {
+     //   $mlid = $item['mlid'];
+     //   break;
+     // }
+     if (isset($item['mlid'])) {
+        $mlid = $item['mlid'];
+        break;
+     }
+    }
+  }
+
+  // set default background
+  $background_fid = variable_get('menu-image-default', '');
+
+  // get background for menu entry
+  if ($mlid) {
+    if (variable_get('menu-image-'.$mlid, FALSE)) {
+      $background_fid = variable_get('menu-image-'.$mlid, FALSE);
+    }
+  }
+
+  // get background from node field
+  if ($node = menu_get_object()) {
+    $image_field = field_get_items('node', $node, 'field_background_image');
+    if (isset($image_field) && is_array($image_field) && isset($image_field[0])) {
+      $background_fid = $image_field[0]['fid'];
+    }
+  }
+
+  // set background
+  if ($background_fid) {
+    // let's do this only for jeeves theme or jeeves events
+    if ($theme_info->name == 'jeeves') {
+      set_page_background($background_fid);
+    }
+    elseif (isset($theme_info->base_theme) && $theme_info->base_theme == 'jeeves') {
+      set_page_background($background_fid);
+    }
+  }
+}
+
+/**
+ * Function to set page background image
+ */
+function set_page_background($fid) {
+  if (!$fid) {
+    return;
+  }
+
+  $file = file_load($fid);
+
+  if ($file && is_object($file)) {
+    $style = 'image-w-2000-scale';
+    $derivative_uri = image_style_path($style, $file->uri);
+    if (!file_exists($derivative_uri)) {
+      $style = image_style_load('image-w-2000-scale', NULL);
+      image_style_create_derivative($style, $file->uri, $derivative_uri);
+    }
+
+    // get image path
+    $url = file_create_url($derivative_uri);
+    $url = parse_url($url);
+    $path = $url['path'];
+
+    // file_create_url
+    drupal_add_css(
+      //'body > #page {background-image: url("'.$path.'");}',
+      'body > #page {
+        background: url("'.$path.'") no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+      }',
+      array(
+        'group' => CSS_THEME,
+        'type' => 'inline',
+      )
+    );
+  }
+}
+
+/**
+ * Function implements hook_file_insert to
+ * @global type $user
+ * @param type $file
+ */
+function custom_background_file_insert($file) {
+  // global $user;
+
+  // $imageFile = file_load($file->fid);
+  // if (!$imageFile->status) {
+  //   $imageFile->status = FILE_STATUS_PERMANENT;
+
+  //   file_save($imageFile);
+
+  //   $references = file_usage_list($imageFile);
+  //   if (empty($references)) {
+  //     // making usage for this file
+  //     file_usage_add($imageFile, 'file', 'user', $user->uid);
+  //   }
+  // }
+}

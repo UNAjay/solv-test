@@ -1,0 +1,11 @@
+name = Insert Block
+description = "Inserts the contents of a block into into a node using [block:module=delta] tags"
+core = 7.x
+
+
+; Information added by drush on 2016-03-23
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "insert_block"
+datestamp = "1458729869"
+

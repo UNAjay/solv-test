@@ -1,0 +1,8 @@
+name = Custom robots.txt file
+description = "Generates the robots.txt file in public:// and gives you the chance to edit it from the web UI."
+core = 7.x
+files[] = robotstxt_custom.module
+files[] = robotstxt_custom.admin.inc
+files[] = robotstxt_custom.install
+configure = admin/config/search/robotstxt_custom
+

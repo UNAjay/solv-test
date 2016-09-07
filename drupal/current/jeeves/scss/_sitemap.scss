@@ -1,0 +1,81 @@
+//-----------------------------------------
+// sitemap-page
+//-----------------------------------------
+.page-sitemap {
+	#site-map {
+	  h1 {
+	    color: $jeevesRed;
+	    padding: 0 15px 15px;
+	    @include font-size(36, 40);
+	    @include full-width;
+
+	    @include at-breakpoint($first) {
+	      padding: 0 0 25px;
+	      @include font-size(42);
+	    }
+	  }
+	  h2 {
+	    color: $jeevesRed;
+	    padding: 10px 15px 6px;
+	    @include font-size(24);
+	    @include full-width;
+
+	    @include at-breakpoint($first) {
+	      padding: 10px 0 6px;
+	    }
+	  }
+	  a {
+	    color: #707070;
+
+	    &:hover {
+				color: $jeevesRed;
+	      text-decoration: underline;
+	    }
+	  }
+		
+		.site-map-menu {
+		  padding: 10px 15px 20px;
+		  @include full-width;
+
+		  @include at-breakpoint($first) {
+		    padding-right: 0;
+		    padding-left: 0;
+		  }
+			li {
+				margin-bottom: 0;
+		    @include full-width;
+
+		    &.has-children {
+		      margin-bottom: 0;
+		    }
+				// first level
+				a {
+					@include font-size(24);
+				}
+		  }
+		  > li > ul {
+		    margin-top: 0;
+				padding: 10px 15px 10px;
+		    @include full-width;
+		  }
+		  // second level
+		  > li > ul > li {
+				color: $paragraphColor;
+		    background: none;
+				padding-left: 17px;
+				width: 100%;
+		    text-indent: -5px;
+
+		    &:before {
+		      content: '-';
+		      left: -5px;
+		      position: relative;
+		    }
+				
+				a {
+					@include font-size(14);
+				}
+		  }
+		}
+	}
+}

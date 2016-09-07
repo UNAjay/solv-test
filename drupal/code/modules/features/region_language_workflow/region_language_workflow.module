@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Region/Language workflow feature.
+ */
+
+include_once 'region_language_workflow.features.inc';

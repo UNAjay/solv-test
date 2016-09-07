@@ -1,0 +1,313 @@
+<?php
+
+/**
+ * @file
+ * An image formatter that allows lazy loading with the JAIL plugin.
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function jail_menu() {
+  $items = array();
+  $items['admin/config/content/jail'] = array(
+    'title' => 'JAIL Formatter',
+    'description' => 'Configure JAIL formatting',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('jail_admin_settings'),
+    'access arguments' => array('administer site configuration'),
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'jail.admin.inc',
+  );
+  return $items;
+}
+
+/**
+ * Implements hook_field_formatter_info().
+ */
+function jail_field_formatter_info() {
+  return array(
+    'jail' => array(
+      'label' => t('JAIL load'),
+      'field types' => array('image', 'text'),
+      'settings' => array(
+        'jail_effect' => 'none',
+        'jail_image_style' => 'None (original image)',
+        'jail_image_link' => 'Nothing',
+      ),
+    ),
+  );
+}
+
+/**
+ * Implements hook_field_formatter_settings_form().
+ */
+function jail_field_formatter_settings_form($field, $instance, $view_mode, $form, &$form_state) {
+  $display = $instance['display'][$view_mode];
+  $settings = $display['settings'];
+  $element = array();
+  $element['jail_effect'] = array(
+    '#type' => 'select',
+    '#title' => t('Effect'),
+    '#description' => t('Select the effect to use'),
+    '#default_value' => $settings['jail_effect'],
+    '#options' => array(
+      'show' => 'None',
+      'fadeIn' => 'Fade in',
+      'slideDown' => 'Slide down',
+    ),
+  );
+  $image_styles = image_style_options(FALSE);
+  $element['jail_image_style'] = array(
+    '#title' => t('Image style'),
+    '#type' => 'select',
+    '#default_value' => $settings['jail_image_style'],
+    '#empty_option' => t('None (original image)'),
+    '#options' => $image_styles,
+  );
+  $link_types = array(
+    'content' => t('Content'),
+    'file' => t('File'),
+  );
+  $element['jail_image_link'] = array(
+    '#title' => t('Link image to'),
+    '#type' => 'select',
+    '#default_value' => $settings['jail_image_link'],
+    '#empty_option' => t('Nothing'),
+    '#options' => $link_types,
+  );
+  return $element;
+}
+
+/**
+ * Implements hook_field_formatter_settings_summary().
+ */
+function jail_field_formatter_settings_summary($field, $instance, $view_mode) {
+  $display = $instance['display'][$view_mode];
+  $settings = $display['settings'];
+  if ($settings['jail_effect']=="none") {
+    $effect = 'show';
+  }
+  else {
+    $effect = $settings['jail_effect'];
+  }
+  $noscript = " NOT ";
+  if (variable_get('jail_noscript', 0)) {
+    $noscript = "";
+  }
+  if ($settings['jail_image_style']=="") {
+    $jis = "Original";
+  }
+  else {
+    $jis = $settings['jail_image_style'];
+  }
+  $summary = t('Images will load Asynchronously when scrolled into view using a "@effect" effect.<br>Using Image Style: @jail_image_style', array(
+    '@effect' => $effect,
+    '@jail_image_style' => $jis,
+  ));
+  $link_types = array(
+    'content' => t('Linked to content'),
+    'file' => t('Linked to file'),
+  );
+  if (isset($link_types[$settings['jail_image_link']])) {
+    $summary .= "<br/>" . $link_types[$settings['jail_image_link']];
+  }
+
+  return $summary;
+}
+
+/**
+ * Implements hook_field_formatter_view().
+ */
+function jail_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
+  $element = array();
+  $settings = $display['settings'];
+  $effect = $settings['jail_effect'];
+  $placeholder = file_create_url(variable_get('jail_place', drupal_get_path('module', 'jail') . '/white.gif'));
+  // Check if the formatter involves a link.
+  if ($display['settings']['jail_image_link'] == 'content') {
+    $uri = entity_uri($entity_type, $entity);
+  }
+  elseif ($display['settings']['jail_image_link'] == 'file') {
+    $link_file = TRUE;
+  }
+
+  if ($items) {
+    $imagepath = file_create_url($items[0]['uri']);
+    foreach ($items as $delta => $item) {
+      if (isset($link_file)) {
+        $uri = array(
+          'path' => file_create_url($item['uri']),
+          'options' => array(),
+        );
+      }
+
+      $element[$delta] = array(
+
+          '#theme' => 'jail_formatter',
+          '#item' => $item,
+          '#jail_image_style' => $settings['jail_image_style'],
+         //@TODO add links '#path' => isset($uri) ? $uri : '',
+          '#jail_effect' => $effect,
+          '#path' => isset($uri) ? $uri : '',
+          '#placeholder' => $placeholder,
+        );
+      }
+      return $element;
+    }
+  }
+
+/**
+ * Returns HTML for an image field formatter.
+ *
+ * @param $variables
+ *   An associative array containing:
+ *   - item: An array of image data.
+ *   - image_style: An optional image style.
+ *   - path: An array containing the link 'path' and link 'options'.
+ *
+ * @ingroup themeable
+ */
+function theme_jail_formatter($variables) {
+  $item = $variables['item'];
+
+  $placeholder = $variables['placeholder'];
+  $image = array(
+    'path' => $item['uri'],
+    'alt' => $item['alt'],
+  );
+  if (isset($item['width']) && isset($item['height'])) {
+    $image['width'] = $item['width'];
+    $image['height'] = $item['height'];
+  }
+  if (isset($variables['jail_image_style'])) {
+    image_style_transform_dimensions($variables['jail_image_style'], $image);
+  }
+
+  $effect = $variables['jail_effect'];
+  // Do not output an empty 'title' attribute.
+  if (drupal_strlen($item['title']) > 0) {
+    $image['title'] = $item['title'];
+  }
+  if ($variables['jail_image_style'] == 'None (original image)' || $variables['jail_image_style'] == '') {
+    $url = file_create_url($item['uri']);
+  }
+  else {
+    $url = image_style_url($variables['jail_image_style'], $item['uri']);
+  }
+
+  $attributes = drupal_attributes($image);
+  $jail_version = variable_get('jail_version', "0.9.5");
+  if ($jail_version == "0.9.5") {
+    $output = '<img class="lazy" ' . $attributes  . ' data-href="' . $url . '" src="' . $placeholder . '"/>';
+  } else {
+    $output = '<img class="lazy" ' . $attributes  . ' data-src="' . $url . '" src="' . $placeholder . '"/>';
+  }
+  if (variable_get('jail_noscript', 0)) {
+    $output .= '<noscript><img src="' . $url . '"></noscript>';
+  }
+  if ($variables['path']) {
+    $path = $variables['path']['path'];
+    $options = $variables['path']['options'];
+    // When displaying an image inside a link, the html option must be TRUE.
+    $options['html'] = TRUE;
+    $output = l($output, $path, $options);
+  }
+  drupal_add_js(drupal_get_path('module', 'jail') . '/jquery.jail.js');
+
+  $loader_image = variable_get('jail_loader', drupal_get_path('module', 'jail') . '/white.gif');
+
+  $options = array();
+  if ($loader_image) {
+    $placeholder_url = file_create_url(variable_get('jail_loader', drupal_get_path('module', 'jail') . '/white.gif'));
+    $options['placeholder_fragment'] = 'placeholder : "' . $placeholder_url . '"';
+  }
+  if ($variables['jail_effect'] != "none") {
+    $options['jail_effect'] = 'effect : "' . $variables['jail_effect'] . '"';
+  }
+
+  if (variable_get('jail_offset', 0)) {
+    $options['jail_offset'] = 'offset : "' . variable_get('jail_offset', 0) . '"';
+  }
+
+  if (variable_get('jail_event', 'load+scroll')) {
+    $options['jail_event'] = 'event : "' . variable_get('jail_event', 'load+scroll') . '"';
+  }
+  if (variable_get('jail_timeout', 0)) {
+    $options['jail_timeout'] = 'timeout : "' . variable_get('jail_timeout', 0) . '"';
+  }
+
+  $options['jail_effect'] = 'effect : "fadeIn"';
+  $options['jail_speed'] = 'speed : 1000';
+
+  $js_options = '';
+  if ($options) {
+    $js_options = '{' . implode(', ', $options) . '}';
+  }
+  $js = '(function ($) {Drupal.behaviors.jail = { attach: function (context, settings) {
+    //$(".lazy",context).once("jail",function() {
+      $(".lazy").jail(' . $js_options . ');
+    //} );
+  }}})(jQuery);';
+
+  // Avoid adding duplicate inline js.
+  static $added;
+  if (!isset($added[$js])) {
+    drupal_add_js($js, array('type' => 'inline', 'scope' => 'footer', 'weight' => 5));
+    $added[$js] = 1;
+  }
+
+  return $output;
+}
+
+/**
+ * Implements template_preprocess_user_picture().
+ */
+function jail_preprocess_user_picture(&$variables) {
+  if (variable_get('jail_users', 0) && isset($variables['account']->picture->uri) ) {
+    $path = image_style_url(variable_get('user_picture_style', ''), $variables['account']->picture->uri);
+    $place = variable_get('jail_place', '/' . drupal_get_path('module', 'jail') . '/white.gif');
+    $jail_version = variable_get('jail_version', "0.9.5");
+    if ($jail_version == "0.9.5") {
+      $img = '<img class="lazy" data-href="' . $path . '" src="/' . $place . '"/>';
+    } else {
+      $img = '<img class="lazy" data-src="' . $path . '" src="/' . $place . '"/>';
+    }
+    if (variable_get('jail_noscript', 0)) {
+      $img .= '<noscript><img src="' . $path . '"></noscript>';
+    }
+    drupal_add_js(drupal_get_path('module', 'jail') . '/jquery.jail.js');
+    $js = '(function ($) {alert("hi");$(".lazy").jail({placeholder : "/' . variable_get('jail_loader', '/' . drupal_get_path('module', 'jail') . '/white.gif') . '"';
+
+    $js = '(function ($) {Drupal.behaviors.jail = { attach: function (context, settings) {
+      $(".lazy",context).once("jail",function() {
+        $(this).show().jail({
+          placeholder:"/' . variable_get('jail_loader', '/' . drupal_get_path('module', 'jail') . '/white.gif') . '"
+          ';
+
+
+    $effect = variable_get('jail_effect',"none");
+    if ($effect != "none") {
+      $js .= ', effect : "' . $effect . '"';
+    }
+    $js.=   '});
+      } );
+    }}})(jQuery);';
+    //$js .= '});})(jQuery);';
+    drupal_add_js($js, array('type' => 'inline', 'scope' => 'footer', 'weight' => 5));
+    $variables['user_picture'] = $img;
+  };
+}
+
+/**
+ * Implements hook_theme().
+ */
+function jail_theme() {
+  return array(
+    'jail_formatter' => array(
+      'variables' => array('item' => NULL, 'path' => NULL, 'jail_image_style' => NULL, 'placeholder' => NULL, 'jail_effect' => NULL),
+    ),
+  );
+}
+
+

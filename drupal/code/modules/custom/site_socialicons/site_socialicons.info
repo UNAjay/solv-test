@@ -1,0 +1,4 @@
+name = Social Media Icons and Blocks
+description = "Various blocks and social icons for Jeeves"
+package = Fields
+core = 7.x

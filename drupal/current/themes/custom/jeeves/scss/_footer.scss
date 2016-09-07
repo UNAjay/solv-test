@@ -1,0 +1,129 @@
+//-----------------------------------------
+// footer
+//-----------------------------------------
+footer {
+	width: 100%;
+	position: absolute;
+	bottom: 0;
+  @include font-size(12, 16);
+	background: transparent;
+	height: $footerHeightMobile;
+	padding: 15px;
+  
+	@include at-breakpoint($third) {
+		//background: url('../images/bg-footer.png') repeat-x;
+		height: $footerHeightDesktop;
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+  ul {
+	  @include at-breakpoint($second) {
+	  	float: left;
+	  }
+  }
+  li {
+		margin-bottom: 8px;
+	  
+	  @include at-breakpoint($third) {
+			float: left;
+	  }
+
+	  &.last {
+	  	margin-bottom: 0;
+	  }
+  }
+	
+  a,
+  label,
+	p,
+	.block p,
+	#block-lang-dropdown-language h2 {
+		color: #B2B1AE;
+		text-shadow: 1px 1px #333;
+
+	  @include at-breakpoint($second) {
+			color: #9FA09F;
+	  }
+	  @include at-breakpoint($third) {
+			margin: 0;
+	  }
+  }
+	a {
+		font-weight: 600;
+		
+	  &:hover {
+	  	color: #fff;
+	  }
+  }
+	
+  // footer menu block
+  .block-menu-block {
+  	float: left;
+		@include span-columns(8,16);
+	
+		@include at-breakpoint($third) {
+    	width: auto;
+			
+			.menu {
+				li {
+					margin-left: 18px;
+					
+					&:first-child {
+						margin-left: 0;
+					}
+				}
+			}
+	  }
+  }
+
+  // social icons block
+	.block-site-socialicons {
+		float: left;
+		margin: 20px 0 0 -5px;
+		@include full-width;
+
+	  @include at-breakpoint($third) {
+    	float: right;
+      margin: 0;
+      width: auto;
+	  }
+	  h2 {
+	  	display: none;
+	  }
+		li {
+			float: left;
+			width: auto;
+		}
+		img {
+			width: 16px;
+			height: auto;
+			float: left;
+		}
+		a,
+		label {
+			float: left;
+			margin-right: 0;
+			margin-left: 5px;
+		}
+		label {
+			@include at-breakpoint(0 $second - 1) {
+				@include full-width;
+				padding-bottom: 10px;
+			}
+		}
+		.name {
+	    float: right;
+	    margin-top: 1px;
+	    margin-left: 4px;
+		}
+	}
+	
+	// copyright block
+	.block-block {
+		float: left;
+		
+	  @include at-breakpoint(0 $second - 1) {
+    	@include span-columns(6 omega,16);
+	  }
+	}
+}

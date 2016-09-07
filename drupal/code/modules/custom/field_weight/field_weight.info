@@ -1,0 +1,20 @@
+name = Field weights
+description = "Change the weight (order) that fields are displayed on a per node basis."
+package = Fields
+core = 7.x
+
+dependencies[] = field
+
+configure = admin/config/field_weight
+
+files[] = field_weight.install
+files[] = field_weight.module
+files[] = field_weight.admin.inc
+
+
+; Information added by Drupal.org packaging script on 2014-04-10
+version = "7.x-2.0-beta1+11-dev"
+core = "7.x"
+project = "field_weight"
+datestamp = "1397145253"
+

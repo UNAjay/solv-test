@@ -1,0 +1,66 @@
+.view-files,
+.view-videos {
+	@include full-width;
+
+	.row {
+		margin-bottom: 20px;
+	 	@include full-width;
+	}
+	.view-content {
+		padding: 15px 0;
+		@include full-width;
+	}
+}
+
+// files
+.view-files {
+	.row {
+		border-bottom: 1px solid #E9E9E9;
+	  padding-bottom: 20px;
+	}
+	.view-content {
+		padding: 15px;
+    @include full-width;
+
+    @include at-breakpoint($second) {
+      padding: 15px 0;
+    }
+	}
+	.divtable-header,
+	.divtable-content {
+	  @include full-width;
+	}
+
+	// header
+	.divtable-header {
+	  font-weight: 600;
+		border-bottom: 1px solid #E9E9E9;
+		margin-bottom: 20px;
+	  padding-bottom: 10px;
+	  word-wrap: break-word;
+	}
+
+	// content
+	.views-field-field-acton-url {
+		@include span-columns(8,16);
+	}
+	.views-field-field-attachment-type {
+		@include span-columns(8 omega,16);
+	}
+
+}
+
+// videos
+.view-videos {
+	.views-field-title {
+		padding: 0 15px;
+
+    @include at-breakpoint($first) {
+      padding: 0;
+    }
+	}
+}
+
+.media-vimeo-video {
+  margin-bottom: 20px;
+}

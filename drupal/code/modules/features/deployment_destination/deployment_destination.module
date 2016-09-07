@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Deployment: Destination feature.
+ */
+
+include_once 'deployment_destination.features.inc';

@@ -1,0 +1,195 @@
+// apply box-sizing everywhere for continuity
+* {
+  @include box-sizing(border-box);
+}
+
+html,
+body {
+  height: 100%;
+  font-family: $sans-font-family;
+  margin: 0;
+  padding: 0;
+  height:100%;
+  counter-reset: section;
+}
+
+html {
+  background: $base-background-color;
+}
+
+body {
+  //min-height: 100%;
+  @include font-size(14);
+}
+
+//-----------------------------------------
+// general elements
+//-----------------------------------------
+.element-invisible,
+.skip-link {
+  display: none;
+}
+
+#page {
+  position: relative;
+  min-height: 100%;
+  @include at-breakpoint($bp-med) {
+    padding-top: 0
+  }
+}
+
+#content {
+  margin: 0;
+  padding-bottom: 287px;
+}
+
+.not-front #content {
+  //padding-bottom: 320px;
+  padding-bottom: 377px;
+}
+
+
+.region-holder,
+.region-holder-content .region-content .region-holder,
+.region-holder-content .content > .view,
+.page-user .region-content {
+  @include container;
+	margin: 0 auto;
+	max-width: 1000px;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.page-user .region-content {
+  padding: 40px 0;
+}
+
+.region-content {
+  background: transparent;
+	padding: 20px 0;
+  //@include full-width;
+
+  @include at-breakpoint($bp-small) {
+    padding: 20px 0;
+  }
+}
+
+.front {
+  .node-page {
+    h1.section-title {
+      display: none;
+    }
+  }
+}
+
+//-----------------------------------------
+// breadcrumbs
+//-----------------------------------------
+.breadcrumb {
+  display: none;
+  a,
+  .current {
+    background: url('../images/bg-breadcrumb.png') repeat-x;
+  }
+  .home-icon {
+    background-color: #46725c;
+  }
+  .home-text {
+    background: url('../images/bg-breadcrumb-first.png') repeat-x transparent;
+  }
+  .current {
+		span {
+      background: url('../images/bg-breadcrumb-end.png') no-repeat;
+    }
+  }
+}
+
+//-----------------------------------------
+// view filters
+//-----------------------------------------
+.view-filters {
+  background: transparent;
+  padding: 0 0 20px;
+  clear: both;
+  @include full-width;
+
+  @include at-breakpoint($bp-med-2) {
+    padding: 0;
+  }
+
+  label {
+    display: none;
+  }
+	// Custom selects in filter
+	.sbSelector {
+		white-space: nowrap;
+		max-width: 100%;
+		overflow: hidden;
+		text-overflow: ellipsis;
+
+    @include at-breakpoint($bp-med) {
+      max-width: 85%;
+    }
+	}
+}
+
+.region-content {
+  padding: 0;
+}
+
+.field-add-this {
+  // display: none;
+}
+
+
+.content {
+  .body {
+    h2, h3 {
+      color: $black;
+      font-size: 15px;
+      font-weight: normal;
+      text-transform: uppercase;
+    }
+    h3 {
+      color: $gray;
+    }
+  }
+}
+
+/* =====================================
+  Table
+  ====================================== */
+
+table {
+  @include full-width;
+
+  @include at-breakpoint($bp-med) {
+    width: 468px;
+  }
+
+  td,
+  th {
+    padding: 10px;
+    //vertical-align: middle;
+
+    @include at-breakpoint($bp-small) {
+      padding: 10px 10px 10px 0;
+    }
+  }
+  p { padding: 0 !important; }
+
+  thead {
+    border-bottom: 1px solid #555;
+  }
+  tbody {
+    td {
+      border-bottom: 1px dotted #B6B6B6;
+    }
+  }
+}
+
+.link-phone {
+  padding-left: 20px;
+  background: url(../images/icon-phone.png) no-repeat left center;
+}
+

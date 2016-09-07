@@ -1,0 +1,182 @@
+//-----------------------------------------
+// list-pages
+//-----------------------------------------
+.partners-view,
+.employees-view {
+  .view-content {
+    padding: 15px;
+    @include full-width;
+
+    @include at-breakpoint($first) {
+      padding: 15px 0;
+    }
+  }
+  .views-row {
+    border-top: 1px dotted #ACACAC;
+    margin-bottom: 10px;
+    padding-top: 10px;
+    color: $paragraphColor;
+    @include span-columns(16,16);
+  }
+  .views-row-odd {
+    @include at-breakpoint($second) {
+      @include span-columns(8,16);
+    }
+  }
+  .views-row-even {
+    @include at-breakpoint($second) {
+      @include span-columns(8 omega,16);
+    }
+  }
+  img {
+    float: left;
+    margin: 0 15px 0 0;
+
+    @include at-breakpoint($second) {
+      margin-bottom: 15px;
+    }
+  }
+  .views-field-title,
+  .views-field-name {
+    display: block;
+    color: $jeevesRed;
+    font-weight: 600;
+    margin-bottom: 3px;
+    @include font-size(16);
+  }
+}
+.employees-view {
+  h3 {
+    margin-top: 20px;
+		padding: 10px 0 6px;
+    @include full-width;
+
+    @include at-breakpoint($first) {
+      margin-top: 30px;
+    }
+  }
+}
+.partners-view {
+  .views-row,
+	.views-row-odd,
+	.views-row-even {
+	  @include full-width;
+		
+		@include at-breakpoint($first) {
+			 @include full-width;
+		}
+	}
+	
+	.views-field-field-partner-logo {
+    float: left;
+		margin-top: 7px;
+		text-align: center;
+   
+		a {
+			display: block;
+			margin-right: 30px;
+		  min-height: 80px;
+			width: 120px; 
+		}
+		img {
+		  float: none;
+		}
+	}
+	.views-field-title {
+ 	  margin-bottom: -1px;
+ 		padding-top: 1px;
+ 	}
+}
+
+//-----------------------------------------
+// pager
+//-----------------------------------------
+.pager {
+  text-align: center;
+  margin: 20px 0;
+  @include full-width;
+
+  li {
+    display: inline-block;
+    margin: 0 10px;
+    color: #707070;
+    font-weight: 600;
+		
+		a {
+			color: $jeevesRed;
+		}
+  }
+}
+
+//-----------------------------------------
+// employee presentation
+//-----------------------------------------
+.page-user {
+  .aside-primary {
+    > div {
+      margin-right: 15px;
+      margin-left: 15px;
+
+      @include at-breakpoint($first) {
+        margin-right: 0;
+        margin-left: 0;
+      }
+    }
+  }
+  .region-content {
+    .information {
+      margin-top: 15px;
+    }
+    .photo img {
+      @include full-width;
+      height: auto;
+      padding: 0 15px;
+
+      @include at-breakpoint($first) {
+        padding: 0 7px 0 0;
+      }
+    }
+    .firstname-lastname p {
+      color: $jeevesRed;
+      margin: 15px 0;
+      word-wrap: break-word;
+      @include font-size(36, 40);
+
+      @include at-breakpoint($first) {
+        margin: 0 0 25px;
+        @include font-size(42, 46);
+      }
+    }
+    .role,
+    .region,
+    .office,
+    .phone {
+      color: $paragraphColor;
+      margin-bottom: 5px;
+
+      a {
+        color: $paragraphColor;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+    .link {
+      margin: 5px 0 0;
+      padding: 0 15px;
+      @include full-width;
+
+      @include at-breakpoint($first) {
+        padding: 0;
+      }
+
+      img {
+        width: 40px;
+        height: auto;
+        float: left;
+        margin-right: 5px;
+      }
+    }
+  }
+}

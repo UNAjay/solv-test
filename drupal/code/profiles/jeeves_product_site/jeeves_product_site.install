@@ -1,0 +1,18 @@
+<?php
+/**
+ * @file
+ * Install, update and uninstall functions for installation profile.
+ */
+
+/**
+ * Implements hook_install().
+ *
+ * Perform actions to set up the site for this profile.
+ *
+ * @see system_install()
+ */
+function jeeves_product_site_install() {
+
+  variable_set('theme_default', 'solvaxis');
+
+}

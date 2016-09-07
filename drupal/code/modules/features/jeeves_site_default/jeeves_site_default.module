@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Jeeves Site Default feature.
+ */
+
+include_once 'jeeves_site_default.features.inc';

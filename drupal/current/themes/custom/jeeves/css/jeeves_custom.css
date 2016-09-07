@@ -1,0 +1,93 @@
+
+.page-node .ui-widget-content {
+  background: none;
+  border: 0;
+  font-size: 100%;
+  font-family: 'Open Sans', sans-serif;
+  min-height: 200px;
+}
+.page-node .ui-widget-header {
+  background: none;
+  border: none;
+  border-radius: 0;
+  color: #6a6a6a;
+  border-bottom: 1px solid #c7c7c7;
+  padding: 0 30px;
+}
+.ui-tabs .ui-tabs-nav li {
+  background: none;
+  border: 0;
+  color: #6a6a6a;
+}
+.ui-tabs .ui-tabs-nav li a {
+  padding: 8px 20px;
+  color: #fff;
+  margin-bottom: -1px;
+  background: url(../images/bg-breadcrumb.png) repeat-x scroll 0 0;
+}
+.ui-tabs .ui-tabs-nav li.ui-state-active a {
+  background: url(../images/bg-breadcrumb-first.png) repeat-x scroll 0 0;
+}
+.ui-state-active a .field-item {
+  font-weight: 800;
+}
+
+
+/* Jobs */
+
+.node-type-job-posting .date,
+.node-type-job-posting .location,
+.node-type-job-posting .group-apply {
+  clear: both;
+}
+.node-type-job-posting .body {
+  margin-top: 20px;
+}
+.node-type-job-posting .date,
+.node-type-job-posting .location {
+  font-weight: bold;
+  padding: 3px 0;
+}
+.node-type-job-posting .date .field-label,
+.node-type-job-posting .location .field-label {
+  float: left;
+}
+.node-type-job-posting .group-apply {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 10px;
+  float: left;
+  background: #f7f7f7;
+}
+.apply-now.button {
+  color: #fff;
+  padding: 5px 10px;
+  float: left;
+}
+.node-type-job-posting .view-job-postings {
+  float: left;
+}
+.node-type-job-posting .info {
+  margin: 0;
+}
+
+.view-job-postings.view-display-id-job_listing .views-row {
+  border-top: 1px dotted #ACACAC;
+  margin-bottom: 10px;
+  padding-top: 10px;
+  color: #404040;
+  width: 100%;
+  float: left;
+  margin-right: 1.99203%;
+  display: inline;
+}
+.view-job-postings.view-display-id-job_listing .views-row .views-field-title-field {
+  color: #e94e1b;
+  display: block;
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+.view-job-postings.view-display-id-job_listing .views-row .views-label {
+  float: left;
+  margin-right: 5px;
+}

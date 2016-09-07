@@ -1,0 +1,35 @@
+/* =====================================
+  Landing page
+  ====================================== */
+.node-type-landing-page {
+
+
+  //-----------------------------------------
+  // top menu
+  //-----------------------------------------
+  #block-menu-block-3 {
+    @include clear-float;
+    h2 {
+      @include full-width;
+
+      @include at-breakpoint($bp-small) {
+        width: auto;
+      }
+      a {
+        color: $black;
+        font-weight: 300;
+        text-transform: uppercase;
+        &.active,
+        &.active-trail,
+        &:hover {
+          background: transparent;
+          color: $black;
+        }
+      }
+    }
+  }
+
+}
+
+
+

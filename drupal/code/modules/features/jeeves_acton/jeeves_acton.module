@@ -1,0 +1,71 @@
+<?php
+/**
+ * @file
+ * Code for the Jeeves ActOn feature.
+ */
+
+include_once 'jeeves_acton.features.inc';
+
+
+/**
+ * Implements hook_menu().
+ */
+function jeeves_acton_menu() {
+  $items = array();
+
+  // Node page tabs.
+  $items['acton_form/%jeeves_acton_menu/done'] = array(
+    'title' => 'ActOn confirmation',
+    'page callback' => '_jeeves_acton_confirmation',
+    'page arguments' => array(1),
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+  return $items;
+}
+
+
+/**
+ * Menu loader callback.
+ */
+function jeeves_acton_menu_load($nid) {
+  if (!is_numeric($nid)) {
+    return FALSE;
+  }
+  $node = node_load($nid);
+  if (!isset($node->type) || $node->type != 'acton_form') {
+    return FALSE;
+  }
+  return $node;
+}
+
+
+/**
+ * Prints the confirmation message after a successful submission.
+ */
+function _jeeves_acton_confirmation($node) {
+  drupal_set_title($node->title);
+  $response = field_view_field('node', $node, 'body', 'ds_response');
+  return drupal_render($response);
+}
+
+
+/**
+ * Process variables for node.tpl.php.
+ */
+function jeeves_acton_preprocess_node(&$variables) {
+  $variables['view_mode'] = $variables['elements']['#view_mode'];
+  $view_mode = $variables['elements']['#view_mode'];
+  $entity_type = $variables['elements']['#entity_type'];
+  $node = $variables['elements']['#node'];
+
+  if (user_is_logged_in() && $entity_type == 'node' && $node->type == 'acton_form' && $view_mode == 'full') {
+    $url = url('acton_form/' . $node->nid . '/done', array('absolute' => TRUE));
+    $variables['content']['response_url']['#markup'] = 'Response URL: ';
+    $variables['content']['response_url']['#markup'] .= l($url, $url);
+    $variables['content']['response_url']['#weight'] = '0';
+  }
+}
+
+
+

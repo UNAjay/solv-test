@@ -1,0 +1,6 @@
+name = Custom Links Wysiwyg
+description = "Adds a button to allow inserting custom links through a rich text editor's toolbar."
+package = Other
+core = 7.x
+configure = admin/config/content/wysiwyg
+dependencies[] = wysiwyg

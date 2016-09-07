@@ -1,0 +1,156 @@
+//-----------------------------------------
+// footer
+//-----------------------------------------
+footer {
+	position:absolute;
+  bottom:0;
+  width:100%;
+  height:auto;
+  background: transparent;
+  overflow: hidden;
+
+  @include at-breakpoint($bp-med) {
+    // min-height: $footerHeightDesktop;
+    // padding: 0;
+    // margin-top: $footerHeightDesktop;
+    height:287px;
+  }
+
+  .region-holder {
+    height: 100%;
+  }
+
+  //footer info
+	.footer-info {
+    width: 100%;
+    background-color: $crimson;
+    color: $white;
+    height: auto;
+    padding: 27px 10px 0;
+    position: relative;
+    overflow: hidden;
+
+    @include at-breakpoint($bp-med-2) {
+  		@include span-columns(8,12);
+      //min-height: $footerHeightDesktop;
+      padding: 27px 20px 36px;
+      overflow: visible;
+      height: 100%;
+    }
+
+    @include at-breakpoint($bp-xl) {
+      padding: 27px 20px 36px 0;
+  		&:before {
+        content: '';
+        display: block;
+        position: absolute;
+        height: 100%;
+        width: 30px;
+        background: $crimson;
+        left: -30px;
+        top: 0;
+        overflow: visible;
+      }
+    }
+
+		.region {
+			 width: 100%;
+       margin-bottom: 20px;
+
+       @include at-breakpoint($bp-med-2) {
+         display: inline-block;
+         float: left;
+         margin-left: 6.4%;
+         margin-bottom: 0;
+         width: 46.8%;
+         height: 100%;
+         &.region-footer-col-1 {
+           margin-left: 0;
+         }
+       }
+		 }
+     h3 {
+       margin-top: 0;
+       margin-bottom: 38px;
+       padding-bottom: 0;
+       position: relative;
+       font-size: 14px;
+       font-weight: 300;
+       text-transform: uppercase;
+
+       &:before {
+         content: '';
+         display: block;
+         position: absolute;
+         left: 0;
+         bottom: -16px;
+         width: 80px;
+         height: 1px;
+         background: $white;
+       }
+     }
+     .content {
+       p {
+         margin: 0;
+       }
+       a {
+        color: $white;
+        text-decoration: underline;
+       }
+     }
+  }
+
+  .region-footer-primary {
+    width: 100%;
+    padding: 10px 10px 20px;
+    height: auto;
+    @include at-breakpoint($bp-med-2) {
+      @include span-columns(4 omega,12);
+      height:287px;
+      position: relative;
+    }
+    // social icons block
+    .block-site-socialicons {
+      @include at-breakpoint($bp-med-2) {
+        position: absolute;
+        bottom: 36px;
+        left: 0;
+        padding: 0;
+      }
+    }
+    .social-icons {
+      padding: 0;
+    }
+  }
+
+  .menu {
+    display: inline-block;
+    position: relative;
+    top: 0;
+    width: auto;
+    height: auto;
+    margin-left: -15px;
+    overflow: visible;
+    padding: 0;
+    li {
+      font-size: 14px;
+      margin: 0 6px;
+      padding: 0;
+      line-height: 22px;
+      display: block;
+      a {
+        background: none;
+        color: $black;
+        text-decoration: none;
+        padding: 0;
+        &:hover {
+          text-decoration: underline;
+        }
+        &.active,
+        &.active-trail {
+
+        }
+      }
+    }
+  }
+}

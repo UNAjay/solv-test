@@ -1,0 +1,32 @@
+//-----------------------------------------
+// general mixins
+//-----------------------------------------
+@mixin font-family () {
+  font-family: 'Open Sans', sans-serif;
+}
+
+@mixin full-width () {
+	float: left;
+	width: 100%;
+}
+
+//-----------------------------------------
+// CSS font-size with rem and px-fallback for ie
+// http://css-tricks.com/snippets/css/less-mixin-for-rem-font-sizing/
+//-----------------------------------------
+//@mixin font-size($size: 14, $line: $size + 4) {
+//  font-size: $size + px;
+//  line-height: $line + px;
+//  font-size: ($size / 10) + rem;
+//	line-height: ($line / 10) + rem;
+//}
+
+@mixin font-size($size: 14, $line: 0) {
+  font-size: $size + px;
+  font-size: ($size / 10) + rem;
+	
+	@if $line > 0 {
+		line-height: $line / $size;
+	}
+	
+}

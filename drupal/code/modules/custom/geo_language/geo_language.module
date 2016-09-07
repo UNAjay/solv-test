@@ -1,0 +1,572 @@
+<?php
+/**
+ * @file
+ */
+
+
+/**
+ * Implements hook_module_implements_alter().
+ */
+function geo_language_module_implements_alter(&$implementations, $hook) {
+  switch ($hook) {
+    case 'menu_alter':
+      // Move some of our hook implementations to the end of the list.
+      $group = $implementations['geo_language'];
+      unset($implementations['geo_language']);
+      $implementations['geo_language'] = $group;
+      break;
+  }
+}
+
+
+
+function geo_language_menu_alter(&$items) {
+
+
+  foreach (entity_get_info() as $entity_type => $info) {
+    // Menu is rebuilt while determining entity translation base paths and
+    // callbacks so we might not have them available yet.
+    if (entity_translation_enabled($entity_type)) {
+      $et_info = $info['translation']['entity_translation'];
+      foreach ($et_info['path schemes'] as $scheme) {
+        $translate_item = NULL;
+        $edit_item = NULL;
+        if (isset($scheme['translate path'])) {
+          $translate_path = $scheme['translate path'];
+          // Backup existing values for the translate overview page.
+          if (isset($items[$translate_path])) {
+            $backup[$entity_type] = $items[$translate_path];
+          }
+        }
+      }
+      if ($entity_type == 'node') {
+        geo_language_node_menu_alter($items, $backup);
+      }
+    }
+
+  }
+
+  $items['node/%node/translate']['access callback'] = 'geo_language_translation_node_tab_access';
+
+}
+
+
+
+/**
+ * Node specific access callback.
+ */
+function geo_language_translation_node_tab_access() {
+  $args = func_get_args();
+  $node = array_shift($args);
+  if (module_exists('entity_translation') && entity_translation_node('node', $node)) {
+    $function = array_shift($args);
+    return call_user_func_array($function, $args);
+  }
+  else {
+    return geo_language_translation_tab_access('node', $node);
+  }
+}
+
+
+/**
+ * Access callback.
+ */
+function geo_language_translation_tab_access($entity_type, $entity) {
+  if (module_exists('entity_translation') && drupal_multilingual() && (user_access('translate any entity') || user_access("translate $entity_type entities"))) {
+    $handler = entity_translation_get_handler($entity_type, $entity);
+    // Ensure $entity holds an entity object and not an id.
+    $entity = $handler->getEntity();
+
+    $enabled = entity_translation_enabled($entity_type, $entity);
+    return $enabled && $handler->getLanguage() != LANGUAGE_NONE;
+  }
+  return FALSE;
+}
+
+
+
+
+
+function geo_language_node_access($node, $op, $account) {
+  global $user;
+  if ($user->uid > 0) {
+    $account = user_load($user->uid);
+    $args = arg();
+
+    $account_langs = array();
+    if (isset($account->field_acc_language[LANGUAGE_NONE])) {
+      foreach ($account->field_acc_language[LANGUAGE_NONE] as $lang) {
+        $account_langs[] = $lang['value'];
+      }
+    }
+
+    if ($op == 'update' || $op == 'delete') {
+
+      if (
+        $args[2] == 'translate'
+        || ($args[2] == 'edit' && $args[3] == 'add') // On translation add page
+        || (in_array($args[3], $account_langs))
+        )
+      {
+        return NODE_ACCESS_ALLOW;
+      }
+
+      // Check if user have access to language
+      if (in_array($node->language, $account_langs)) {
+        return NODE_ACCESS_ALLOW;
+      }
+      else {
+        return NODE_ACCESS_DENY;
+      }
+    }
+  }
+}
+
+
+
+
+/**
+ * Implements hook_form_alter().
+ */
+function geo_language_form_alter(&$form, $form_state, $form_id) {
+  // dpm($form_id);
+  // dpm($form);
+  // $form['language']['#options'] = array('fr' => 'SW');
+
+  if ($form_id == 'taxonomy_form_term' && $form['#bundle'] == 'employee_region') {
+    $form['field_region_language'][LANGUAGE_NONE]['#options'] = locale_language_list('name');
+
+    if (isset($form['#term']['field_region_language'][LANGUAGE_NONE])) {
+      foreach ($form['#term']['field_region_language'][LANGUAGE_NONE] as $lang) {
+        $default[] = $lang['value'];
+      }
+      $form['field_region_language'][LANGUAGE_NONE]['#default_value'] = $default;
+    }
+  }
+
+  if ($form_id == 'user_profile_form') {
+    $form['field_acc_language'][LANGUAGE_NONE]['#options'] = locale_language_list('name');
+
+    $account = $form['#user'];
+    if (isset($account->field_acc_language[LANGUAGE_NONE])) {
+      foreach ($account->field_acc_language[LANGUAGE_NONE] as $lang) {
+        $default[] = $lang['value'];
+      }
+      $form['field_acc_language'][LANGUAGE_NONE]['#default_value'] = $default;
+    }
+  }
+
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter().
+ */
+function _geo_language_form_node_form_alter(&$form, &$form_state) {
+
+  if (isset($form['language'])) {
+    $all_langs = $form['language']['#options'];
+    global $user;
+    $account = user_load($user->uid);
+    if (!$form['language']['#disabled']) {
+      if (isset($account->field_acc_language[LANGUAGE_NONE])) {
+        foreach ($account->field_acc_language[LANGUAGE_NONE] as $lang) {
+          $account_langs[] = $lang['value'];
+        }
+        foreach ($all_langs as $key => $value) {
+          if (!in_array($key, $account_langs)) {
+            // $available_langs[$key] = $value;
+            unset($form['language']['#options']["$key"]);
+          }
+        }
+        // $form['language']['#options'] = $available_langs;
+      }
+    }
+  }
+  return $form;
+}
+
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter().
+ */
+function geo_language_form_node_form_alter(&$form, &$form_state) {
+
+  if (isset($form['language'])) {
+
+    // if (isset($form['field_region'])) {
+
+    //   $form['language']['#ajax'] = array(
+    //       'callback' => 'geo_language_select_callback',
+    //       // 'name' => 'ajax_submit',
+    //       'wrapper' => 'language-region',
+    //     );
+
+    //   if (isset($form_state['values']['language'])) {
+    //     $options = _geo_language_get_language_geos($form_state['values']['language']);
+    //   }
+    //   elseif (isset($form_state['entity_translation']['form_langcode'])) {
+    //     $options = _geo_language_get_language_geos($form_state['entity_translation']['form_langcode']);
+    //   }
+    //   elseif (isset($form['language']['#default_value'])) {
+    //     $options = _geo_language_get_language_geos($form['language']['#default_value']);
+    //   }
+    //   else {
+    //     $options = _geo_language_get_language_geos();
+    //   }
+    //   $form['field_region'][LANGUAGE_NONE]['#options'] = $options;
+
+    //   // $form['field_region'][LANGUAGE_NONE]['#default_value'] = isset($form_state['values']['language'])
+
+    //   $form['field_region']['#prefix'] = '<div id="language-region">';
+    //   $form['field_region']['#suffix'] = '</div>';
+
+    // }
+
+    $form['#after_build'][] = '_geo_language_form_node_form_alter';
+
+  }
+
+
+
+  // $form['#submit'][] = 'locale_field_node_form_submit';
+}
+
+
+function geo_language_select_callback($form, $form_state) {
+  return $form['field_region'];
+}
+
+
+
+
+function _geo_language_get_language_geos($language = NULL) {
+
+  global $user;
+  $account = user_load($user->uid);
+
+  // Get user regions
+  $user_regions = field_get_items('user', $account, 'field_acc_region');
+  $user_geos = array();
+  if ($user_regions) {
+    foreach ($user_regions as $geo) {
+      $user_geos[] = $geo['tid'];
+    }
+  }
+
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'taxonomy_term')
+    ->entityCondition('bundle', 'employee_region');
+  if ($language) {
+    $query->fieldCondition('field_region_language', 'value', $language);
+  }
+  $result = $query->execute();
+  $terms = $result['taxonomy_term'];
+
+  foreach ($terms as $item) {
+    if (in_array($item->tid, $user_geos)) {
+      $term = taxonomy_term_load($item->tid);
+      $options[$item->tid] = $term->name;
+    }
+
+  }
+
+
+
+  return $options;
+
+}
+
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter().
+ */
+function geo_language_form_lingotek_download_translations_form_alter($form, $form_state) {
+
+}
+
+
+function geo_language_node_menu_alter(&$items, $backup) {
+  if (isset($backup['node'])) {
+    $item = $backup['node'];
+    // Preserve the menu router item defined by other modules.
+    $callback['page callback'] = $item['page callback'];
+    $callback['file'] = $item['file'];
+    $callback['module'] = $item['module'];
+    $access_arguments = array_merge(array(1, $item['access callback']), $item['access arguments']);
+  }
+  else {
+    $callback = FALSE;
+    $access_arguments = array(1);
+  }
+
+  //JMA - due to hook_module_implementation_alter calling entity translation last, we can't change the callback here, i've done it in entity_translation.node.inc - consider calling it here?
+  // Replace the translation overview page since we can't hook it.
+  $items['node/%node/translate']['page callback'] = 'geo_language_translation_node_overview';
+  $items['node/%node/translate']['page arguments'] = array(1);
+  $items['node/%node/translate']['access arguments'] = $access_arguments;
+  $items['node/%node/translate']['access callback'] = 'geo_language_translation_node_tab_access';
+  $items['node/%node/translate']['file'] = 'geo_language.module';
+  $items['node/%node/translate']['module'] = 'geo_language';
+
+}
+
+
+
+
+
+/**
+ * Translations overview page callback.
+ */
+function geo_language_translation_node_overview($entity, $entity_type = 'node', $callback = NULL) {
+
+  global $user;
+  $account = user_load($user->uid);
+  $langs = array();
+
+  // Get user regions
+  $user_regions = field_get_items('user', $account, 'field_acc_region');
+  $user_geos = array();
+  if ($user_regions) {
+    foreach ($user_regions as $geo) {
+      $user_geos[] = $geo['tid'];
+    }
+  }
+
+  // Get user languages
+  $account_langs = array();
+  if (isset($account->field_acc_language[LANGUAGE_NONE])) {
+    foreach ($account->field_acc_language[LANGUAGE_NONE] as $lang) {
+      $account_langs[] = $lang['value'];
+    }
+  }
+
+  // Get node regions/geos
+  $node_geos = array();
+  $node_regions = field_get_items('node', $entity, 'field_region');
+  if ($node_regions) {
+    foreach ($node_regions as $node_geo) {
+      $node_geos[] = $node_geo['tid'];
+    }
+  }
+
+  // if (!empty($node_geos)) {
+  //   // Load languages referenced to region/geo and check if acting user have access
+  //   foreach ($node_geos as $geo_tid) {
+  //     if (in_array($geo_tid, $user_geos)) {
+  //       $geo_term = taxonomy_term_load($geo_tid);
+  //       $geo_langs = field_get_items('taxonomy_term', $geo_term, 'field_region_language');
+  //       if ($geo_langs) {
+  //         foreach ($geo_langs as $lang) {
+  //           $langs[] = $lang['value'];
+  //         }
+  //       }
+  //     }
+
+  //   }
+  //   $langs = array_unique($langs);
+  // }
+  // else {
+    $langs = $account_langs;
+  // }
+
+  include_once DRUPAL_ROOT . '/' . drupal_get_path('module', 'entity_translation') . '/entity_translation.admin.inc';
+
+  // Entity translation and node translation share the same system path.
+  if ($callback && entity_translation_node($entity_type, $entity)) {
+    return entity_translation_overview_callback($callback, $entity);
+  }
+
+  $handler = entity_translation_get_handler($entity_type, $entity);
+  // Ensure $entity holds an entity object and not an id.
+  $entity = $handler->getEntity();
+  $handler->initPathScheme();
+
+  // Initialize translations if they are empty.
+  $translations = $handler->getTranslations();
+  if (empty($translations->original)) {
+    $handler->initTranslations();
+    $handler->saveTranslations();
+  }
+
+  // Ensure that we have a coherent status between entity language and field
+  // languages.
+  if ($handler->initOriginalTranslation()) {
+    // FIXME!
+    field_attach_presave($entity_type, $entity);
+    field_attach_update($entity_type, $entity);
+  }
+
+  ////////////////////////////////
+
+  $fields_info = field_info_instances($entity_type, $bundle_name = $entity->type);
+  foreach ($fields_info as $field_name => $value) {
+    if (!empty($entity->$field_name)) {
+      foreach ($entity->{$field_name} as $lang => $value) {
+        $lang_keys[] = $lang;
+      }
+    }
+  }
+
+  if (isset($entity->translations) && isset($entity->translations->original)) {
+    $source_lang = $entity->translations->original;
+    foreach ($lang_keys as $lang_key) {
+      if (($lang_key != $source_lang) && !isset($entity->translations->data[$lang_key]) && ($lang_key != 'und')) {
+        $handler->setTranslation(array(
+          'translate' => isset($entity->translate) ? $entity->translate : 0,
+          'status' => $entity->status,
+          'language' => $lang_key,
+          'source' => $source_lang,
+          'uid' => $entity->uid,
+          'created' => $entity->created,
+        ));
+      }
+    }
+  }
+  $handler->saveTranslations();
+
+  /////////////////
+
+
+
+  $header = array(t('Language'), t('Source language'), t('Translation'), t('Status'), t('Operations'));
+  $languages = entity_translation_languages();
+  $source = $translations->original;
+  $path = $handler->getViewPath();
+  $rows = array();
+
+  if (drupal_multilingual()) {
+    // If we have a view path defined for the current entity get the switch
+    // links based on it.
+    if ($path) {
+      $links = EntityTranslationDefaultHandler::languageSwitchLinks($path);
+    }
+
+    foreach ($languages as $lang_key => $language) {
+      $classes = array();
+      $options = array();
+      $language_name = $language->name;
+      $langcode = $language->language;
+      $edit_path = $handler->getEditPath($langcode);
+      $add_path = "{$handler->getEditPath()}/add/$source/$langcode";
+
+      if ($edit_path) {
+        $add_links = EntityTranslationDefaultHandler::languageSwitchLinks($add_path);
+        $edit_links = EntityTranslationDefaultHandler::languageSwitchLinks($edit_path);
+      }
+
+      if (isset($translations->data[$langcode])) {
+        list(, , $bundle) = entity_extract_ids($entity_type, $entity);
+
+        // Existing translation in the translation set: display status.
+        $is_original = $langcode == $translations->original;
+        $translation = $translations->data[$langcode];
+        $label = _entity_translation_label($entity_type, $entity, $langcode);
+        $link = isset($links->links[$langcode]['href']) ? $links->links[$langcode] : array('href' => $path, 'language' => $language);
+        $row_title = l($label, $link['href'], $link);
+
+        if (empty($link['href'])) {
+          $row_title = $is_original ? $label : t('n/a');
+        }
+
+        if ($edit_path && $handler->getAccess('update') && $handler->getTranslationAccess($langcode) && in_array($langcode, $langs)) {
+          $link = isset($edit_links->links[$langcode]['href']) ? $edit_links->links[$langcode] : array('href' => $edit_path, 'language' => $language);
+          $link['query'] = isset($_GET['destination']) ? drupal_get_destination() : FALSE;
+          $options[] = l(t('edit'), $link['href'], $link);
+
+        }
+
+        $status = $translation['status'] ? t('Published') : t('Not published');
+        $classes[] = $translation['status'] ? 'published' : 'not-published';
+        $status .= isset($translation['translate']) && $translation['translate'] ? theme('entity_translation_overview_outdated', array('message' => t('outdated'))) : '';
+        $classes[] = isset($translation['translate']) && $translation['translate'] ? 'outdated' : '';
+
+        if ($is_original) {
+          $language_name = t('<strong>@language_name</strong>', array('@language_name' => $language_name));
+          $source_name = t('(original content)');
+        }
+        else {
+          $source_name = $languages[$translation['source']]->name;
+        }
+      }
+      else {
+        // No such translation in the set yet: help user to create it.
+        $row_title = $source_name = t('n/a');
+
+        if ($source != $langcode && $handler->getAccess('update') && $handler->getTranslationAccess($langcode) && in_array($langcode, $langs)) {
+          list(, , $bundle) = entity_extract_ids($entity_type, $entity);
+          $translatable = FALSE;
+
+          foreach (field_info_instances($entity_type, $bundle) as $instance) {
+            $field_name = $instance['field_name'];
+            $field = field_info_field($field_name);
+            if ($field['translatable']) {
+              $translatable = TRUE;
+              break;
+            }
+          }
+
+          $link = isset($add_links->links[$langcode]['href']) ? $add_links->links[$langcode] : array('href' => $add_path, 'language' => $language);
+          $link['query'] = isset($_GET['destination']) ? drupal_get_destination() : FALSE;
+          $options[] = $translatable ? l(t('add'), $link['href'], $link) : t('No translatable fields');
+          $classes[] = $translatable ? '' : 'non-traslatable';
+        }
+        $status = t('Not translated');
+      }
+
+      $rows[] = array(
+        'data' => array($language_name, $source_name, $row_title, $status, implode(" | ", $options)),
+        'class' => $classes,
+      );
+    }
+  }
+
+  drupal_set_title(t('Translations of %label', array('%label' => $handler->getLabel())), PASS_THROUGH);
+
+  // Add metadata to the build render allow to let other modules know about
+  // which entity this is.
+  $build['#entity_type'] = $entity_type;
+  $build['#entity'] = $entity;
+  $build['entity_translation_overview'] = array(
+    '#theme' => 'entity_translation_overview',
+    '#header' => $header,
+    '#rows' => $rows,
+  );
+
+  return $build;
+}
+
+
+
+/**
+* Implements hook_field_attach_view_alter().
+*/
+function geo_language_field_attach_view_alter(&$output, $context) {
+
+  if (variable_get('locale_field_language_fallback', TRUE) && entity_translation_enabled($context['entity_type'])) {
+    $entity = $context['entity'];
+    $entity_type = $context['entity_type'];
+    $handler = entity_translation_get_handler($entity_type, $entity);
+    $translations = $handler->getTranslations();
+
+    // Apply fallback to only orginal language
+    if (isset($context['language']) && isset($translations->data[$context['language']]) && entity_translation_access($entity_type, $translations->data[$context['language']])) {
+      foreach (element_children($output) as $field_name) {
+        $element = &$output[$field_name];
+        if (isset($element['#field_translatable']) && $element['#field_translatable'] == '1') {
+          if ($element['#language'] != $context['language'] && $element['#language'] != $translations->original) {
+            foreach ($element['#items'] as $delta => $item) {
+              unset($element[$delta]);
+            }
+            unset($output[$field_name]);
+          }
+        }
+      }
+    }
+  }
+
+}
+
+
+
+
+

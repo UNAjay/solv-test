@@ -1,0 +1,8 @@
+name = Views div tables
+description = Views display plugin to display html list with labels in heading.
+core = 7.x
+package = Views
+
+dependencies[] = views
+
+files[] = site_views_divtable_plugin_style_divtable.inc

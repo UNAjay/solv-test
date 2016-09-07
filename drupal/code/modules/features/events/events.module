@@ -1,0 +1,285 @@
+<?php
+/**
+ * @file
+ * Code for the Events feature.
+ */
+
+include_once 'events.features.inc';
+
+/*
+  hook_form_alter()
+  Override "- Any -" filter selection to be replaced with filter label
+*/
+function events_form_alter(&$form, &$form_state, $form_id) {
+
+  // events filter form
+
+  if ($form['#id'] == 'views-exposed-form-events-block') {
+
+    if (isset($form['field_event_type_value'])) $form['field_event_type_value']['#options']['All'] = $form['#info']['filter-field_event_type_value']['label'];
+    // seems that simple hierarchical select doesn't work this way
+    if (isset($form['field_event_location_tid'])) $form['field_event_location_tid']['#options']['All'] = $form['#info']['filter-field_event_location_tid']['label'];
+
+  }
+}
+
+function events_menu() {
+
+  $items['jeeveserp-layout/topitem/events'] = array(
+    'page callback' => '_events_topitem_autocomplete',
+    'access arguments' => array('reference top event'),
+    'type' => MENU_CALLBACK
+  );
+
+  $items['admin/content/topitem-events'] = array(
+    'title' => 'Reference top event',
+    'description' => 'Use top item picker for events',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('events_topitem_admin'),
+    'access arguments' => array('reference top event'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+  return $items;
+}
+
+function events_permission() {
+  return array(
+    'reference top event' => array(
+      'title' => t('Reference top event'),
+      'description' => t('Use top item picker for events'),
+    ),
+  );
+}
+
+/**
+ * Function to create settings form for each menu item
+ * @return type
+ */
+function events_topitem_admin() {
+  $form = array();
+
+  global $user;
+  $account = user_load($user->uid);
+  $account_langs = array();
+  if (isset($account->field_acc_language[LANGUAGE_NONE])) {
+    foreach ($account->field_acc_language[LANGUAGE_NONE] as $lang) {
+      $account_langs[] = $lang['value'];
+    }
+  }
+
+  $languages = language_list('enabled');
+
+  foreach ($languages[1] as $language) {
+
+    // Check if user have access to language
+    if (empty($account_langs) || in_array($language->language, $account_langs)) {
+
+      $default_value = variable_get('events_topitem_'.$language->language, variable_get('events_topitem_en', FALSE));
+
+      // default to US if none specified
+      if (empty($default_value)) $default_value = variable_get('events_topitem_en', FALSE);
+
+      if ($default_value && is_numeric($default_value)) {
+        $node = node_load($default_value);
+        if ($node) {
+          $default_value = check_plain($node->title) . " [nid:$node->nid]";
+        }
+      }
+
+      // Text field form element
+      $form['events_topitem_'.$language->language] = array(
+        '#type' => 'textfield',
+        '#title' => t("Top item for " . $language->name),
+        '#description' => t("Pick node for displaying in events overview page"),
+        '#autocomplete_path' => 'jeeveserp-layout/topitem/events',
+        '#default_value' => $default_value,
+      );
+    }
+  }
+
+  $form['#submit'][]='events_topitem_admin_submit';
+
+  return system_settings_form($form);
+}
+
+function events_topitem_admin_submit($form, &$form_state){
+
+  $languages = language_list('enabled');
+
+  foreach ($languages[1] as $language) {
+    $nid = 0;
+
+    // extract nid from field value (if found)
+    $pattern = '/^(?:\s*|(.*) )?\[\s*nid\s*:\s*(\d+)\s*\]$/';
+    preg_match($pattern, $form_state['values']['events_topitem_'.$language->language], $matches);
+
+    // if anything matches
+    if (sizeof($matches) > 0) {
+
+      // extract nid from last match
+      if (is_numeric($matches[sizeof($matches) - 1])) {
+
+        // let's save it, if nid is numeric
+        $nid = $matches[sizeof($matches) - 1];
+      }
+    }
+
+    // save value
+    //variable_set('events_topitem_'.$language->language, $nid);
+    $form_state['values']['events_topitem_'.$language->language] = $nid;
+
+  }
+
+  form_state_values_clean($form_state);
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function events_block_info() {
+  $blocks = array(
+    'events_topitem' => array(
+      'info' => t('Top item picker'),
+    ),
+  );
+
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_configure().
+ */
+function events_block_configure($delta='') {
+  global $language;
+
+  $form = array();
+
+  switch($delta) {
+
+    case 'events_topitem':
+
+      $default_value = variable_get('events_topitem_'.$language->language, variable_get('events_topitem_en', FALSE));
+
+      // default to US if none specified
+      if (empty($default_value)) $default_value = variable_get('events_topitem_en', FALSE);
+
+      if ($default_value && is_numeric($default_value)) {
+        $node = node_load($default_value);
+        if ($node) {
+          $default_value = check_plain($node->title) . " [nid:$node->nid]";
+        }
+      }
+
+      // Text field form element
+      $form['events_topitem'] = array(
+        '#type' => 'textfield',
+        '#title' => t("Top item"),
+        '#description' => t("Pick node for displaying in events overview page"),
+        '#autocomplete_path' => 'jeeveserp-layout/topitem/events',
+        '#default_value' => $default_value,
+      );
+
+      break;
+  }
+  return $form;
+}
+
+function _events_topitem_autocomplete($string) {
+  $matches = array();
+  if ($string) {
+    $result = db_select('node')
+      ->fields('node', array('title', 'nid'))
+      ->condition('type', 'event', '=')
+      ->condition('title', '%' . db_like($string) . '%', 'LIKE')
+      ->range(0, 10)
+      ->execute();
+    foreach ($result as $node) {
+      $matches[check_plain($node->title) . " [nid:$node->nid]"] = check_plain($node->title) . " [nid:$node->nid]";
+    }
+  }
+
+  drupal_json_output($matches);
+}
+
+/**
+ * Implements hook_block_save().
+ */
+function events_block_save($delta = '', $edit = array()) {
+  global $language;
+
+  switch($delta) {
+
+    case 'events_topitem' :
+
+      $nid = 0;
+
+      // extract nid from field value (if found)
+      preg_match('/^(?:\s*|(.*) )?\[\s*nid\s*:\s*(\d+)\s*\]$/', $edit['events_topitem'], $matches);
+
+      // if anything matches
+      if (sizeof($matches) > 0) {
+
+        // extract nid from last match
+        if (is_numeric($matches[sizeof($matches) - 1])) {
+
+          // let's save it, if nid is numeric
+          $nid = $matches[sizeof($matches) - 1];
+        }
+      }
+
+      // save value
+      variable_set('events_topitem_'.$language->language, $nid);
+
+      break;
+  }
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function events_block_view($delta='') {
+  $block = array();
+
+  switch($delta) {
+
+    case 'events_topitem' :
+      $block['content'] = _events_topitem_view();
+      break;
+  }
+
+  return $block;
+}
+
+/**
+ * Custom function to assemble renderable array for block content.
+ * Returns a renderable array with the block content.
+ * @return
+ *   returns a renderable array of block content.
+ */
+function _events_topitem_view() {
+
+  global $language;
+
+  $markup = '';
+  $nid = variable_get('events_topitem_'.$language->language, variable_get('events_topitem_en', 0));
+
+  // default to US if none specified
+  if (empty($nid)) $nid = variable_get('events_topitem_en', FALSE);
+
+  if ($nid > 0) $markup = views_embed_view('events', 'block_2', $nid);
+  else {
+    if (user_access('reference top event')) $markup = 'No event promoted' . ', ' .l('pick one here', 'admin/content/topitem-events');
+  }
+
+  // Block output in HTML with div wrapper
+  $block = array(
+    'content' => array(
+      'title' => '<none>',
+      '#type' => 'markup',
+      '#markup' => $markup,
+    ),
+  );
+
+ return $block;
+}

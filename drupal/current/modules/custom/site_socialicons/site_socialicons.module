@@ -1,0 +1,569 @@
+<?php
+/**
+ * @file
+ * Formatter to add icons to social links.
+ */
+
+/**
+ * Implements hook_field_formatter_info().
+ *
+ * Adds formatter to display videoes on Derfor RUC
+ */
+function site_socialicons_field_formatter_info() {
+  return array(
+    // The key must be unique, so it's best to prefix with your module's name.
+    'site_socialicons_formatter' => array(
+      // the label is is what is displayed in the select box in the UI.
+      'label' => t('Display social media links as icons'),
+      // Field types is the important bit!! List the field types your formatter is for.
+      'field types' => array('link_field'),
+      // You can usually leave 'multiple values' as follows:
+      'multiple values' => FIELD_BEHAVIOR_DEFAULT,
+      // Array of the settings we'll create.
+      'settings'  => array(
+        // Give a default value for when the form is first loaded.
+        'pic_size' => 'small',
+      ),
+    ),
+  );
+}
+
+
+
+/**
+ * Implements hook_field_formatter_settings_form().
+ */
+function site_socialicons_formatter_settings_form($field, $instance, $view_mode, $form, &$form_state) {
+  //This gets the view_mode where our settings are stored
+  $display = $instance['display'][$view_mode];
+  //This gets the actual settings
+  $settings = $display['settings'];
+  //Initialize the element variable
+  $element = array();
+  //Add your select box
+  $element['pic_size'] = array(
+    '#type'           => 'select',                // Use a select box widget
+    '#title'          => t('Button Size'),        // Widget label
+    '#description'    => t('Select button size'), // Helper text
+    '#default_value'  => $settings['pic_size'],   // Get the value if it's already been set
+    '#options'        => array(
+      'small'  => 'Small',
+      'medium' => 'Medium',
+      'large'  => 'Large',
+    ),
+  );
+  return $element;
+}
+
+/**
+ * Implements hook_field_formatter_settings_summary().
+ */
+function site_socialicons_field_formatter_settings_summary($field, $instance, $view_mode) {
+  $display = $instance['display'][$view_mode];
+  $settings = $display['settings'];
+  // We use t() for translation and placeholders to guard against attacks.
+  $summary = t('Use a @size for the social media button', array(
+    '@size' => $settings['pic_size'],
+  ));
+  return $summary;
+}
+
+/**
+ * Implements hook_field_formatter_view().
+ * This code just passes straight through to a theme function, MYMODULE_formatter_FORMATTER
+ * (e.g. MYMODULE_formatter_MYMODULE_absolute_url).
+ */
+function site_socialicons_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
+  $element = array();
+  $settings = $display['settings'];
+
+  // size is unused here. can use it in future probably.
+  $size = $settings['pic_size'];
+
+  foreach ($items as $delta => $item) {
+    // Getting the actual value.
+    $raw_url = $item['url'];
+
+    // HERE WE NEED TO FIGURE OUT WHAT SOCIAL MEDIA
+
+    $url = parse_url($raw_url);
+
+    if ($url === false) {
+      return '';
+    }
+
+    if (!empty($url['host'])) {
+      $host = check_plain($url['host']);
+    }
+
+    switch ($host) {
+      case 'www.linkedin.com':
+      case 'linkedin.com':
+        $socialmedia = 'linkedin';
+      break;
+
+      case 'www.facebook.com':
+      case 'facebook.com':
+          $socialmedia = 'facebook';
+        break;
+
+      case 'www.xing.com':
+      case 'xing.com':
+        $socialmedia = 'Xing';
+      break;
+
+      case 'www.twitter.com':
+      case 'twitter.com':
+          $socialmedia = 'twitter';
+          break;
+      case 'plus.google.com':
+          $socialmedia = 'google';
+          break;
+       case 'drupal.org':
+          $socialmedia = 'drupal';
+          break;
+      default:
+        $socialmedia = 'link';
+      break;
+    }
+
+    // END FIGURING OUT WHAT SOCIAL MEDIA
+
+    // Create the image - Note that I'm storing the images in our module but they could be anywhere.
+    $image = theme('image', array('alt' => ucfirst($socialmedia) . ' link', 'path' => base_path() . drupal_get_path('module', 'site_socialicons') .'/icons/'. $socialmedia . '.png'));
+
+    $options = array(
+      // This tells Drupal that we're sending HTML, not plain text, otherwise it would encode it.
+      'html' => TRUE,
+      'attributes'  => array(
+        'title' => $item['title'],
+        'target' => '_blank',
+      ),
+    );
+    if (isset($url)) {
+      // Create the Link.
+      $link = l($image, $raw_url, $options);
+      // Assign it to the #markup of the element.
+      $element[$delta]['#markup'] = $link;
+    }
+  }
+  return $element;
+}
+
+// ===========================================================================================================================
+
+/**
+ * Implements hook_block_info().
+ */
+function site_socialicons_block_info() {
+  $blocks = array(
+    'site_socialicons_global' => array(
+      'title' => t('Follow us'),
+      'info' => t('Social icons - Global'),
+    ),
+    'site_socialicons_news' => array(
+      'title' => t('Follow us'),
+      'info' => t('Social icons - News'),
+    ),
+    'site_socialicons_blogs' => array(
+      'title' => t('Follow us'),
+      'info' => t('Social icons - Blogs'),
+    ),
+    'site_socialicons_events' => array(
+      'title' => t('Follow us'),
+      'info' => t('Social icons - Events'),
+    ),
+  );
+
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_configure().
+ */
+function site_socialicons_block_configure($delta='') {
+  global $language;
+
+  $form = array();
+
+  switch($delta) {
+
+    case 'site_socialicons_global' :
+      // Text field form element
+      $form['text_body'] = array(
+        '#type' => 'text_format',
+        '#title' => t("List your social profile URL's. Each URL in separate line."),
+        '#default_value' => $text = variable_get('site_socialicons_global_'.$language->language, variable_get('site_socialicons_global_en', '')),
+        '#wysiwyg' => false,
+      );
+
+      break;
+
+    case 'site_socialicons_news' :
+      $text = variable_get('site_socialicons_news_'.$language->language, variable_get('site_socialicons_news_en', ''));
+      // fallback to global social icons
+      if (empty($text)) {
+        $text = variable_get('site_socialicons_global_'.$language->language, variable_get('site_socialicons_global_en', ''));
+      }
+
+      // Text field form element
+      $form['text_body'] = array(
+        '#type' => 'text_format',
+        '#title' => t("List your social profile URL's. Each URL in separate line."),
+        '#default_value' => $text,
+        '#wysiwyg' => false,
+      );
+
+      break;
+
+    case 'site_socialicons_blogs' :
+      $text = variable_get('site_socialicons_blogs_'.$language->language, variable_get('site_socialicons_blogs_en', ''));
+      // fallback to global social icons
+      if (empty($text)) {
+        $text = variable_get('site_socialicons_global_'.$language->language, variable_get('site_socialicons_global_en', ''));
+      }
+
+      // Text field form element
+      $form['text_body'] = array(
+        '#type' => 'text_format',
+        '#title' => t("List your social profile URL's. Each URL in separate line."),
+        '#default_value' => $text,
+        '#wysiwyg' => false,
+      );
+
+      break;
+
+    case 'site_socialicons_events' :
+      $text = variable_get('site_socialicons_events_'.$language->language, variable_get('site_socialicons_events_en', ''));
+      // fallback to global social icons
+      if (empty($text)) {
+        $text = variable_get('site_socialicons_global_'.$language->language, variable_get('site_socialicons_global_en', ''));
+      }
+
+      // Text field form element
+      $form['text_body'] = array(
+        '#type' => 'text_format',
+        '#title' => t("List your social profile URL's. Each URL in separate line."),
+        '#default_value' => $text,
+        '#wysiwyg' => false,
+      );
+
+      break;
+  }
+  return $form;
+}
+
+/**
+ * Implements hook_block_save().
+ */
+function site_socialicons_block_save($delta = '', $edit = array()) {
+  global $language;
+
+  switch($delta) {
+
+    case 'site_socialicons_global' :
+      // Saving the WYSIWYG text
+      variable_set('site_socialicons_global_'.$language->language, $edit['text_body']['value']);
+      break;
+
+    case 'site_socialicons_news' :
+      // Saving the WYSIWYG text
+      variable_set('site_socialicons_news_'.$language->language, $edit['text_body']['value']);
+      break;
+
+    case 'site_socialicons_blogs' :
+      // Saving the WYSIWYG text
+      variable_set('site_socialicons_blogs_'.$language->language, $edit['text_body']['value']);
+      break;
+
+    case 'site_socialicons_events' :
+      // Saving the WYSIWYG text
+      variable_set('site_socialicons_events_'.$language->language, $edit['text_body']['value']);
+      break;
+  }
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function site_socialicons_block_view($delta='') {
+  $block = array();
+
+  switch($delta) {
+
+    case 'site_socialicons_global' :
+      $block['content'] = _site_socialicons_global_view();
+      break;
+
+    case 'site_socialicons_news' :
+      $block['title'] = t('Follow us');
+      $block['content'] = _site_socialicons_news_view();
+      break;
+
+    case 'site_socialicons_blogs' :
+      $block['title'] = t('Follow us');
+      $block['content'] = _site_socialicons_blogs_view();
+      break;
+
+    case 'site_socialicons_events' :
+      $block['title'] = t('Follow us');
+      $block['content'] = _site_socialicons_events_view();
+      break;
+  }
+
+  return $block;
+}
+
+/**
+ * Custom function to assemble renderable array for block content.
+ * Returns a renderable array with the block content.
+ * @return
+ *   returns a renderable array of block content.
+ */
+function _site_socialicons_global_view() {
+
+  global $language;
+
+  $block = array();
+
+  // Capture WYSIWYG text from the variable
+  $text = variable_get('site_socialicons_global_'.$language->language, variable_get('site_socialicons_global_en', ''));
+
+  // Add RSS links
+  $text .= "\n".'rss.xml';
+
+  $markup = '<label>'.t('Follow us:').'</label>';
+  $markup .= _site_socialicons_parse_text($text, 'global');
+
+  // Block output in HTML with div wrapper
+  $block = array(
+    'message' => array(
+      '#type' => 'markup',
+      '#markup' => $markup,
+    ),
+  );
+
+  return $block;
+}
+
+/**
+ * Custom function to assemble renderable array for block content.
+ * Returns a renderable array with the block content.
+ * @return
+ *   returns a renderable array of block content.
+ */
+function _site_socialicons_news_view() {
+
+  global $language;
+
+  $block = array();
+
+  // Capture WYSIWYG text from the variable
+  $text = variable_get('site_socialicons_news_'.$language->language, variable_get('site_socialicons_news_en', ''));
+  // fallback to global social icons
+  if (empty($text)) {
+    $text = variable_get('site_socialicons_global_'.$language->language, variable_get('site_socialicons_global_en', ''));
+  }
+
+  // Add RSS links
+  $text .= "\n".'news/rss.xml';
+
+  $markup = _site_socialicons_parse_text($text);
+
+  // Block output in HTML with div wrapper
+  $block = array(
+    'message' => array(
+      '#type' => 'markup',
+      '#markup' => $markup,
+    ),
+  );
+
+  return $block;
+}
+
+/**
+ * Custom function to assemble renderable array for block content.
+ * Returns a renderable array with the block content.
+ * @return
+ *   returns a renderable array of block content.
+ */
+function _site_socialicons_blogs_view() {
+  global $language;
+
+  $block = array();
+
+  // Capture WYSIWYG text from the variable
+  $text = variable_get('site_socialicons_blogs_'.$language->language, variable_get('site_socialicons_blogs_en', ''));
+  // fallback to global social icons
+  if (empty($text)) {
+    $text = variable_get('site_socialicons_global_'.$language->language, variable_get('site_socialicons_global_en', ''));
+  }
+
+  // Add RSS links
+  $text .= "\n".'blogs/rss.xml';
+
+  $markup = _site_socialicons_parse_text($text);
+
+  // Block output in HTML with div wrapper
+  $block = array(
+    'message' => array(
+      '#type' => 'markup',
+      '#markup' => $markup,
+    ),
+  );
+
+  return $block;
+}
+
+/**
+ * Custom function to assemble renderable array for block content.
+ * Returns a renderable array with the block content.
+ * @return
+ *   returns a renderable array of block content.
+ */
+function _site_socialicons_events_view() {
+
+  global $language;
+
+  $block = array();
+
+  // Capture WYSIWYG text from the variable
+  $text = variable_get('site_socialicons_events_'.$language->language, variable_get('site_socialicons_events_en', ''));
+  // fallback to global social icons
+  if (empty($text)) {
+    $text = variable_get('site_socialicons_global_'.$language->language, variable_get('site_socialicons_global_en', ''));
+  }
+
+  // Add RSS links
+  $text .= "\n".'events/rss.xml';
+
+  $markup = _site_socialicons_parse_text($text);
+
+  // Block output in HTML with div wrapper
+  $block = array(
+    'message' => array(
+      '#type' => 'markup',
+      '#markup' => $markup,
+    ),
+  );
+
+  return $block;
+}
+
+function _site_socialicons_parse_text($text, $context = FALSE) {
+  $markup = '<ul class="social-icons">';
+
+  $text = explode("\n", $text);
+
+  foreach($text as $line) {
+
+    if (!empty($line)) {
+      $raw_url = check_plain($line);
+      $url = parse_url($raw_url);
+
+      if (!empty($url['host'])) {
+        $host = check_plain($url['host']);
+      }
+      elseif (!empty($url['scheme']) && $url['scheme'] == 'mailto') {
+        $host = 'mailto';
+      }
+      else {
+        $host = '';
+      }
+
+      switch ($host) {
+        case 'www.linkedin.com':
+        case 'linkedin.com':
+          $socialmedia = 'linkedin';
+          $socialmedianame = 'LinkedIn';
+        break;
+
+        case 'www.facebook.com':
+        case 'facebook.com':
+            $socialmedia = 'facebook';
+            $socialmedianame = 'Facebook';
+          break;
+
+        case 'www.xing.com':
+        case 'xing.com':
+            $socialmedia = 'xing';
+            $socialmedianame = 'Xing';
+          break;
+
+        case 'www.twitter.com':
+        case 'twitter.com':
+            $socialmedia = 'twitter';
+            $socialmedianame = 'Twitter';
+            break;
+        case 'plus.google.com':
+            $socialmedia = 'google';
+            $socialmedianame = 'Google+';
+            break;
+        case 'drupal.org':
+            $socialmedia = 'drupal';
+            $socialmedianame = 'Drupal';
+            break;
+        case 'mailto':
+            $socialmedia = 'mail';
+            $socialmedianame = 'Mail';
+            break;
+        default: // host
+          if (isset($url['path'])) {
+            // parse path for local url's
+            $path = $url['path'];
+            switch ($path) {
+              case 'rss.xml':
+                $socialmedia = 'rss';
+                $socialmedianame = 'Site RSS';
+                break;
+              case 'news/rss.xml':
+                $socialmedia = 'rss';
+                $socialmedianame = 'News RSS';
+                break;
+              case 'blogs/rss.xml':
+                $socialmedia = 'rss';
+                $socialmedianame = 'Blogs RSS';
+                break;
+              case 'events/rss.xml':
+                $socialmedia = 'rss';
+                $socialmedianame = 'Events RSS';
+                break;
+              default: // path
+                $socialmedia = 'link';
+                $socialmedianame = $raw_url;
+              break;
+            }
+          }
+          else {
+            $socialmedia = 'link';
+            $socialmedianame = $raw_url;
+          }
+          break;
+      }
+
+      // Create the image - Note that I'm storing the images in our module but they could be anywhere.
+      $image = theme('image', array('title' => $socialmedianame, 'alt' => $socialmedianame, 'path' => base_path() . drupal_get_path('module', 'site_socialicons') .'/icons/'. $socialmedia . '.png'));
+
+      // Construct link
+      $options = array(
+        // This tells Drupal that we're sending HTML, not plain text, otherwise it would encode it.
+        'html' => TRUE,
+        'attributes'  => array(
+          'title' => $socialmedianame,
+          'target' => '_blank',
+        ),
+      );
+
+      if ($context == 'global') {
+        // no labels for global block
+        $markup .= '<li>'.l($image, $raw_url, $options).'</li>';
+      }
+      else $markup .= '<li>'.l($image . ' '. '<span class="name">'. $socialmedianame.'<span>', $raw_url, $options).'</li>';
+    }
+
+  } // foreach line
+
+  $markup .= '</ul>';
+
+  return $markup;
+}

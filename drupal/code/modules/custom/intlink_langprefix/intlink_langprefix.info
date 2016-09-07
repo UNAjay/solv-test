@@ -1,0 +1,4 @@
+name = Internal Link Language prefix
+description = Input filter that adds current language prefix for /node/xxx entries
+core = 7.x
+dependencies[] = filter

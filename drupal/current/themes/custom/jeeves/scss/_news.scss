@@ -1,0 +1,131 @@
+//-----------------------------------------
+// news list
+//-----------------------------------------
+.main-primary {
+  .news-top-story,
+  .news-listing {
+    @include full-width;
+  }
+  // top story
+  .news-top-story {
+    margin-bottom: 20px;
+
+    img {
+      @extend %full-width-image;
+    }
+    .views-field-title {
+      a {
+        padding: 0 0 5px;
+        @include font-size(20);
+        @include full-width;
+      }
+    }
+		.views-field-body {
+			padding: 0 15px;
+ 
+		  @include at-breakpoint($first) {
+		    padding: 0;
+		  }
+		}
+  }
+  // news list
+  .news-listing {
+		.view-content {
+			padding: 15px 0;
+	    @include full-width;
+    }
+    .view-content li {
+      padding: 0 15px 10px;
+      @include full-width;
+
+      @include at-breakpoint($first) {
+        padding: 0 0 10px;
+      }
+    }
+    .views-field-created,
+    .views-field-title {
+      @include full-width;
+    }
+    .views-field-created {
+      @include at-breakpoint($first) {
+        @include span-columns(4,16);
+      }
+      @include at-breakpoint($second) {
+        @include span-columns(3,16);
+      }
+    }
+    .views-field-title {
+      @include at-breakpoint($first) {
+        @include span-columns(12 omega,16);
+      }
+      @include at-breakpoint($second) {
+        @include span-columns(13 omega,16);
+      }
+    }
+  }
+}
+
+//-----------------------------------------
+// news page
+//-----------------------------------------
+.field-news-image img {
+  @extend %full-width-image;
+}
+
+//-----------------------------------------
+// news sidebars
+//-----------------------------------------
+.aside-primary {
+  .block-site-socialicons,
+  .news-listing {
+    a {
+      color: $jeevesRed;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+  .block-site-socialicons {
+    .social-icons {
+      padding: 0 15px 5px;
+      @include full-width;
+    }
+    li {
+      margin-bottom: 10px;
+      @include full-width;
+    }
+    a {
+      float: left;
+    }
+    img {
+      width: 20px;
+      height: auto;
+      float: left;
+    }
+    span {
+      float: left;
+      margin: 2px 0 0 5px;
+    }
+  }
+  .news-listing {
+    .content,
+		.view-content {
+      padding: 0 15px 15px;
+      @include full-width;
+    }
+		h2 {
+			margin: 15px;
+		}
+    .view-content li {
+      margin-bottom: 10px;
+      @include full-width;
+    }
+    .views-field.views-field-created {
+      @include font-size(11);
+    }
+    .pager {
+      margin-top: 10px;
+    }
+  }
+}

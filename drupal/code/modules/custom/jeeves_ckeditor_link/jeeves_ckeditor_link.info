@@ -1,0 +1,4 @@
+name = Jeeves CKEditor Link
+description = Custom CKEditor Link.
+package = User interface
+core = 7.x

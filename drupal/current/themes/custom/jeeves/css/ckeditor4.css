@@ -1,0 +1,34 @@
+body {
+  font-size: 100%;
+}
+
+h1,
+h2 {
+  color: #e94e1b;
+  font-size: 26px;
+  font-size: 1.6rem;
+}
+
+h3 {
+  color: #404040;
+  font-size: 12px;
+  font-size: 1.2rem;
+}
+
+p {
+  color: #404040;
+  font-size: 10px;
+  font-size: 0.8rem;
+}
+
+.call-to-action {
+  display: block;
+  color: #e94e1b;
+  float: left;
+  width: 100%;
+  font-size: 23px;
+  font-size: 1.3rem;
+  font-weight: 600;
+  line-height: 1.3;
+  padding: 10px 15px;
+}

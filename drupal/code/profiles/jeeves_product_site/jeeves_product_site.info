@@ -1,0 +1,84 @@
+; $Id $
+name = Jeeves Product Site
+description = Default installation profile for Jeeves product.
+core = 7.x
+
+; Core
+dependencies[] = block
+dependencies[] = contextual
+dependencies[] = image
+dependencies[] = list
+dependencies[] = menu
+dependencies[] = number
+dependencies[] = options
+dependencies[] = path
+dependencies[] = taxonomy
+dependencies[] = overlay
+dependencies[] = field
+dependencies[] = field_ui
+dependencies[] = file
+dependencies[] = dblog
+
+
+; Contrib
+dependencies[] = i18n
+dependencies[] = i18n_menu
+dependencies[] = i18n_translation
+dependencies[] = i18n_select
+dependencies[] = i18n_field
+dependencies[] = i18n_path
+dependencies[] = i18n_taxonomy
+dependencies[] = i18n_sync
+dependencies[] = i18n_node
+dependencies[] = i18n_string
+dependencies[] = i18n_variable
+dependencies[] = i18n_block
+dependencies[] = context
+dependencies[] = ctools
+dependencies[] = features
+dependencies[] = imce
+dependencies[] = imce_wysiwyg
+dependencies[] = pathauto
+dependencies[] = strongarm
+dependencies[] = token
+dependencies[] = views
+dependencies[] = views_ui
+dependencies[] = wysiwyg
+dependencies[] = libraries
+dependencies[] = admin_menu
+dependencies[] = entityreference
+dependencies[] = countries
+dependencies[] = entity
+dependencies[] = entity_translation
+dependencies[] = entity_translation_i18n_menu
+dependencies[] = file_entity
+dependencies[] = inline_entity_form
+dependencies[] = media
+dependencies[] = module_filter
+dependencies[] = lang_dropdown
+dependencies[] = menu_block
+dependencies[] = menu_position
+dependencies[] = shs
+dependencies[] = navigation404
+
+; Development
+dependencies[] = diff
+
+; Jeeves custom
+dependencies[] = jeeveserp_permissions
+dependencies[] = region_language_workflow
+dependencies[] = jeeveserp_layout
+dependencies[] = employees
+dependencies[] = promo
+dependencies[] = attachments
+dependencies[] = industries
+dependencies[] = blogs
+dependencies[] = events
+dependencies[] = news
+dependencies[] = partners
+dependencies[] = contact_us
+dependencies[] = landing_pages
+; dependencies[] = site_search
+dependencies[] = custom_background
+dependencies[] = devdocs
+

@@ -1,0 +1,312 @@
+.aside-primary {
+	// TODO: add a general class to all boxes that need the background-style in the sidebars
+	> .menu,
+	.sidebar-box,
+	.success-stories,
+	.attachments,
+	.offices,
+	.contact-form-block,
+	.search-facet,
+	.block-site-socialicons,
+	.news-listing,
+	.news-subscr-form-block,
+	.rfi-rfp-rfq-contact-form,
+	.events-subscr-form-block,
+	.tag-cloud,
+	// TODO: replace the class .block-tagclouds with .tag-cloud on tag-page
+	.block-tagclouds,
+	.contact-form,
+	.customers-sidebar {
+		@extend %sidebar-box;
+	}
+
+	h2 {
+    @extend %sidebar-title;
+	}
+	p {
+    color: $paragraphColor;
+	}
+
+	// messages in sidebar
+	.messages {
+		margin: 10px 15px;
+	}
+
+	// contact
+	.contact-form-block,
+	.contact-form {
+		h2 {
+    	background: url('../images/icon-contact.png') no-repeat left 3px;
+			padding-left: 35px;
+		}
+	}
+
+	// attachments
+	.attachments {
+		padding: 15px;
+
+		h2 {
+    	background: url('../images/icon-files.png') no-repeat left 3px;
+			margin: 0 0 15px;
+			padding-left: 35px;
+		}
+		a {
+			color: #707070;
+			word-wrap: break-word;
+
+			&:hover {
+				text-decoration: underline;
+			}
+		}
+		.file {
+			margin: 0 15px 10px;
+  		@include full-width;
+		}
+		.field-acton-url {
+			background: url('../images/icon-key-feature.png') no-repeat left 5px;
+			padding-left: 17px;
+		}
+	}
+}
+
+//-----------------------------------------
+// submenu - mobile
+//-----------------------------------------
+
+.mobile-submenu {
+	padding: 5px 15px 10px;
+  @include full-width;
+
+  @include at-breakpoint($first) {
+  	display: none;
+  }
+}
+
+//-----------------------------------------
+// submenu - desktop
+//-----------------------------------------
+
+.aside-primary {
+	> .menu {
+		display: none;
+
+	  @include at-breakpoint($first) {
+	  	display: block;
+	  }
+
+		h2 {
+    	background: url('../images/icon-submenu.png') no-repeat right 5px;
+			padding-right: 30px;
+		}
+		// dont apply style on contextual links
+		.content {
+			li {
+				border-top: 1px solid #E9E9E9;
+				background: #707070;
+			}
+			.depth-2 {
+				padding-left: 5px;
+
+				> a {
+					padding-right: 10px;
+					padding-left: 10px;
+				}
+			}
+			a {
+				background: #F7F7F7;
+				display: block;
+				padding: 9px 15px;
+				color: #707070;
+
+				&:hover,
+				&.active {
+					background: #707070;
+					color: #fff;
+				}
+			}
+			.collapsed > a {
+	  		background: url('../images/submenu-arrow-grey-down.png') no-repeat right center #F7F7F7;
+
+				&:hover {
+	  			background: url('../images/submenu-arrow-white-down.png') no-repeat right center #707070;
+	  		}
+	  	}
+			.expanded > a.active-trail {
+	    	background: url('../images/submenu-arrow-grey-up.png') no-repeat right center #F7F7F7;
+
+				&:hover {
+	  			background: url('../images/submenu-arrow-white-up.png') no-repeat right center #707070;
+	  		}
+			}
+			.expanded > a.active {
+	    	background: url('../images/submenu-arrow-white-up.png') no-repeat right center #707070;
+			}
+		}
+	}
+}
+
+.aside-primary {
+	.pane-menu-tree {
+		display: none;
+
+	  @include at-breakpoint($first) {
+	  	display: block;
+	  }
+
+		ul.menu {
+			li {
+				border-top: 1px solid #E9E9E9;
+				background: #707070;
+			}
+			.depth-2 {
+				padding-left: 5px;
+
+				> a {
+					padding-right: 10px;
+					padding-left: 10px;
+				}
+			}
+			a {
+				background: #F7F7F7;
+				display: block;
+				padding: 9px 15px;
+				color: #707070;
+
+				&:hover,
+				&.active {
+					background: #707070;
+					color: #fff;
+				}
+			}
+			.collapsed > a {
+	  		background: url('../images/submenu-arrow-grey-down.png') no-repeat right center #F7F7F7;
+
+				&:hover {
+	  			background: url('../images/submenu-arrow-white-down.png') no-repeat right center #707070;
+	  		}
+	  	}
+			.expanded > a.active-trail {
+	    	background: url('../images/submenu-arrow-grey-up.png') no-repeat right center #F7F7F7;
+
+				&:hover {
+	  			background: url('../images/submenu-arrow-white-up.png') no-repeat right center #707070;
+	  		}
+			}
+			.expanded > a.active {
+	    	background: url('../images/submenu-arrow-white-up.png') no-repeat right center #707070;
+			}
+		}
+	}
+	.panel-pane {
+		margin-bottom: 15px;
+		margin-top: 15px;
+	}
+	.pane-block {
+		overflow: hidden;
+		background: #F7F7F7;
+		border: 1px solid #E9E9E9;
+	}
+}
+
+//-----------------------------------------
+// success stories
+//-----------------------------------------
+
+.view-success-stories {
+	margin: 0 15px 15px;
+	float: left;
+
+	.views-row {
+		border-bottom: 1px solid #E9E9E9;
+		margin-bottom: 15px;
+		padding-bottom: 15px;
+  	@include font-size(13, 17);
+	}
+	.views-row-last {
+		border-bottom: none;
+		margin-bottom: 0;
+		padding-bottom: 0;
+	}
+	.views-field-field-success-story-title {
+		margin-bottom: 15px;
+		font-weight: 600;
+	}
+	a {
+	  color: $jeevesRed;
+
+	  &:hover {
+	  	text-decoration: underline;
+	  }
+	}
+}
+
+//-----------------------------------------
+// partners
+//-----------------------------------------
+.offices {
+	padding-bottom:10px;
+	.contactinfo {
+		color: #707070;
+		margin: 0 15px 5px;
+	}
+	.locations {
+		margin: 0 15px 5px;
+	}
+	.product {
+    .badges {
+      li {
+        margin: 0 0 5px 15px;
+        img {
+          height: 20px;
+        }
+      }
+    }
+  }
+}
+
+//---------------------------------------
+// sidebar text, micro vertical
+//---------------------------------------
+
+.aside-primary {
+	.field-sidebar-text,
+	.micro-vertical {
+		clear: both;
+		padding: 0 15px;
+
+	  @include at-breakpoint($first) {
+	    padding: 0;
+	  }
+
+		h2 {
+			margin: 0;
+		}
+		a {
+		  color: $jeevesRed;
+
+		  &:hover {
+		  	text-decoration: underline;
+		  }
+		}
+	}
+	.field-sidebar-text {
+		margin-bottom: 15px;
+		background: #5f6488 url(../images/sidebar_bg.png) no-repeat left bottom;
+		padding: 15px 15px 90px;
+
+		h2,h3,h4,p {
+			color: #fff;
+		}
+	}
+}
+
+//---------------------------------------
+// customers list in sidebar
+//---------------------------------------
+.customers-sidebar {
+	padding: 0 15px 15px;
+
+	h2 {
+		margin: 0 0 15px;
+	}
+}

@@ -1,0 +1,106 @@
+<?php
+
+/**
+ * @file
+ */
+
+
+function et_language_path_form_entity_translation_admin_form_alter(&$form, &$form_state, $form_id) {
+
+  $form['language_path_update'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Enable language path update'),
+    '#description' => t('When language path update is enabled, if no translation is available for entity, its url alias language will be updated to Neutral on entity update and/or translation deletetion. Once there is one or more translations added, new aliases will be added or updated.'),
+    '#default_value' => variable_get('language_path_update', TRUE),
+    '#weight' => '0',
+    '#states' => array(
+        // 'unchecked' => array(':input[name="locale_field_language_fallback"]' => array('checked' => FALSE)),
+        'disabled' => array(':input[name="locale_field_language_fallback"]' => array('checked' => FALSE)),
+      )
+  );
+}
+
+
+function et_language_path_default($entity, $type) {
+  // About to be saved (before insert/update)
+  if (isset($entity->path['alias'])) {
+    if (variable_get('language_path_update', TRUE)) {
+      // Ensure that we are dealing with a bundle having entity translation enabled.
+      if (entity_translation_enabled($type, $entity)) {
+        $translations = entity_translation_get_handler($type, $entity)->getTranslations();
+        if ($entity->language == $translations->original) {
+          $uri = entity_uri($type, $entity);
+
+          module_load_include('inc', 'pathauto', 'pathauto');
+          $default = _pathauto_existing_alias_data($uri['path'], $entity->language);
+
+          if ($entity->path['pathauto'] == FALSE && ($default['alias'] != $entity->path['original']['alias'])) {
+            $delete['source'] = $entity->path['original']['source'];
+            $delete['alias'] = $entity->path['original']['alias'];
+            $delete['language'] = LANGUAGE_NONE;
+            path_delete($delete);
+          }
+
+          if ($default) {
+            $path_default['source'] = $default['source'];
+            $path_default['language'] = LANGUAGE_NONE;
+            $path_default['alias'] = $default['alias'];
+
+            if (!path_load($path_default)) {
+              path_save($path_default);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+
+/**
+ * Implements hook_entity_insert().
+ */
+function et_language_path_entity_insert($entity, $type) {
+  et_language_path_default($entity, $type);
+}
+
+
+/**
+ * Implements hook_entity_update().
+ */
+function et_language_path_entity_update($entity, $type) {
+  et_language_path_default($entity, $type);
+}
+
+
+function et_language_path_pathauto_alias_alter(&$alias, array &$context) {
+  $info = entity_get_info();
+  $entity_type = $context['module'];
+
+  if (variable_get('language_path_update', TRUE)) {
+    // Ensure that we are dealing with a bundle having entity translation enabled.
+    if (!empty($info[$entity_type]['token type']) && !empty($context['data'][$info[$entity_type]['token type']])) {
+      $entity = $context['data'][$info[$entity_type]['token type']];
+      if (entity_translation_enabled($entity_type, $entity)) {
+        $translations = entity_translation_get_handler($entity_type, $entity)->getTranslations();
+
+        $existing_alias = _pathauto_existing_alias_data($context['source'], LANGUAGE_NONE);
+        if ($existing_alias['alias'] != $alias) {
+          path_delete($existing_alias);
+        }
+
+        if ($context['language'] == $translations->original && $context['op'] == 'bulkupdate') {
+          $path_default['source'] = $context['source'];
+          $path_default['alias'] = $alias;
+          $path_default['language'] = LANGUAGE_NONE;
+          if (!path_load($path_default)) {
+            path_save($path_default);
+          }
+
+        }
+      }
+    }
+  }
+
+}
+

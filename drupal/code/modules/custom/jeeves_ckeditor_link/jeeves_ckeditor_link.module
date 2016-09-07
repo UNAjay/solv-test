@@ -1,0 +1,41 @@
+<?php
+/**
+ * @file
+ */
+
+/**
+ * Implementation of hook_ckeditor_link_TYPE_url().
+ */
+function jeeves_ckeditor_link_ckeditor_link_node_url($path, $langcode) {
+  if (!preg_match('`^node/(\d+)$`', $path, $matches)) {
+    return;
+  }
+
+  $nid = $matches[1];
+
+  $languages = ckeditor_link_get_languages();
+  if ($languages) {
+    // Core language support for content types has 2 as maximum value. Over this
+    // contrib modules such as Entity Translation might introduce different
+    // behaviors, hence we just skip any language alteration.
+    $node = db_query('SELECT nid, type, language FROM {node} WHERE nid = :nid', array(':nid' => $nid))->fetchObject();
+    if ($node) {
+      $language_support = variable_get('language_content_type_' . $node->type, 0) <= 2;
+      if ($language_support && $node->language && ($node->language != LANGUAGE_NONE) && isset($languages[$node->language])) {
+        $langcode = $node->language;
+      }
+      elseif (module_exists('entity_translation') && entity_translation_enabled('node', $node)) {
+        $translations = entity_translation_get_handler('node', $node)->getTranslations();
+        if (isset($translations->data[$langcode])) {
+          return ckeditor_link_url("node/$nid", $langcode);
+        }
+        else {
+          return url("$langcode/node/$nid");
+        }
+      }
+    }
+  }
+
+
+  return ckeditor_link_url("node/$nid", $langcode);
+}

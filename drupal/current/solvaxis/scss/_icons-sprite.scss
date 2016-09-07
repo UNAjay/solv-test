@@ -1,0 +1,108 @@
+// Icons sprite
+.icon-wrapper {
+  display: block;
+  min-height: 250px;
+  position: relative;
+  .icon {
+    display: block;
+    margin: 0 auto;
+    background-image: url('../images/product-line.png');
+    background-repeat: no-repeat;
+    background-size: 160px 640px;
+    border: 3px solid transparent;
+    @include border-radius(100%, 100%);
+    @include box-sizing(content-box);
+    
+    &.icon_1 {
+      background-position: 0 0;
+      width: 152px;
+      height: 152px;
+    }
+    &.icon_2 {
+      background-position: 0 -160px;
+      width: 152px;
+      height: 152px;
+    }
+    &.icon_3 {
+      background-position: 0 -320px;
+      width: 152px;
+      height: 152px;
+    }
+    &.icon_4 {
+      background-position: 0 -480px;
+      width: 152px;
+      height: 152px;
+    }
+  }
+  .icon-title {
+    color: $white;
+    display: block;
+    @include font-size(16);
+    font-weight: 300;
+    text-align: center;
+    margin-top: 10px;
+    padding: 0 20px;
+    @include at-breakpoint($bp-med) {
+      position: absolute;
+      top: 180px;
+      left: 0;
+      width: 100%;
+      margin-top: 0;
+    }
+  }
+}
+
+a {
+  .icon-wrapper {
+    &:hover,
+    &:active,
+    &:focus {
+      .icon-title {
+        color: $white;
+        text-decoration: none;
+      }
+      .icon {
+        background-color: $crimson;
+        border: 3px solid $crimson;
+      }
+    }
+  }
+  &.external-link {
+    text-decoration: none;
+  }
+}
+
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
+  .icon-wrapper {
+    .icon {
+        /* Reference the @2x Sprite */
+				background-image: url('../images/product-line@2x.png');
+        /* Translate the @2x sprite's dimensions back to 1x */
+        background-size: 160px 640px;
+			}
+    }
+	}
+
+// icons layout
+.icon-wrapper {
+  width: 100%;
+  margin: 0;
+  padding: 10px 10px 0;
+  &.float {
+    @include at-breakpoint($bp-med) {
+      @include span-columns(8,16);
+      margin: 0;
+      padding: 10px 10px 0;
+    }
+    @include at-breakpoint($bp-large-2) {
+      @include span-columns(4,16);
+      margin: 0;
+      padding: 10px 10px 0;
+    }
+  }
+  &.center {
+    display: inline-block;
+    margin: 10px 0;
+    width: 100%;
+  }
+}

@@ -1,0 +1,78 @@
+/* Open Sans font from Google Fonts */
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,300,400,700);
+
+/* overwrite acton/form.css styles */
+TABLE, TR, TD, DIV, TEXTAREA, INPUT, SELECT, UL, OL {
+  font-size: 16px;
+  font-family: 'Open Sans',sans-serif;
+	font-weight: 300;
+}
+.formField {
+	color: #707070;
+	padding-top: 0;
+  padding-bottom: 0;
+}
+
+/* main table */
+.ao_tbl_container {
+  width: 100%;
+}
+
+/* stretch out the textfields */
+.formField > textarea,
+textarea.formTextAreaWidthMedium {
+  width: 100%;
+}
+
+form {
+	margin-bottom: 4px;
+  padding: 0 5px;
+}
+
+input[type="text"],
+input[type="email"],
+textarea,
+.formTextArea {
+  margin-bottom: 10px;
+  float: left;
+  width: 100%;
+  font-size: 1.2rem;
+  border-top: 1px solid #B8B8B8;
+  border-right: 1px solid #D5D5D5;
+  border-bottom: 1px solid #EDEDED;
+  border-left: 1px solid #B8B8B8;
+  border-radius: 0;
+  padding: 5px 7px;
+	height: auto;
+  color: #404040;
+  font-size: 16px;
+  font-family: 'Open Sans',sans-serif;
+	font-weight: 300;
+}
+
+input[type="button"] {
+  background: url("images/bg-button.png");
+  background-repeat: repeat-x;
+  background-position: left top;
+  border: 1px solid #AD3429;
+  border-radius: 0;
+  color: #fff;
+  cursor: pointer;
+  text-transform: uppercase;
+  text-shadow: 1px 1px #333;
+  font-size: 14px;
+  font-family: 'Open Sans', sans-serif;
+	padding: 5px 15px;
+	float: right;
+	margin-right: 10px;
+}
+
+input[type="button"]:hover {
+  background-position: left bottom;
+  border: 1px solid #000;
+}
+
+.formField .formFieldLabel b {
+	color: #E94E1B !important;
+  font-weight: 300;
+}

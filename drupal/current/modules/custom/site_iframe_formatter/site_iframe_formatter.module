@@ -1,0 +1,159 @@
+<?php
+/**
+ * @file
+ * Formatter to add icons to social links.
+ */
+
+/**
+ * Implements hook_field_formatter_info().
+ *
+ * Adds formatter to display videoes on Derfor RUC
+ */
+function site_iframe_formatter_field_formatter_info() {
+  return array(
+    // The key must be unique, so it's best to prefix with your module's name.
+    'site_iframe_formatter_link' => array(
+      'label' => t('Open link in colorbox'),
+      'field types' => array('link_field'),
+      'multiple values' => FIELD_BEHAVIOR_DEFAULT,
+      'settings'  => array(
+        'iframe_width' => 455,
+        'iframe_height' => 580,
+      ),
+    ),
+    // The key must be unique, so it's best to prefix with your module's name.
+    'site_iframe_formatter_display' => array(
+      'label' => t('Show link as responsive iframe'),
+      'field types' => array('link_field'),
+      'multiple values' => FIELD_BEHAVIOR_DEFAULT,
+      'settings'  => array(
+        //'iframe_width' => 455,
+        'iframe_height' => 580,
+      ),
+    ),
+  );
+}
+
+
+
+/**
+ * Implements hook_field_formatter_settings_form().
+ */
+function site_iframe_formatter_formatter_settings_form($field, $instance, $view_mode, $form, &$form_state) {
+  //This gets the view_mode where our settings are stored
+  $display = $instance['display'][$view_mode];
+  //This gets the actual settings
+  $settings = $display['settings'];
+
+  $element = array();
+  $element['iframe_width'] = array(
+    '#type'           => 'textfield',                // Use a select box widget
+    '#title'          => t('Iframe width'),        // Widget label
+    '#default_value'  => $settings['iframe_width'],   // Get the value if it's already been set
+  );
+  $element['iframe_height'] = array(
+    '#type'           => 'textfield',                // Use a select box widget
+    '#title'          => t('Iframe height'),        // Widget label
+    '#default_value'  => $settings['iframe_height'],   // Get the value if it's already been set
+  );
+  return $element;
+}
+
+/**
+ * Implements hook_field_formatter_settings_summary().
+ */
+function site_iframe_formatter_field_formatter_settings_summary($field, $instance, $view_mode) {
+  $display = $instance['display'][$view_mode];
+  $settings = $display['settings'];
+  // We use t() for translation and placeholders to guard against attacks.
+  $summary = t('Select iframe size');
+  return $summary;
+}
+
+/**
+ * Implements hook_field_formatter_view().
+ * This code just passes straight through to a theme function, MYMODULE_formatter_FORMATTER
+ * (e.g. MYMODULE_formatter_MYMODULE_absolute_url).
+ */
+function site_iframe_formatter_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
+
+  $element = array();
+
+  switch ($display['type']) {
+    case 'site_iframe_formatter_link':
+
+      foreach ($items as $delta => $item) {
+        // Getting the actual value.
+        $raw_url = $item['url'];
+
+        // add url parameters for colorbox, we need to parse it and see if we have any query parameters defined already
+        $query = parse_url($raw_url, PHP_URL_QUERY);
+        if( $query ) $raw_url .= '&width=455&height=580&iframe=true';
+        else $raw_url .= '?width=455&height=580&iframe=true';
+
+        // get the title
+        $title = $entity->title;
+
+        $options = array(
+          // This tells Drupal that we're sending HTML, not plain text, otherwise it would encode it.
+          'html' => TRUE,
+          'attributes'  => array(
+            'class' => array('colorbox-load'), // , 'colorbox-node'
+            'title' => $title,
+            'target' => '_blank',
+          ),
+        );
+
+        if (isset($raw_url)) {
+          // Create the Link.
+          $link = l($title, $raw_url, $options);
+          // Assign it to the #markup of the element.
+          $element[$delta]['#markup'] = $link;
+        }
+      }
+    break;
+
+
+    case 'site_iframe_formatter_display':
+
+      foreach ($items as $delta => $item) {
+        // Getting the actual value.
+        $raw_url = $item['url'];
+
+        if (isset($raw_url)) {
+          // $element[$delta]['#markup'] = '<iframe class="external-iframe-display" frameborder="0" src="'.$raw_url.'" ></iframe>';
+          $element[$delta]['#markup'] = '<div id="iframe" class="external-iframe-display"></div>';
+          $element[$delta]['#markup'] .= "
+
+<script>
+
+var linker;
+
+function addiFrame(divId, url, opt_hash) {
+
+  return function(tracker) {
+    window.linker = window.linker || new window.gaplugins.Linker(tracker);
+    var iFrame = document.createElement('iFrame');
+    iFrame.src = window.linker.decorate(url, opt_hash);
+    document.getElementById(divId).appendChild(iFrame);
+  };
+
+}
+
+// Dynamically add the iFrame to the page with proper linker parameters.
+ga(addiFrame('iframe', '".$raw_url."'));
+
+</script>";
+
+          drupal_add_js(drupal_get_path('module', 'site_iframe_formatter').'/iframe_parent.js');
+          drupal_add_css(drupal_get_path('module', 'site_iframe_formatter').'/iframe_parent.css');
+
+        }
+      }
+    break;
+
+  }
+
+  return $element;
+}
+

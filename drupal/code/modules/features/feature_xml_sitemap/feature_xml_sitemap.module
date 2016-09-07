@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Feature XML sitemap feature.
+ */
+
+include_once 'feature_xml_sitemap.features.inc';

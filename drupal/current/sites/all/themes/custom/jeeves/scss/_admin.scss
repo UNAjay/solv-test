@@ -1,0 +1,63 @@
+//-----------------------------------------
+// Drupal tabs css - copied from theme arnold
+//-----------------------------------------
+ul.tabs{
+  background: #fff;
+  float: left;
+  width: 100%;
+  padding: 10px;
+  font-size: 1.4rem;
+}
+.tabs li {
+  display: inline-block;
+  list-style: none;
+  padding:0;
+}
+.tabs li a {
+  float: left;
+  border-radius: 3px 3px 3px 3px;
+  color: #444444;
+  font-weight: 600;
+  margin: 0;
+  padding: 6px 10px;
+}
+.tabs li a:hover,
+.tabs li a:active,
+.tabs li a:focus,
+.tabs li.active a {
+  background: none repeat scroll 0 0 #999999;
+  color: #FFFFFF;
+  text-decoration: none;
+}
+
+//-----------------------------------------
+// messages
+//-----------------------------------------
+.messages-wrapper {
+  background: #fff;
+  padding: 15px 15px 0;
+  @include full-width;
+
+  @include at-breakpoint($first) {
+    padding: 20px 20px 0;
+  }
+
+  .messages {
+    border: none;
+    margin: 0;
+  }
+}
+.messages-wrapper,
+aside {
+  .messages {
+    &.status {
+      background-image: url('../images/icon-message-status.png');
+    }
+    &.error {
+      background-image: url('../images/icon-message-error.png');
+    }
+    &.warning {
+      background-image: url('../images/icon-message-warning.png');
+    }
+  }
+}

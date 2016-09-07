@@ -1,0 +1,13 @@
+name = Smartling entity reference
+description = Rebuild entity references in translated entities.
+core = 7.x
+package = Smartling
+dependencies[] = smartling
+dependencies[] = entityreference
+
+; Information added by Drupal.org packaging script on 2016-06-02
+version = "7.x-2.95"
+core = "7.x"
+project = "smartling"
+datestamp = "1464881045"
+

@@ -1,0 +1,177 @@
+@CHARSET "UTF-8";
+.region-content select,
+ #colorbox select,
+#block-lang-dropdown-language select{
+	display: block !important;
+	visibility: hidden !important;
+	-webkit-appearance: none;
+}
+.sbHolder{
+	background-color: #fff;
+	border-top: 1px solid #B8B8B8;
+    border-bottom: 1px solid #EDEDED;
+    border-left: 1px solid #B8B8B8;
+	font-size: 16px;
+	font-weight: normal;
+	height: 35px;
+	position: relative;
+}
+.sbHolder:focus .sbSelector{
+	outline: none;
+}
+.sbHolder:focus {
+	outline: none;
+}
+.sbSelector{
+	display: block;
+	height: 30px;
+	left: 0;
+	line-height: 33px;
+	outline: none;
+	overflow: hidden;
+	position: absolute;
+	text-indent: 10px;
+	top: 0;
+	width: 100%;
+}
+.sbSelector:link, .sbSelector:visited, .sbSelector:hover{
+	color: #707070;
+	outline: none;
+	text-decoration: none !important;
+}
+.sbToggle{
+	background: url(../img/bg-select.png) no-repeat;
+	display: block;
+	height: 33px;
+	outline: none;
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: 34px;
+}
+.sbToggle:hover{
+}
+.sbToggleOpen{
+}
+.sbToggleOpen:hover{
+}
+.sbHolderDisabled{
+	background-color: #3C3C3C;
+	border: solid 1px #515151;
+}
+.sbHolderDisabled .sbHolder{
+}
+.sbHolderDisabled .sbToggle{
+}
+.sbOptions{
+	background-color: #fff;
+	border: solid 1px #b1b1b1;
+	border-top: 1px solid #B8B8B8;
+    border-bottom: 1px solid #444;
+    border-right: 1px solid #444;
+    -webkit-box-shadow: 5px 5px 5px rgba(0,0,0,0.2);
+    -moz-box-shadow: 5px 5px 5px rgba(0,0,0,0.2);
+    box-shadow: 5px 5px 5px rgba(0,0,0,0.2);
+	list-style: none;
+	left: -1px;
+	margin: 0;
+	padding: 0;
+	position: absolute;
+	top: 33px !important;
+	width: 100%;
+	z-index: 1;
+	overflow-y: auto;
+}
+.sbOptions li{
+	padding: 0;
+}
+.sbOptions li a{
+	padding: 0 10px;
+}
+.sbOptions a{
+	display: block;
+	outline: none;
+	padding: 0;
+}
+.sbOptions a:link, .sbOptions a:visited{
+	color: #707070;
+	text-decoration: none;
+}
+.sbOptions a:hover,
+.sbOptions a:focus,
+.sbOptions a.sbFocus{
+	background: #3a76d0;
+	color: #fff;
+}
+.sbOptions li.last a{
+	border-bottom: none;
+}
+.sbOptions .sbDisabled{
+	border-bottom: dotted 1px #515151;
+	color: #999;
+	display: block;
+	padding: 7px 0 7px 3px;
+}
+.sbOptions .sbGroup{
+	color: #707070;
+	display: block;
+	font-style: italic;
+	font-weight: bold;
+	padding: 7px 0 7px 3px;
+}
+.sbOptions .sbSub{
+	padding-left: 17px;
+}
+
+/*Selectbox in language dropdown*/
+#block-lang-dropdown-language .sbHolder{
+  background-color: transparent;	
+  border: 0 none;
+  height: auto;
+  color: #9FA09F;
+  margin-top: -17px;
+	padding-right: 0;
+}
+#block-lang-dropdown-language .sbToggle{
+	background: url(../img/bg-language-arrow.png) no-repeat right 8px transparent;
+	display: block;
+  height: 17px;
+  width: 17px;
+}
+#block-lang-dropdown-language .sbSelector{
+	color: #9FA09F;
+	font-size: 1.2rem;
+	height: 17px;
+	line-height: 17px;
+	overflow: visible;
+	padding-right: 0;
+    position: relative;
+    text-indent: 0;
+}
+#block-lang-dropdown-language .sbOptions{
+	-webkit-box-shadow: 1px 1px 0 rgba(0,0,0,0.3);
+    -moz-box-shadow: 1px 1px 0 rgba(0,0,0,0.3);
+    box-shadow: 1px 1px 0 rgba(0,0,0,0.3);
+	left: 0;
+	top: 20px !important;
+	overflow-y: hidden;
+}
+#block-lang-dropdown-language .sbOptions a{
+	font-size: 1.2rem;
+}
+#block-lang-dropdown-language .sbOptions a:link, #block-lang-dropdown-language .sbOptions a:visited{
+	color: #9FA09F;
+	padding-right: 5px;
+	text-decoration: none;
+}
+#block-lang-dropdown-language .sbOptions a:hover,
+#block-lang-dropdown-language .sbOptions a:focus,
+#block-lang-dropdown-language .sbOptions a.sbFocus{
+	background: #3a76d0;
+	color: #fff;
+}
+#block-lang-dropdown-language .sbOptions li a{
+	color: #9FA09F;
+	height: auto;
+	padding: 1px 3px;
+}

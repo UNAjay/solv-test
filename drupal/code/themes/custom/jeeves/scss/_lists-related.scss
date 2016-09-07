@@ -1,0 +1,200 @@
+//-----------------------------------------
+// lists
+//-----------------------------------------
+.main-primary {
+	.description-container {
+		p,
+		h3 {
+			padding-left: 0;
+			padding-right: 0;
+		}
+	}
+}
+.apps,
+.partners,
+.main-primary .stories,
+.industries,
+.success-stories,
+.clients,
+.blog-list-view,
+.page-blogs,
+.videos,
+.view-videos {
+  .view-filters {
+    margin-bottom: 30px;
+  }
+  .view-content {
+    padding: 0;
+  }
+	.views-row {
+    float: left;
+    margin-top: 10px;
+		margin-bottom: 20px;
+	}
+  .views-row-last {
+    margin-bottom: 0;
+  }
+	// todo: create general class
+  .image,
+  .picture,
+  .logo,
+  .video {
+    float: left;
+		padding: 0 15px;
+    @include span-columns(16,16);
+
+    @include at-breakpoint($first) {
+      padding: 0 7px 0 0;
+      @include span-columns(8,16);
+			margin-right: 0;
+    }
+    @include at-breakpoint($second) {
+      @include span-columns(6,16);
+			margin-right: 0;
+    }
+
+    img {
+      width: 100%;
+      height: auto;
+    }
+  }
+  // container for list item title, body, link
+	.description-container {
+		padding: 0 15px;
+		@include full-width;
+		
+		@include at-breakpoint($first) {
+			padding: 0;
+    }
+	  @include at-breakpoint($second) {
+			padding: 0;
+		}
+	}
+	.image + .description-container,
+	.views-field-field-image + .description-container,
+	.video + .description-container,
+	.picture + .description-container,
+	.logo + .description-container { 
+		@include span-columns(16,16);
+		
+		@include at-breakpoint($first) {
+			 @include span-columns(8 omega,16);
+    }
+	  @include at-breakpoint($second) {
+			 @include span-columns(10 omega,16);
+		}
+	}
+  .description,
+  .body,
+  .story {
+    @include at-breakpoint($first) {
+      border-top: 1px dotted #B6B6B6;
+      margin-top: 10px;
+      padding-top: 10px;
+    }
+  }
+}
+
+.resources-videos-listing {
+  .videos {
+    margin-top: 0;
+  }
+  .views-row {
+    width: 100%;
+  }
+}
+.apps,
+.partners,
+.main-primary .stories,
+.industries,
+.success-stories,
+.clients,
+.blog-list-view,
+.page-blogs,
+.videos {
+  .title,
+  .title-field {
+    color: $jeevesRed;
+    padding: 15px 0 10px;
+    @include font-size(20);
+
+    @include at-breakpoint($first) {
+      padding: 10px 0;
+    }
+  }
+}
+.industries,
+.customers,
+.clients,
+.apps,
+.videos,
+.partners,
+.main-primary .stories {
+  margin-top: 30px;
+  @include full-width;
+}
+
+//-----------------------------------------
+// related lists
+//-----------------------------------------
+.clients,
+.apps,
+.videos,
+.vertical,
+.partners,
+.main-primary .stories {
+  .field-label {
+    @extend h3;
+  }
+  .node-teaser {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    @include full-width;
+  }
+  h2 {
+    display: none;
+  }
+}
+.apps {
+  .links {
+    padding: 0 15px;
+    @include span-columns(16,16);
+
+    @include at-breakpoint($first) {
+      padding: 0;
+      @include span-columns(8 omega,16);
+    }
+    @include at-breakpoint($second) {
+      @include span-columns(10 omega,16);
+    }
+  }
+}
+
+.clients {
+	.links {
+		padding: 0 15px;
+		margin-left: 0;
+	  @include full-width;
+		
+    @include at-breakpoint($first) {
+			padding: 0;
+			margin-left: 0;
+		}
+    @include at-breakpoint($second) {
+			padding: 0;
+			margin-left: 0;
+		}
+  }
+	.image + .description-container + .links {
+		@include full-width;
+		
+    @include at-breakpoint($first) {
+			padding: 0 0 0 49.004%;
+			margin-left: 1.99203%;
+		}
+    @include at-breakpoint($second) {
+			padding: 0 0 0 36.255%;
+			margin-left: 1.99203%;
+		}
+	}
+}

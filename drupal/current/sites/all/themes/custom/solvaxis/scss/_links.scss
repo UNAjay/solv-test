@@ -1,0 +1,246 @@
+//
+// Link styles
+// =============================================================================
+
+a {
+  color: $link-color;
+  //text-decoration: none;
+
+  &:hover,
+  &:active,
+  &:focus {
+    color: $link-color-hover;
+    text-decoration: underline;
+
+    &.icon {
+      text-decoration: none;
+    }
+  }
+  &:focus {
+    outline: none;
+  }
+  :visited {
+    color: $link-color-hover;
+  }
+  
+  // Call to action buttons
+  &.call-to-action {
+    border: 1px solid $black;
+    color: $black;
+    display: inline-block;
+    float: left;
+    font-size: 15px;
+    line-height: 20px;
+    font-weight: 300;
+    margin-bottom: 10px;
+    height: auto;
+    width: 100%;
+    max-width: 320px;
+    position: relative;
+    padding: 14px 10px 14px 70px;
+    text-decoration: none;
+    overflow: hidden;
+    &:before {
+      display: block;
+      content: "";
+      width: 48px;
+      height: 48px;
+      background-image: url('../images/call-to-action1.png');
+      background-repeat: no-repeat;
+      background-size: 480px 96px;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    // Call to action buttons on dark background
+    .section_dark & {
+      border: 1px solid $white;
+      color: $white;
+    }
+    &:hover {
+      background-color: $crimson;
+      border: 1px solid $crimson;
+      color: $white;
+    }
+    &:active,
+    &:focus {
+      background-color: $crimson-darker;
+      border: 1px solid $crimson-darker;
+      color: $white;
+    }
+    
+    &.download-pdf {
+      &:before {
+        background-position: -96px 0;
+      }
+      &:hover,
+      &:active,
+      &:focus {
+        &:before {
+          background-position: -96px -48px;
+        }
+      }
+    }
+    
+    &.fill-form {
+      &:before {
+        background-position: 0 0;
+      }
+      &:hover,
+      &:active,
+      &:focus {
+        &:before {
+          background-position: 0 -48px;
+        }
+      }
+    }
+    
+    &.go-to-link {
+      &:before {
+        background-position: -48px 0;
+      }
+      &:hover,
+      &:active,
+      &:focus {
+        &:before {
+          background-position: -48px -48px;
+        }
+      }
+    }
+    
+    &.more-details {
+      &:before {
+        background-position: -144px 0;
+      }
+      &:hover,
+      &:active,
+      &:focus {
+        &:before {
+          background-position: -144px -48px;
+        }
+      }
+    }
+    
+    &.read-more {
+      &:before {
+        background-position: -192px 0;
+      }
+      &:hover,
+      &:active,
+      &:focus {
+        &:before {
+          background-position: -192px -48px;
+        }
+      }
+    }
+    
+    &.tips-tricks {
+      &:before {
+        background-position: -240px 0;
+      }
+      &:hover,
+      &:active,
+      &:focus {
+        &:before {
+          background-position: -240px -48px;
+        }
+      }
+    }
+    
+    &.attached {
+      &:before {
+        background-position: -288px 0;
+      }
+      &:hover,
+      &:active,
+      &:focus {
+        &:before {
+          background-position: -288px -48px;
+        }
+      }
+    }
+    
+    &.rss-feed {
+      &:before {
+        background-position: -336px 0;
+      }
+      &:hover,
+      &:active,
+      &:focus {
+        &:before {
+          background-position: -336px -48px;
+        }
+      }
+    }
+    
+    &.email {
+      &:before {
+        background-position: -384px 0;
+      }
+      &:hover,
+      &:active,
+      &:focus {
+        &:before {
+          background-position: -384px -48px;
+        }
+      }
+    }
+    
+    &.phone {
+      &:before {
+        background-position: -432px 0;
+      }
+      &:hover,
+      &:active,
+      &:focus {
+        &:before {
+          background-position: -432px -48px;
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
+  a {
+    &.call-to-action {
+      &:before  {
+        /* Reference the @2x Sprite */
+  			background-image: url('../images/call-to-action1@2x.png');
+        /* Translate the @2x sprite's dimensions back to 1x */
+        background-size: 480px 96px;
+  		}
+    }
+  }
+}
+
+.more-link {
+  clear: both;
+  text-align: center;
+  padding: 20px 0 0;
+  a {
+    color: $white;
+    &:hover,
+    &:active,
+    &:focus {
+      color: $gray;
+      text-decoration: none;
+    }  
+  }
+  .view-mode-section_light & {
+    a {
+      color: $gray;
+    }
+  }
+}
+
+// Links within paragraphs
+p a {
+  color: $link-color;
+}
+
+.block-floatbar {
+  @include at-breakpoint($bp-xl) {
+    top: 267px !important;
+  }
+}

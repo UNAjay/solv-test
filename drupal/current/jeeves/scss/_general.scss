@@ -1,0 +1,534 @@
+// apply box-sizing everywhere for continuity
+* {
+  @include box-sizing(border-box);
+}
+
+html,
+body {
+  height: 100%;
+}
+
+html {
+  background: #4C4C4C;
+}
+
+body {
+  @include font-size(14);
+}
+
+//-----------------------------------------
+// general elements
+//-----------------------------------------
+.element-invisible,
+.skip-link {
+  display: none;
+}
+
+#page {
+  background-size: 100% auto;
+  background-repeat: no-repeat;
+  background-position: 0 67px;
+  min-width: 320px;
+  min-height: 100%;
+  position: relative;
+
+  @include at-breakpoint($first) {
+    background-size: cover;
+    background-position: center center;
+  }
+  @include at-breakpoint($second) {
+    padding-top: 20px;
+  }
+}
+.not-front #page {
+  @include at-breakpoint(0 $first - 1) {
+    background-image: none !important;
+  }
+}
+
+.region-holder {
+  @include container;
+	margin: 0 auto;
+	max-width: 1004px;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+#content {
+  padding-bottom: $footerHeightMobile;
+
+  @include at-breakpoint($first) {
+    margin-top: 60px;
+    margin-right: 10px;
+    margin-left: 10px;
+    padding-bottom: $footerHeightMobile + 30px;
+  }
+	@include at-breakpoint($third) {
+    padding-bottom: $footerHeightDesktop + 30px;
+	}
+}
+
+.region-content {
+  background: #fff;
+	padding: 20px 0;
+  @include full-width;
+
+  @include at-breakpoint($first) {
+    padding: 30px 20px;
+  }
+}
+
+.main-primary {
+  h1 {
+    color: $jeevesRed;
+    padding: 0 15px 15px;
+    @include font-size(36, 40);
+    @include full-width;
+
+    @include at-breakpoint($first) {
+      padding: 0 0 25px;
+      @include font-size(42);
+    }
+  }
+  h2 {
+    color: $jeevesRed;
+    padding: 10px 15px 6px;
+    @include font-size(24);
+    @include full-width;
+
+    @include at-breakpoint($first) {
+      padding: 10px 0 6px;
+    }
+  }
+  h3 {
+    color: #707070;
+    padding: 10px 15px 6px;
+    @include font-size(24);
+    @include full-width;
+
+    @include at-breakpoint($first) {
+      padding: 10px 0 6px;
+    }
+  }
+  p {
+    color: $paragraphColor;
+    padding: 0 15px 15px;
+    @include full-width;
+
+    @include at-breakpoint($first) {
+      padding: 0 0 15px;
+    }
+  }
+  a {
+    color: $jeevesRed;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+  .body {
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+  }
+	.field {
+		margin: 0 0 15px 15px;
+    @include at-breakpoint($first) {
+      margin: 0 0 15px 0;
+    }
+	}
+	.title-field {
+		margin: 0 0 15px 0;
+	}
+}
+
+//-----------------------------------------
+// list style
+//-----------------------------------------
+.body,
+.description-field {
+	ul {
+	  padding: 10px 15px 20px;
+	  @include full-width;
+
+	  @include at-breakpoint($first) {
+	    padding-right: 0;
+	    padding-left: 0;
+	  }
+		li {
+	    color: $paragraphColor;
+	    margin-bottom: 10px;
+	    padding-left: 17px;
+	    @include full-width;
+
+	    &.has-children {
+	      margin-bottom: 0;
+	    }
+	  }
+	  // first level
+	  > li {
+	    background: url('../images/icon-key-feature.png') no-repeat left 5px;
+	  }
+	  > li > ul {
+	    margin-top: 10px;
+	    @include full-width;
+	  }
+	  // second level
+	  > li > ul > li {
+	    background: none;
+			width: 100%;
+	    text-indent: -5px;
+
+	    &:before {
+	      content: '-';
+	      left: -5px;
+	      position: relative;
+	    }
+	  }
+	}
+	ol {
+	  padding: 10px 15px 20px;
+	  @include full-width;
+
+	  @include at-breakpoint($first) {
+	    padding-right: 0;
+	    padding-left: 0;
+	  }
+
+	  li {
+			margin-left: 20px;
+			margin-bottom: 10px;
+			list-style: decimal;
+		}
+	}
+}
+//list in main primary
+.main-primary {
+	> ul {
+	  padding: 10px 15px 20px;
+	  @include full-width;
+
+	  @include at-breakpoint($first) {
+	    padding-right: 0;
+	    padding-left: 0;
+	  }
+		li {
+	    color: $paragraphColor;
+	    margin-bottom: 10px;
+	    padding-left: 17px;
+	    @include full-width;
+
+	    &.has-children {
+	      margin-bottom: 0;
+	    }
+	  }
+	  // first level
+	  > li {
+	    background: url('../images/icon-key-feature.png') no-repeat left 5px;
+	  }
+	  > li > ul {
+	    margin-top: 10px;
+	    @include full-width;
+	  }
+	  // second level
+	  > li > ul > li {
+	    background: none;
+			width: 100%;
+	    text-indent: -5px;
+
+	    &:before {
+	      content: '-';
+	      left: -5px;
+	      position: relative;
+	    }
+	  }
+	}
+	> ol {
+	  padding: 10px 15px 20px;
+	  @include full-width;
+
+	  @include at-breakpoint($first) {
+	    padding-right: 0;
+	    padding-left: 0;
+	  }
+
+	  li {
+			margin-left: 20px;
+			margin-bottom: 10px;
+			list-style: decimal;
+		}
+	}
+}
+
+.media-vimeo-outer-wrapper {
+  float: left;
+  max-width: 100%;
+  margin-bottom: 15px;
+  padding: 0 15px;
+
+  @include at-breakpoint($first) {
+    padding: 0;
+  }
+
+  embed {
+    max-width: 100%;
+  }
+}
+
+.promo-text {
+  @include font-size(20, 25);
+}
+
+//-----------------------------------------
+// breadcrumbs
+//-----------------------------------------
+.breadcrumb {
+  display: none;
+
+  @include at-breakpoint($first) {
+    display: block;
+    height: 37px;
+    margin-bottom: 7px;
+    color: #fff;
+    @include full-width;
+  }
+
+  a {
+    display: block;
+    float: left;
+    color: #fff;
+    margin-right: 5px;
+  }
+  a,
+  .current {
+    background: url('../images/bg-breadcrumb.png') repeat-x;
+    padding: 10px 12px;
+  }
+  .home-icon {
+    background: url('../images/icon-home.png') no-repeat center center #006690;
+    width: 37px;
+    height: 100%;
+    margin-right: 0;
+  }
+  .home-text {
+    background: url('../images/bg-breadcrumb-first.png') repeat-x transparent;
+  }
+  .current {
+    float: left;
+    padding-right: 0;
+		position: relative;
+
+    span {
+      background: url('../images/bg-breadcrumb-end.png') no-repeat;
+      display: block;
+      width: 20px;
+      height: 37px;
+      position: absolute;
+			top: 0;
+			right: -20px;
+    }
+  }
+}
+
+//-----------------------------------------
+// key features
+//-----------------------------------------
+.key_features {
+  padding: 10px 15px 20px;
+  @include full-width;
+
+  @include at-breakpoint($first) {
+    padding-right: 0;
+    padding-left: 0;
+  }
+
+  li {
+    color: $paragraphColor;
+    margin-bottom: 10px;
+    padding-left: 17px;
+    @include full-width;
+
+    &.has-children {
+      margin-bottom: 0;
+    }
+  }
+  // first level
+  > li {
+    background: url('../images/icon-key-feature.png') no-repeat left 5px;
+  }
+  > li > ul {
+    margin-top: 10px;
+    @include full-width;
+  }
+  // second level
+  > li > ul > li {
+    width: 100%;
+    text-indent: -5px;
+
+    &:before {
+      content: '-';
+      left: -5px;
+      position: relative;
+    }
+  }
+}
+
+// fix for touchdevices
+.aside-primary {
+  position: relative;
+  overflow: hidden;
+}
+
+//-----------------------------------------
+// view filters
+//-----------------------------------------
+.view-filters {
+  background: #E2EFF4;
+  clear: both;
+  padding: 15px;
+  @include full-width;
+
+  label {
+    display: none;
+  }
+	// Custom selects in filter 
+	.sbSelector {
+		white-space: nowrap; 
+		max-width: 80%; 
+		overflow: hidden;
+		text-overflow: ellipsis; 
+	}
+}
+.views-exposed-widget {
+  @include at-breakpoint($second) {
+    float: left;
+  }
+}
+.view-content {
+  padding-top: 5px;
+
+  @include at-breakpoint($first) {
+    padding: 0;
+  }
+}
+
+//-----------------------------------------
+// login page
+//-----------------------------------------
+.page-user {
+  .form-item {
+    margin-bottom: 10px;
+  }
+}
+
+//-----------------------------------------
+// lightbox
+//-----------------------------------------
+#colorbox {
+  h2 {
+    padding-bottom: 15px;
+    @include font-size(30);
+  }
+  .form-item {
+    margin-bottom: 10px;
+    @include full-width;
+  }
+  label {
+    @extend %custom-field-label;
+  }
+  input[type="text"],
+  input[type="email"],
+  textarea {
+    width: 100%;
+    @extend %textfield-textarea;
+  }
+  textarea {
+    // width: inherit;
+    float: left;
+  }
+}
+
+/* =====================================
+	Table
+	====================================== */
+
+table {
+	@include full-width;
+	
+	@include at-breakpoint($second) {
+  	width: 468px;
+  }
+	
+	td,
+	th {
+		padding: 10px;
+		//vertical-align: middle;
+		
+		@include at-breakpoint($first) {
+	  	padding: 10px 10px 10px 0;
+	  }
+	}
+	p { padding: 0 !important; }
+	
+	thead {
+		border-bottom: 1px solid #555;
+	}
+	tbody {
+		td {
+			border-top: 1px dotted #B6B6B6;
+			border-bottom: 1px dotted #B6B6B6;
+		}
+	}
+}
+
+/* =====================================
+	Customers
+	====================================== */
+
+.view.customers-list {
+	.views-row {
+		float: left;
+		width: 100%;
+		margin: 0;
+		padding: 30px 10px;
+		text-align: center;
+	}
+}
+
+@include at-breakpoint($first) {
+  .view.customers-list {
+  	margin-top: 0;
+		.views-row {
+			width: 50%;
+			margin: 0;
+			padding: 10px;
+			height: 200px;
+			display: table;
+			text-align: center;
+			a { display: inline-block; }
+			.wrapper {
+				display: table-cell;
+				vertical-align: middle;
+				img {
+					display: inline-block;
+					max-width: 100%;
+					height: auto;
+				}
+			}
+		}
+  }
+}
+
+/* =====================================
+	Customers Success stories
+	====================================== */
+
+.view.customers.success-stories {
+	.views-row {
+		width: 100%;
+		.image {
+			@include span-columns(6,16);
+		}
+	}
+}

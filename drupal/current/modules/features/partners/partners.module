@@ -1,0 +1,72 @@
+<?php
+/**
+ * @file
+ * Code for the Partners feature.
+ */
+
+include_once 'partners.features.inc';
+
+/**
+ * Implements hook_field_formatter_info().
+ */
+function partners_field_formatter_info() {
+  return array(
+    'partners_badge_display_formatter' => array(
+      'label' => t('Jeeves ERP badge display'),
+      'description' => t('Display field as Jeeves ERP badge'),
+      'field types' => array('list_text', 'taxonomy_term_reference'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_field_formatter_view().
+ */
+function partners_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
+
+  $element = $values = array();
+
+  // let's fetch allowed values as icons filenames if it's a list_text field
+  if ($field['type'] == 'list_text') {
+
+    // load allowed values for this field, we want to scrape textual names from it
+    $allowed_values = list_allowed_values($field, $instance, $entity_type, $entity);
+
+    // push field values into array
+    foreach ($items as $item) {
+      $item_value = check_plain($item['value']);
+      $image = '<img src="' . base_path().drupal_get_path('module', 'partners') . '/badges/badge.' . $item_value . '.png" alt="'. $allowed_values[$item_value].'" title="'. $allowed_values[$item_value].'">';
+
+      $values[] = array('class' => array('badge-'.$item_value), $image);
+    }
+
+  }
+
+  elseif ($field['type'] == 'taxonomy_term_reference') {
+
+    // push field values into array
+    foreach ($items as $item) {
+      if (isset($item['tid'])) {
+        $term = taxonomy_term_load($item['tid']);
+        if(is_object($term)) {
+
+          // logo image URL
+          $product_logo = field_get_items('taxonomy_term', $term, 'field_product_logo');
+
+          // if image url set
+          if (isset($product_logo[0]['uri'])) {
+
+            $values[] = theme('image_style', array('style_name' => 'partner_badge', 'path' => $product_logo[0]['uri']));
+          }
+        }
+      }
+    }
+  }
+
+  // generate ul element from the list
+  if(sizeof($items) > 0) {
+    $element[0]['#markup'] = theme_item_list(array('items' => $values, 'type' => 'ul', 'attributes' => array('class' => 'badges')));
+  }
+
+  return $element;
+}

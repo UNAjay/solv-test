@@ -1,0 +1,27 @@
+//-----------------------------------------
+// breadcrumbs
+//-----------------------------------------
+.breadcrumb {
+  a,
+  .current {
+    background: url('../images/bg-breadcrumb.png') repeat-x;
+  }
+  .home-icon {
+    background-color: #46725c;
+  }
+  .home-text {
+    background: url('../images/bg-breadcrumb-first.png') repeat-x transparent;
+  }
+  .current {
+		span {
+      background: url('../images/bg-breadcrumb-end.png') no-repeat;
+    }
+  }
+}
+
+//-----------------------------------------
+// view filters
+//-----------------------------------------
+.view-filters {
+  background: #e0ece7;
+}

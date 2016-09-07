@@ -1,0 +1,220 @@
+// .not-front {
+//   #block-system-main .region-holder,
+//   #block-system-main > .content {
+//     padding: 0 35px;
+//     @include at-breakpoint($bp-xl) {
+//       padding: 0;
+//     }
+//   }
+//   #block-system-main > .content .region-holder {
+//     padding: 0;
+//   }
+// }
+
+.group-right {
+  .field-sidebar-text {
+    p {
+      &:first-child {
+        margin-top: 0;
+      }
+    }
+    .field-item {
+     // background: pink;
+      float: left;
+      width: 100%;
+    }
+  }
+}
+
+.not-front {
+  .node {
+      h2:not(.section-title), 
+      h3:not(.section-title), 
+      h5:not(.section-title) {
+        font-size: 15px;
+        font-weight: normal;
+        text-transform: uppercase;
+        line-height: normal;
+        padding: 0;
+        margin-bottom: 13px;
+        clear: both;
+      }
+      .group-left {
+        h5 {
+          border-bottom: 1px solid transparent;
+          margin-bottom: 7px;
+          padding: 0 0 6px 20px;
+          position: relative;
+          cursor: pointer;
+          &:before {
+            display: block;
+            content: "";
+            position: absolute;
+            left:0;
+            top: 4px;
+            width: 11px;
+            height: 11px;
+            background: url('../images/sprite.png') no-repeat;
+            background-size: 120px 51px;
+            background-position: -11px -40px;
+          }
+          @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
+            &:before {
+              /* Reference the @2x Sprite */
+        			background-image: url('../images/sprite@2x.png');
+              /* Translate the @2x sprite's dimensions back to 1x */
+              background-size: 120px 51px;
+            }
+          }
+
+          &.collapsed {
+            border-bottom: 1px solid $gray-light;
+            &:before {
+              background-position: 0 -40px;
+            }
+          }
+
+          &:hover {
+            color: $crimson;
+          }
+        }
+        
+      }
+      .group-right {
+        h2, h3, h5 {
+          margin-top: -4px;
+        }
+        p + h2,
+        p + h3,
+        p + h5 {
+          margin-top: 12px;
+        }
+      }
+  
+      .content-wrap {
+        float: left;
+        clear: both;
+        width: 100%;
+        p {
+          &:first-child {
+            margin-top: 0;
+          }
+        }
+      }
+    }
+  }
+
+// Blogs
+.block-tagclouds h2 {
+  font-size: 20px;
+  font-weight: 300;
+  text-transform: uppercase;
+}
+
+.field-tags {
+  margin-bottom: 20px;
+  .field-label {
+    float: left;
+  }
+}
+
+.this {
+  display: inline-block;
+  clear: both;
+  margin-top: 25px;
+  @include at-breakpoint($bp-med-2) {
+    margin-top: 70px;
+  }
+}
+
+
+.page-user {
+  #block-system-main {
+    .form-item {
+      margin-bottom: 20px;
+    }
+  }
+}
+
+//-----------------------------------------
+// Flippy pager - previous/next
+//-----------------------------------------
+// mobile
+.region-content ul.flippy {
+  padding: 0;
+  margin: 30px 0 0;
+  li {
+    position: relative;
+    color: $crimson;
+    padding: 0;
+    a {
+      font-size: 0;
+      min-width: 38px;
+      &:before {
+        content: '\e807';
+        font-family: 'solvaxis-icn';
+        font-size: 18px;
+        font-weight: normal;
+      }
+    }
+    // previous
+    &.prev {
+      float: left;
+      .button {
+        padding: 6px 0;
+        &:before {
+          float: left;
+          margin: 0 0 0 12px;
+        }
+      }
+    }
+    // next
+    &.next {
+      float: right;
+      .button {
+        padding: 6px 0;
+        &:before {
+          content: '\e808';
+          float: right;
+          margin: 0 12px 0 0;
+        }
+      }
+    }
+  }
+  // tablet, desktop
+  @include at-breakpoint($bp-med-2) {
+    margin: 60px 0 0;
+    li {
+      a {
+        @include font-size(14);
+        min-width: 190px;
+      }
+      // previous
+      &.prev {
+        .button {
+          padding: 6px 22px 6px 35px;
+          &:before {
+            margin: 0 20px 0 -20px;
+          }
+        }
+      }
+      // next
+      &.next {
+        .button {
+          padding: 6px 35px 6px 22px;
+          &:before {
+            margin: 0 -20px 0 20px;
+          }
+        }
+      }
+    }
+  }
+}
+.region-content .group-footer ul.flippy {
+  @include container;
+	margin: 20px auto 80px;
+	max-width: 1000px;
+  li {
+    list-style-type: none;
+  }
+}

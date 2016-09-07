@@ -1,0 +1,33 @@
+//-----------------------------------------
+// layouts
+//-----------------------------------------
+// add min-height on all regions to keep them from collapsing when empty
+.aside-primary,
+.main-primary {
+  min-height: 1px;
+}
+
+// eleven-five
+.eleven-five {
+  .main-primary {
+    @include span-columns(16 omega,16);
+
+    @include at-breakpoint($first) {
+      @include span-columns(11,16);
+    }
+  }
+  .aside-primary {
+    @include span-columns(16 omega,16);
+
+    @include at-breakpoint($first) {
+      @include span-columns(5 omega,16);
+    }
+  }
+}
+
+// sixteen
+.sixteen {
+  .main-primary {
+    @include span-columns(16 omega,16);
+  }
+}

@@ -1,0 +1,107 @@
+// reset search-module css
+.search-results {
+	.search-snippet-info {
+		padding: 0;
+	}
+	li {
+		margin: 0;
+	}
+}
+
+//-----------------------------------------
+// filter
+//-----------------------------------------
+.pane-apachesolr-form,
+.pane-apachesolr-info {
+  @include full-width;
+}
+.pane-apachesolr-form {
+  @extend .view-filters;
+
+  input[type="text"] {
+  	margin-bottom: 10px;
+  	@include full-width;
+
+	  @include at-breakpoint($first) {
+    	width: 50%;
+    	margin-bottom: 0;
+	  }
+  }
+}
+.pane-apachesolr-info {
+	padding: 10px 15px 0;
+
+  @include at-breakpoint($first) {
+		padding: 10px 0 0;
+  }
+}
+
+//-----------------------------------------
+// results
+//-----------------------------------------
+.pane-apachesolr-result {
+	margin-top: 30px;
+  @include full-width;
+
+	h2 {
+		padding-bottom: 10px;
+	}
+	.title {
+		font-weight: 600;
+	}
+	ul {
+		padding: 0 15px;
+	  @include full-width;
+
+	  @include at-breakpoint($first) {
+	    padding: 0;
+	  }
+	}
+}
+
+//-----------------------------------------
+// facets
+//-----------------------------------------
+.search-facet {
+	.item-list {
+		padding: 0 15px;
+
+	  @include at-breakpoint($first) {
+			padding: 0 15px 15px;
+	  }
+	}
+	li {
+		margin-bottom: 5px;
+	}
+	a {
+		color: #707070;
+	}
+}
+
+.main-primary {
+	.search-facet {
+		margin-top: 30px;
+	  @include full-width;
+
+	  @include at-breakpoint($first) {
+	  	display: none;
+	  }
+
+	  h2 {
+		  @include at-breakpoint(0 $first - 1) {
+		  	padding-bottom: 5px;
+		  	font-weight: 600;
+  			@include font-size(14);
+		  }
+	  }
+	}
+}
+.aside-primary {
+	.search-facet {
+		display: none;
+
+	  @include at-breakpoint($first) {
+	  	display: block;
+	  }
+	}
+}

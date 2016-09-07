@@ -1,0 +1,57 @@
+<?php
+/**
+ * @file
+ * Code for the Jeeves Search feature.
+ */
+
+include_once 'jeeves_search.features.inc';
+
+
+/*
+  hook_form_alter
+  add placeholder tag to form
+*/
+function jeeves_search_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 'search_block_form') {
+    // HTML5 placeholder attribute
+    $form['search_block_form']['#attributes']['placeholder'] = t('Search');
+
+    // redirect to our custom search page
+    $form['actions']['submit']['#submit'][] = 'jeeves_search_form_redirect';
+  }
+
+  if ($form_id == 'search_api_page_search_form_search_page') {
+    // $form['keys_1']['#attributes']['placeholder'] = t('Search');
+
+    // redirect to our custom search page
+    $form['#submit'][] = 'jeeves_search_form_redirect';
+  }
+}
+
+/*
+  custom handler for search block submit action
+*/
+function jeeves_search_form_redirect($form, &$form_state) {
+  unset($_REQUEST['destination']);
+  unset($form['#redirect']);
+
+  $keys = isset($form_state['input']['search_block_form']) ? $form_state['input']['search_block_form'] : $form_state['input']['keys_1'];
+
+  $form_state['redirect'] = 'search/pages/' . trim($keys);
+}
+
+function jeeves_search_block_view_alter(&$data, $block) {
+  if ($block->module == 'search_api_page') {
+    $page = search_api_page_load($block->delta);
+    $item = menu_get_item();
+    // if ($page->path == $item['path']) {
+    if ($item['path'] == 'search/pages') {
+      // $keys = arg(count(arg(NULL, $page->path)));
+      $keys = arg(count(arg(NULL, 'search/pages')));
+      if ($keys && $keys != 'all') {
+        $data['content']['keys_' . $page->id]['#default_value'] = $keys;
+        $data['content']['keys_' . $page->id]['#value'] = $keys;
+      }
+    }
+  }
+}

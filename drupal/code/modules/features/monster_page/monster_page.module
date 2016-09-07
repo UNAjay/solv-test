@@ -1,0 +1,451 @@
+<?php
+/**
+ * @file
+ * Code for the Monster Page feature.
+ */
+
+include_once 'monster_page.features.inc';
+include_once 'monster_page.embed.inc';
+
+
+function monster_page_menu(){
+  $items = array();
+
+  $items['admin/config/monster_page'] = array(
+    'title' => 'Monster page settings',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('monster_page_admin'),
+    'access arguments' => array('administer site configuration'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+  return $items;
+}
+
+
+/**
+ * Function to create settings form for each menu item
+ * @return type
+ */
+function monster_page_admin() {
+  $form = array();
+
+  $form['monster_page_footer_sections'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Footer sections'),
+    '#default_value' => variable_get('monster_page_footer_sections', '')
+  );
+
+  return system_settings_form($form);
+}
+
+
+/**
+ * Process variables for node.tpl.php.
+ */
+function monster_page_preprocess_node(&$variables) {
+  $variables['view_mode'] = $variables['elements']['#view_mode'];
+  $view_mode = $variables['elements']['#view_mode'];
+  $entity_type = $variables['elements']['#entity_type'];
+  $node = $variables['elements']['#node'];
+
+  if ($entity_type == 'node') {
+    $variables['classes_array'][] = $view_mode;
+
+    if ($node->type == 'section') {
+
+      $variables['classes_array'][] = drupal_html_class('node-' . $node->nid);
+
+      $sidebar = field_get_items($entity_type, $node, 'field_sidebar_text');
+      $acton = field_get_items($entity_type, $node, 'field_acton_url');
+      $sidebar_position = field_get_items($entity_type, $node, 'field_sidebar_position');
+      if ($sidebar || $acton) {
+        $variables['classes_array'][] = drupal_html_class('with-sidebar');
+        if ($sidebar_position && $sidebar_position[0]['value'] == 'right') {
+          $variables['elements']['#groups']['group_sidebar']->weight = 1;
+          $variables['content']['group_sidebar']['#weight'] = 1;
+          $variables['elements']['body']['#weight'] = 2;
+          $variables['content']['body']['#weight'] = 2;
+          $variables['classes_array'][] = drupal_html_class('sidebar-position-right');
+        }
+      }
+      $banner_style = field_get_items($entity_type, $node, 'field_banner_style');
+      if ($banner_style) {
+        $variables['classes_array'][] = drupal_html_class('banner-style-' . $banner_style[0]['value']);
+      }
+      $banner_position = field_get_items($entity_type, $node, 'field_banner_position');
+      if ($banner_position && isset($banner_position[0]['value'])) {
+        $variables['classes_array'][] = drupal_html_class('banner-position-' . $banner_position[0]['value']);
+        if ($banner_position[0]['value'] == 'top') {
+          $variables['content']['group_banner']['#weight'] = -20;
+
+        }
+      }
+
+      $transparent = field_get_items($entity_type, $node, 'field_background_transparent');
+      if ($transparent && $transparent[0]['value'] == '1') {
+        $variables['classes_array'][] = drupal_html_class('transparent');
+      }
+
+      $full_width = field_get_items($entity_type, $node, 'field_full_width');
+      if (!$full_width || empty($full_width) || $full_width[0]['value'] == '0') {
+        $variables['classes_array'][] = drupal_html_class('with-sidebar');
+      }
+
+      $show_social = field_get_items($entity_type, $node, 'field_show_social_icons');
+      if ($show_social && $show_social[0]['value'] == '1') {
+        $variables['content']['field_add_this']['#access'] = TRUE;
+      }
+      else {
+        $variables['content']['field_add_this']['#access'] = FALSE;
+      }
+    }
+
+    // All nodes
+    $banner_style = field_get_items($entity_type, $node, 'field_banner_style');
+    if ($banner_style && isset($banner_style[0]['value'])) {
+      $variables['classes_array'][] = drupal_html_class('banner-style-' . $banner_style[0]['value']);
+    }
+    $banner_position = field_get_items($entity_type, $node, 'field_banner_position');
+    if ($banner_position && isset($banner_position[0]['value'])) {
+      $variables['classes_array'][] = drupal_html_class('banner-position-' . $banner_position[0]['value']);
+    }
+
+  }
+
+}
+
+/**
+ * Alter layouts found by Display Suite.
+ *
+ * @param $layouts
+ *   A array of layouts which keys are the layout and which values are
+ *   properties of that layout (label, path, regions and css).
+ */
+function monster_page_ds_layout_info_alter(&$layouts) {
+  $layouts['ds_2col_stacked']['regions']['preface'] = 'Preface';
+  $layouts['ds_2col_stacked']['regions']['banner'] = 'Banner';
+}
+
+
+function monster_page_entity_view($entity, $type, $view_mode, $langcode) {
+  if ($type == 'node' && $entity->type == 'section' && ($view_mode == 'full' || $view_mode == 'teaser')) {
+    $page_wrapper = entity_metadata_wrapper('node', $entity);
+    $page = $page_wrapper->field_section_node_eb->value(); // field_section_node_eb comes from Entityreference backreference
+    if ($page) {
+      $page_uri = entity_uri('node', reset($page));
+      // $page_nid = reset($page)->nid;
+      $fragment = 'node-' . $entity->nid;
+      drupal_goto($page_uri['path'], array('fragment' => $fragment));
+    }
+  }
+  if ($type == 'ee' && $entity->type == 'embed_map' && $view_mode == 'embed') {
+    $map_field = field_get_items('ee', $entity, 'field_location');
+    if ($map_field) {
+      global $language;
+      $map = '<div id="map-canvas"></div>';
+      $entity->content['map'] = array(
+        '#markup' => $map,
+      );
+      $latlon['lat'] = $map_field[0]['lat'];
+      $latlon['lon'] = $map_field[0]['lon'];
+      drupal_add_js(array('embed_map' => $latlon), array('type' => 'setting'));
+      drupal_add_js('https://maps.googleapis.com/maps/api/js?language=' . $language->language, 'external');
+      drupal_add_js(drupal_get_path('module', 'monster_page') . '/monster_page.js');
+      drupal_add_css(' #map-canvas {width: 100%;height: 300px;}', 'inline');
+    }
+  }
+
+  if ($type == 'node' && $entity->type == 'page' && $view_mode == 'full') {
+    if (!drupal_is_front_page()) {
+      $entity_ids = explode(',', variable_get('monster_page_footer_sections', ''));
+      if (is_array($entity_ids)) {
+        $entity_ids = array_map('trim', $entity_ids);
+        $nodes = node_load_multiple($entity_ids);
+        $sections = '';
+        foreach ($nodes as $node) {
+          $mode = field_get_items($type, $node, 'field_view_mode');
+          $mode = $mode[0]['value'];
+          $sections .= drupal_render(node_view($node, $mode));
+        }
+        $entity->content['footer_sections'] = array(
+          '#markup' => $sections,
+        );
+      }
+    }
+  }
+}
+
+
+/**
+ * Implements hook_field_extra_fields().
+ */
+function monster_page_field_extra_fields() {
+  $return = array();
+
+  $return['ee']['embed_map']['display']['embed'] = array(
+    'label' => 'Google JS Map',
+    'weight' =>'0',
+  );
+  $return['node']['page']['display']['footer_sections'] = array(
+    'label' => 'Default footer sections',
+    'weight' =>'0',
+  );
+
+  return $return;
+}
+
+
+function monster_page_entity_view_alter(&$build, $entity_type) {
+  // $view_mode = $build['#view_mode'];
+  if ($entity_type == 'node' && $build['#bundle'] == 'section') {
+    $node = $build['#node'];
+    $ref_view = field_get_items($entity_type, $node, 'field_view');
+    if ($ref_view) {
+      $build['field_add_this']['#access'] = FALSE;
+    }
+  }
+}
+
+
+/**
+ * Change an entity's label dynamically.
+ *
+ * More constrained versions of this hook also exist:
+ * hook_eck_entity_<entity_type>_label
+ * hook_eck_entity_<entity_type>_<bundle>_label
+ *
+ * This hook is mainly useful for dynamic labels, or for using values
+ * in a field as labels.
+ *
+ * If you are storing the label of the entity in a property already, you
+ * should modify the entity_info array's label key, instead of using this hook.
+ *
+ * @param Entity $entity
+ *   The entity object.
+ * @param int $entity_id
+ *   The id of the entity.
+ *
+ * @return mixed
+ *   The label for the entity.
+ */
+function monster_page_eck_entity_ee_label($entity, $entity_id) {
+  $title = field_get_items('ee', $entity, 'title_field');
+  $title = $title[0]['value'];
+  return $title;
+}
+
+
+function monster_page_menu_local_tasks_alter(&$data, $router_item, $root_path) {
+  if ($root_path == 'admin/content/embed' || $root_path == 'admin/content/embed/blocks') {
+    $item = menu_get_item('admin/structure/entity-type/ee/embed_block/add');
+    if ($item['access']) {
+      $item['localized_options']['query']['destintation'] = 'admin/content/embed';
+      $data['actions']['output'][] = array(
+        '#theme' => 'menu_local_action',
+        '#link' => $item,
+      );
+    }
+    $item = menu_get_item('admin/structure/entity-type/ee/embed_form/add');
+    if ($item['access']) {
+      $item['localized_options']['query']['destintation'] = 'admin/content/embed';
+      $data['actions']['output'][] = array(
+        '#theme' => 'menu_local_action',
+        '#link' => $item,
+      );
+    }
+    $item = menu_get_item('admin/structure/entity-type/ee/embed_list/add');
+    if ($item['access']) {
+      $item['localized_options']['query']['destintation'] = 'admin/content/embed';
+      $data['actions']['output'][] = array(
+        '#theme' => 'menu_local_action',
+        '#link' => $item,
+      );
+    }
+    $item = menu_get_item('admin/structure/entity-type/ee/embed_map/add');
+    if ($item['access']) {
+      $item['localized_options']['query']['destintation'] = 'admin/content/embed';
+      $data['actions']['output'][] = array(
+        '#theme' => 'menu_local_action',
+        '#link' => $item,
+      );
+    }
+  }
+}
+
+
+/**
+ * Implements hook_form_alter().
+ */
+function monster_page_form_alter(&$form, $form_state, $form_id) {
+
+  // Translatable webform fields placholders
+  if (isset($form['#theme'][1]) && $form['#theme'][1] == 'webform_form') {
+    foreach ($form['submitted'] as $key => $submitted) {
+
+      if (is_array($submitted)) {
+        if ($submitted['#type'] == 'select') {
+          $form['submitted'][$key]['#empty_option'] = t($form['submitted'][$key]['#title']);
+        }
+        unset($form['submitted'][$key]['#title']);
+
+        if (isset($submitted['#attributes'])
+          && !empty($submitted['#attributes'])
+          && isset($submitted['#attributes']['placeholder'])) {
+            $placeholder = $submitted['#attributes']['placeholder'];
+            $form['submitted'][$key]['#attributes']['placeholder'] = t($placeholder);
+        }
+      }
+    }
+  }
+}
+
+
+function monster_page_field_widget_form_alter(&$element, &$form_state, $context) {
+
+  if ($context['field']['type'] == 'viewfield') {
+    $field = $context['field'];
+    $instance = $context['instance'];
+    $options = _monster_page_viewfield_potential_references($field, $instance);
+    $element['vname']['#options'] = $options;
+    unset($element['vargs'], $element['token_help']);
+  }
+}
+
+
+/**
+ * Returns a select options list of views displays of enabled and allowed views.
+ */
+function _monster_page_viewfield_potential_references($field, $instance) {
+  // Retrieve all currently available views.
+  $views = views_get_enabled_views();
+  // Limit to allowed values, if any.
+  if (isset($instance['settings']['allowed_views']) && is_array($instance['settings']['allowed_views'])) {
+    // Only intersect if at least one view has been enabled; otherwise, we would
+    // end up with empty $views.
+    if ($allowed = array_filter($instance['settings']['allowed_views'])) {
+      $views = array_intersect_key($views, $allowed);
+    }
+  }
+  $options = array();
+  foreach ($views as $view_name => $view) {
+    foreach ($view->display as $display) {
+      if ($display->id != 'default') {
+        $options[$view->name . '|' . $display->id] = $view->human_name . ' - ' . $display->display_title;
+      }
+    }
+  }
+  return $options;
+}
+
+
+/**
+ * Function to do custom order of filter selectboxes
+ * @param type $form
+ * @param type $form_state
+ * @return type
+ */
+function monster_page_form_views_exposed_form_alter(&$form, $form_state) {
+
+  foreach ($form_state['view']->filter as $field => $filter) {
+    if ($filter->options['exposed']) {
+      $field_id = $form['#info']["filter-$field"]['value'];
+      if (isset($form[$field_id]['#options'])) {
+        asort($form[$field_id]['#options']);
+        if (isset($form[$field_id])) $form[$field_id]['#options']['All'] = t($form['#info']['filter-'.$field]['label']);
+      }
+    }
+  }
+
+  if ($form['#id'] == 'views-exposed-form-research-erp-research-erp-block') {
+
+    $default_options = array('' => 'All');
+    foreach ($form_state['view']->filter as $field => $filter) {
+      if ($filter->options['exposed']) {
+        $field_id = $form['#info']["filter-$field"]['value'];
+        if ($field_id == 'tid') {
+          $additional_options = $form[$field_id]['#options'];
+        }
+        if ($field_id == 'type_1') {
+          $default_options = array_merge($default_options, $form[$field_id]['#options']);
+        }
+      }
+    }
+    if (!empty($default_options)) {
+      unset($default_options['attachments']);
+      foreach ($additional_options as $key => $value) {
+        $default_options[$key] = $value;
+      }
+    }
+
+    $form['combine']['#type'] = 'select';
+    $form['combine']['#options'] = $default_options;
+    $form['combine']['#default_value'] = '';
+
+  }
+}
+
+
+/**
+ * Implementation of hook_filter_info().
+ */
+function monster_page_filter_info_alter(&$info) {
+  // $info['insert_block']['tips callback'] = 'monster_page_insert_block_tips';
+}
+
+
+function monster_page_insert_block_tips($filter, $format, $long = FALSE) {
+  module_load_include('inc', 'block', 'block.admin');
+  global $theme_key;
+  $blocks = block_admin_display_prepare_blocks($theme_key);
+  $modules = array('views', 'block');
+  foreach ($blocks as $block) {
+    if (in_array($block['module'], $modules)) {
+      // $block_list[$block['delta']] = $block['info'] . ': [block:' . $block['module'] . '='. $block['delta'] . ']';
+
+      $title = $block['info'];
+      $key = '[block:' . $block['module'] . '='. $block['delta'] . ']';
+      $rows[$block['delta']] = array($title, $key);
+      if ($block['module'] == 'views' && substr($block['delta'], 0, 3) != 'ref') {
+        // unset($block_list[$block['delta']]);
+        unset($rows[$block['delta']]);
+      }
+
+    }
+  }
+  // $data['#attributes'] = array('class' => array('block-list'));
+  // $data['items'] = $block_list;
+
+  $table_data = array(
+      'header'     => array('Title', 'Key'),
+      'rows'       => $rows,
+      'sticky'     => FALSE,
+      'empty'      => 'No results found',
+      'attributes' => array(),
+      'colgroups'  => array(),
+      'caption'    => NULL
+    );
+
+
+
+
+  $output = '';
+  $output .= t('You may use <a href="@insert_block_help">[block:<em>module</em>=<em>delta</em>] tags</a> to display the contents of block <em>delta</em> for module <em>module</em>.',
+    array("@insert_block_help" => url("filter/tips/$format->format", array('fragment' => 'filter-insert_block'))));
+
+  // $output .= theme('item_list', $data);
+  $output .= theme_table($table_data);
+  return $output;
+}
+
+
+function monster_page_form_node_form_alter(&$form, &$form_state, $form_id) {
+  // if (isset($form['ds_extras'])) {
+  //   $form['ds_extras']['#weight'] = -100;
+  // }
+}
+
+
+
+
+

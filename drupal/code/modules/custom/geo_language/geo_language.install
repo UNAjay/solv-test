@@ -1,0 +1,26 @@
+<?php
+
+/**
+ * @file
+ * file_description
+ */
+
+
+/**
+ * Implements hook_install().
+ */
+function geo_language_install() {
+  // Set module weight for it to run after core and i18n modules
+  // db_query("UPDATE {system} SET weight = 20 WHERE name = 'i18n_access' AND type = 'module'");
+  db_update('system')
+    ->fields(array('weight' => 20))
+    ->condition('name', 'geo_language')
+    ->condition('type', 'module')
+    ->execute();
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function geo_language_uninstall() {
+}

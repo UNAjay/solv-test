@@ -1,0 +1,44 @@
+<?php
+
+/**
+ * @file
+ * Provides integration between Collapse Text and Wysiwyg API.
+ */
+
+/**
+ * Implements hook_wysiwyg_plugin().
+ */
+function custom_links_wysiwyg_wysiwyg_plugin($editor) {
+  if ($editor == 'ckeditor') {
+    // Provide support for strings translation: keep them out of plugin file.
+    drupal_add_js(array(
+      'custom_link' => array(
+        'pluginStrings' => array(
+          'buttonLabel' => t('Insert custom link'),
+          'windowLabel' => t('Custom Link settings'),
+          'titleLabel' => t('Custom Link title'),
+          'titleValidateError' => t('Custom Link title should be provided.'),
+          'urlLabel' => t('Custom Link url'),
+          'urlValidateError' => t('Custom Link url should be provided.'),
+          // 'stateLabel' => t('Initially expanded (not collapsed)'),
+          'typeLabel' => t('Type'),
+        ),
+      ),
+    ), 'setting');
+
+    return array(
+      'custom_link' => array(
+        // A URL to the plugin's homepage.
+        // 'url' => 'http://drupal.org/project/collapse_text',
+        // The full path to the native editor plugin, no trailing slash.
+        'path' => drupal_get_path('module', 'custom_links_wysiwyg') . '/ckeditor-plugins/custom_link/',
+        // A list of buttons provided by this native plugin.
+        'buttons' => array(
+          'collapse_text' => t('Custom Link - Insert Custom links tags [link][/link]'),
+        ),
+        // Boolean whether the editor needs to load this plugin.
+        'load' => TRUE,
+      ),
+    );
+  }
+}

@@ -1,0 +1,174 @@
+.events-listing,
+.view-webinars {
+	.view-filters {
+		.description {
+			display: none;
+		}
+	}
+	.form-type-date-popup {
+		margin-bottom: 11px;
+	}
+	.view-content {
+		color: $paragraphColor;
+		padding: 15px;
+    @include full-width;
+    
+    @include at-breakpoint($second) {
+      padding: 15px 0;
+    }
+	}
+	.row {
+		border-bottom: 1px solid #E9E9E9;
+		margin-bottom: 20px;
+	  padding-bottom: 20px;
+	  @include full-width;
+
+	  &.views-row-last {
+	  	margin-bottom: 0;
+  	}
+	}
+
+	.divtable-header,
+	.divtable-content {
+	  @include full-width;
+	}
+
+	// header
+	.divtable-header {
+	  font-weight: 600;
+		border-bottom: 1px solid #E9E9E9;
+		margin-bottom: 20px;
+	  padding-bottom: 10px;
+	  word-wrap: break-word;
+	}
+
+	// content
+	.views-field-field-event-date {
+	  @include span-columns(3,16);
+	}
+	.views-field-nothing {
+	  @include span-columns(9,16);
+
+	  .title {
+	    font-weight: 600;
+	    margin-bottom: 3px;
+	    @include font-size(16);
+	  }
+	  p {
+	  	padding: 0;
+	  }
+	}
+	.views-field-field-event-location {
+	  @include span-columns(4 omega,16);
+
+	  .type {
+	  	font-weight: 600;
+	  	margin-bottom: 3px;
+	  }
+	}
+}
+
+// top event
+.top-event {
+	margin-bottom: 20px;
+	padding: 0 15px;
+ 
+  @include at-breakpoint($first) {
+    padding: 0;
+  }
+	h2 {
+    padding: 10px 0 6px;
+	}
+	img {
+    @extend %full-width-image;
+		padding: 0 0 15px;
+  }
+	.views-field-nothing {
+		.title {
+		  a {
+	      padding-bottom: 5px;
+	      @include font-size(20);
+	      @include full-width;
+     	}
+		}
+	}
+	.views-field-field-event-date {
+		color: #707070;
+		padding-bottom: 5px;
+	}
+	.views-field-nothing-1 {
+		margin: 0 0 10px;
+		padding-bottom: 5px;
+	}
+	.type {
+		font-weight: 600;
+	}
+	.location {
+		li {
+		  float :left;
+			
+			&:before {
+				content: ",";
+				margin: 0 5px 0 0;
+			}
+			
+			&:first-child:before {
+				content: "";
+				margin: 0;
+			}
+		}
+	}
+	.item-list,
+	.product {
+		clear: both;
+	}
+}
+
+// event-page sidebar
+.node-type-event {
+	.main-primary {
+		.field {
+			margin-bottom: 15px;
+			.label {
+				font-weight: 600;
+				color: #555;
+			}
+			ul.badges {
+				li {
+					display: inline-block;
+					margin-left: 60px;
+					margin-top: 1.5em;
+					margin-bottom: 1.5em;
+					
+					&.first {
+						margin-left: 0;
+					}
+				}
+			}
+		}
+	}
+	.aside-primary {
+		> div {
+			@extend %sidebar-box;
+		}
+		.field-label {
+    	@extend %sidebar-title;
+		}
+		.field-items {
+			padding: 0 15px 15px;
+			color: $paragraphColor;
+		}
+		.menu {
+			.field-items {
+				padding: 0;
+			}
+		}
+		a {
+		  color: $jeevesRed;
+
+		  &:hover {
+		  	text-decoration: underline;
+		  }
+		}
+	}
+}

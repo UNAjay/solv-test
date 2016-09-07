@@ -1,0 +1,29 @@
+<?php
+
+/**
+* Remove French entity translations for nodes
+*/
+function custom_actions_update_2(&$sandbox){
+
+  db_query("DELETE FROM {field_data_body} WHERE entity_type='node' AND language IN ('fr') AND entity_id NOT IN (1135, 1122, 1123, 1125, 140, 279, 143, 136, 100, 101, 102, 104, 163, 318)");
+
+  db_query("DELETE FROM {field_revision_body} WHERE entity_type='node' AND language IN ('fr') AND entity_id NOT IN (1135, 1122, 1123, 1125, 140, 279, 143, 136, 100, 101, 102, 104, 163, 318)");
+
+  db_query("DELETE FROM {field_data_title_field} WHERE entity_type='node' AND language IN ('fr') AND entity_id NOT IN (1135, 1122, 1123, 1125, 140, 279, 143, 136, 100, 101, 102, 104, 163, 318)");
+
+  db_query("DELETE FROM {field_revision_title_field} WHERE entity_type='node' AND language IN ('fr') AND entity_id NOT IN (1135, 1122, 1123, 1125, 140, 279, 143, 136, 100, 101, 102, 104, 163, 318)");
+
+  db_query("DELETE FROM {field_data_field_sidebar_text} WHERE entity_type='node' AND language IN ('fr') AND entity_id NOT IN (1135, 1122, 1123, 1125, 140, 279, 143, 136, 100, 101, 102, 104, 163, 318)");
+
+  db_query("DELETE FROM {field_revision_field_sidebar_text} WHERE entity_type='node' AND language IN ('fr') AND entity_id NOT IN (1135, 1122, 1123, 1125, 140, 279, 143, 136, 100, 101, 102, 104, 163, 318)");
+
+}
+
+/**
+* Remove UND values from field_acton_url
+*/
+function custom_actions_update_3(&$sandbox){
+
+  db_query("DELETE FROM {field_data_field_acton_url} WHERE language='und'");
+  db_query("DELETE FROM {field_revision_field_acton_url} WHERE language='und'");
+}

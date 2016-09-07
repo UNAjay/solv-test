@@ -1,0 +1,10 @@
+.node-type-promo {
+	.region-content {
+		padding: 20px;
+	  @include full-width;
+
+	  @include at-breakpoint($first) {
+	    padding: 30px 20px;
+	  }
+	}
+}

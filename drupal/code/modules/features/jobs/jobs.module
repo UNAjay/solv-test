@@ -1,0 +1,189 @@
+<?php
+/**
+ * @file
+ * Code for the Jobs feature.
+ */
+
+include_once 'jobs.features.inc';
+
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter().
+ */
+function jobs_form_node_form_alter(&$form, &$form_state) {
+
+
+  $node = $form['#node'];
+  if ($node->type == ' job_posting') {
+
+  }
+
+}
+
+
+/**
+ * Implements hook_element_info_alter().
+ */
+function jobs_element_info_alter(&$type) {
+  $type['link_field']['#process'][] = 'jobs_link_field_process';
+
+}
+
+
+
+function jobs_link_field_process($element, $form_state, $complete_form) {
+
+  if ($element['#field_name'] == 'field_job_url') {
+
+    $instance = field_widget_instance($element, $form_state);
+    $settings = $instance['settings'];
+
+    if ($settings['title'] !== 'none' && $settings['title'] !== 'value') {
+      $vid = taxonomy_vocabulary_machine_name_load('job_posting_sites')->vid;
+      $tree = taxonomy_get_tree($vid, $parent = 0, $max_depth = 1, $load_entities = FALSE);
+      $items = array('' => '');
+      foreach ($tree as $item) {
+          $items[$item->tid] = $item->name;
+      }
+
+      $element['title'] = array(
+        '#type' => 'select',
+        '#maxlength' => $settings['title_maxlength'],
+        '#title' => t('Title'),
+        '#options' => $items,
+        '#description' => t('The link title is limited to @maxlength characters maximum.', array('@maxlength' => $settings['title_maxlength'])),
+        '#required' => ($settings['title'] == 'required' && (($element['#delta'] == 0 && $element['#required']) || !empty($element['#value']['url']))) ? TRUE : FALSE,
+        '#default_value' => isset($element['#value']['title']) ? $element['#value']['title'] : NULL,
+      );
+    }
+  }
+
+  return $element;
+}
+
+
+
+/**
+ * Implements hook_field_formatter_info().
+ *
+ * Adds formatter to display videoes on Derfor RUC
+ */
+function jobs_field_formatter_info() {
+  return array(
+    // The key must be unique, so it's best to prefix with your module's name.
+    'jobs_link' => array(
+      'label' => t('Display job posting site url'),
+      'field types' => array('link_field'),
+      'multiple values' => FIELD_BEHAVIOR_DEFAULT,
+    ),
+  );
+}
+
+
+
+/**
+ * Implements hook_field_formatter_view().
+ * This code just passes straight through to a theme function, MYMODULE_formatter_FORMATTER
+ * (e.g. MYMODULE_formatter_MYMODULE_absolute_url).
+ */
+function jobs_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
+
+  $element = array();
+
+  switch ($display['type']) {
+    case 'jobs_link':
+
+
+      foreach ($items as $delta => $item) {
+        // Getting the actual value.
+        $url = $item['url'];
+        $title = $item['url'];
+
+        // get the title
+        if (isset($item['title']) && !empty($item['title'])) {
+          $tid = $item['title'];
+          if (is_numeric($tid)) {
+            $term = taxonomy_term_load($tid);
+            $title = $term->name;
+            $logo = render(field_view_field('taxonomy_term', $term, 'field_job_site_logo', 'default'));
+            if (empty($logo)) {
+              $logo = $title;
+            }
+          }
+        }
+
+        $options = array(
+          // This tells Drupal that we're sending HTML, not plain text, otherwise it would encode it.
+          'html' => TRUE,
+          'attributes'  => array(
+            'class' => array(),
+            'title' => $title,
+            'target' => '_blank',
+          ),
+        );
+
+        if (isset($url)) {
+          // Create the Link.
+          $link = l($logo, $url, $options);
+          // Assign it to the #markup of the element.
+          $element[$delta]['#markup'] = $link;
+        }
+        unset($logo,$title);
+      }
+    break;
+
+  }
+
+
+  return $element;
+}
+
+
+function jobs_menu_item_switch() {
+  $query_nodes = db_select('node', 'node');
+  $query_nodes->fields('node');
+  $query_nodes->condition('node.type', 'job_posting');
+  $results = $query_nodes->execute();
+  $nodes = array();
+  foreach ($results as $result) {
+    if ($result->status == '1') {
+      $nodes[$result->nid] = $result->status;
+    }
+  }
+
+  $hidden = empty($nodes) ? 1 : 0;
+
+  $query = db_select('node_revision', 'nr');
+  $query->fields('nr');
+  $query->condition('nr.ds_switch', 'ds_job_listing');
+  // $result_jobs = $query->execute()->fetchAll();
+  $result_jobs = $query->execute();
+  foreach ($result_jobs as $item) {
+    $items[$item->nid] = $item->nid;
+  }
+
+  foreach ($items as $nid) {
+    $path = 'node/' . $nid;
+
+    $result = db_select('menu_links', 'ml');
+    $result->fields('ml');
+    $result->condition('ml.link_path', $path);
+    $menu_item = $result->execute()->fetchObject();
+
+    $menu_link = menu_link_load($menu_item->mlid);
+    $menu_link['hidden'] = $hidden;
+    menu_link_save($menu_link);
+  }
+}
+
+function jobs_node_update($node) {
+  if ($node->type == 'job_posting') {
+    jobs_menu_item_switch();
+  }
+}
+
+function jobs_node_delete($node) {
+  if ($node->type == 'job_posting') {
+    jobs_menu_item_switch();
+  }
+}

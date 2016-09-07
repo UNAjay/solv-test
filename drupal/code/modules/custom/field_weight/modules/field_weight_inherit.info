@@ -1,0 +1,15 @@
+name = Field Weight Inherit
+description = "If weights are not set on the translation being viewed, retrieve them from the source node. Assumes Content Translation."
+package = Fields
+core = 7.x
+
+dependencies[] = field_weight
+dependencies[] = translation
+
+
+; Information added by Drupal.org packaging script on 2014-04-10
+version = "7.x-2.0-beta1+11-dev"
+core = "7.x"
+project = "field_weight"
+datestamp = "1397145253"
+

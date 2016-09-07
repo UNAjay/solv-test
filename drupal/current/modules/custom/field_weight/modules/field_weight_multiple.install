@@ -1,0 +1,46 @@
+<?php
+/**
+ * Implements hook_schema().
+ *
+ * Taken shamelessly from field_weight. We'd use the field_weight table
+ * if not for the fact that field_weight calls field_info_field on each
+ * field. It would error out on our pseudo_fields.
+ */
+function field_weight_multiple_schema() {
+  $schema = array();
+  $schema['field_weight_multiple'] = array(
+    'description' => 'Field instance weight table.',
+    'fields' => array(
+      'nid' => array(
+        'description' => 'The primary identifier for a node.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'vid' => array(
+        'description' => 'The revision identifier for a node.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'type' => array(
+        'description' => 'The bundle type of this node.',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+      ),
+      'field_weights' => array(
+        'description' => 'Serialised array of keyed array containing field_name_{$delta} => weight.',
+        'type' => 'blob',
+        'not null' => TRUE,
+      ),
+    ),
+    'unique keys' => array(
+      'nid_vid' => array('nid', 'vid'),
+      'vid' => array('vid'),
+    ),
+    'primary key' => array('nid', 'vid'),
+  );
+
+  return $schema;
+}

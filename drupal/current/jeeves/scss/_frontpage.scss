@@ -1,0 +1,524 @@
+/* =====================================
+	Frontpage
+	====================================== */
+.node-type-full-page {
+	#page {
+		padding-top: 0;
+		padding-bottom: $footerHeightMobile;
+		
+		@include at-breakpoint($first -20px) {
+			padding-bottom: $footerHeightDesktop;
+		}
+		
+		@include at-breakpoint($second) {
+			padding-bottom: $footerHeightDesktop + 60px;
+		}
+	}
+	
+	#content {
+		margin-top: 150px;
+		padding-bottom: 0;
+		
+ 	  @include at-breakpoint($first) {
+  	  margin-top: 60px;
+ 	  }
+		
+		.region-holder {
+			max-width: none;
+			width: 100%;
+		}
+		#breadcrumb,
+		.tabs,
+		.messages-wrapper {
+			margin: 0 auto;
+			max-width: 1004px;
+		}
+		.messages-wrapper {
+			float: none;
+			clear: both;
+			padding: 20px;
+		}
+	}
+	.region-content {
+	  background: none;
+		padding: 0;
+  }
+	.main-primary {
+		min-height: 0;
+	}
+	footer {
+		background: #4C4C4C;
+		padding-bottom: $footerHeightDesktop + 60px;
+	}
+	
+	//First section in frontpage
+	.first-section-container {
+		clear: both;
+		margin-bottom: -1px;
+		height: auto;	
+	}
+	.first-section {
+	  .node > .content {
+		  margin: 0 auto;
+		  max-width: 1004px;
+	 	}	
+		.node-panel {
+	 	  margin-left: 0;
+	 	  margin-right: 0;
+	 	  padding: 0;
+	 
+	 	  @include at-breakpoint($first) {
+	  	  margin-left: 10px;
+	  	  margin-right: 10px;
+	 	  }
+	 	  @include at-breakpoint($second) {
+	  	  margin-left: 10px;
+	  	  margin-right: 10px;
+	    }	
+		}
+		.contextual-links-region {
+			clear: both;
+		}
+	}
+	
+	//Other sections in frontpage
+	.other-sections {
+		clear: both;
+		
+	  .node > .content {
+		  margin: 0 auto;
+		  max-width: 1004px;
+	 	}	
+		.node-page-section {
+	 	  margin-left: 0;
+	 	  margin-right: 0;
+	 	  padding: 30px 0;
+	 
+	 	  @include at-breakpoint($first) {
+	  	  margin-left: 0;
+	  	  margin-right: 0;
+	 	  }
+	 	  @include at-breakpoint($second) {
+	  	  margin-left: 0;
+	  	  margin-right: 0;
+	    }	
+		}
+  }
+}
+
+//vertical list layout, horizontal list layout - common styles
+.bgcolor-gray {
+	background: #E1E1E1;
+}
+.bgcolor-white {
+	background: #FFF;
+}
+.layout-vertical1,
+.layout-horizontal1 {
+	.field-section-list > .field-items > .field-item {
+		.image {
+			text-align: center;
+		}
+		.title-field,
+		.description-field,
+		p,
+		a {
+			padding: 0;
+			margin: 0;
+		}
+		.description-field {
+		  @include font-size(16);
+	  }
+		a {
+	    color: $jeevesRed;
+ 				
+	 		&:hover {
+	 		  text-decoration: underline;
+	 	  }
+	  }
+	}
+}
+
+//vertical list layout
+.layout-vertical1 {
+	.field-section-list > .field-items > .field-item {
+		text-align: center;
+		padding: 0 15px 15px;
+		@include full-width;
+			
+		@include at-breakpoint($first) {
+		   @include full-width;
+		 }
+		@include at-breakpoint($second) {
+		  width: 33.3%;
+	  }	
+	}
+	.image {
+		margin-bottom: 15px;
+	}
+	.title-field {
+  	@include font-size(25);
+	}
+}
+
+//horizontal list layout
+.layout-horizontal1 {
+	.field-section-list > .field-items > .field-item {
+		@include full-width;
+		padding: 0 15px 15px;
+		
+    @include at-breakpoint($first) {
+      padding: 0 10px 15px;
+    }
+		.title-field {
+	  	@include font-size(25);
+		}
+		.image {
+			@include span-columns(16,16);
+
+	    @include at-breakpoint($first) {
+	      @include span-columns(6,16);
+	    }
+	    @include at-breakpoint($second) {
+				margin-right: 0;
+	      @include span-columns(4,16);
+	    }
+		}
+		.title-field,
+		.description-field {
+			float: left;
+      @include span-columns(16,16);
+
+      @include at-breakpoint($first) {
+        @include span-columns(10 omega,16);
+      }
+      @include at-breakpoint($second) {
+        @include span-columns(12 omega,16);
+      }
+		}
+		@include at-breakpoint($first) {
+			.title-field {
+		  	@include font-size(35);
+			}
+		}
+	}
+}
+
+//slideshows in frontpage
+.node-type-full-page {
+	.flexslider {
+	  background: none;
+		border: none;
+		float: left;
+		margin: 0;
+		width: 100%;
+		@include box-shadow(none);
+	  @include border-radius(0px);
+
+	  img,
+		.flex-direction-nav {
+			display: none !important;	
+		}
+	}
+
+	.view-promo-slideshow,
+	.view-news-slideshow,
+	.full-pages-element1 {
+	  @include span-columns(16,16);
+
+	  @include at-breakpoint($first) {
+	  	@include opacity(0.9);
+	  }
+	  @include at-breakpoint($second) {
+	  	@include span-columns(10 omega,16);
+	  }
+
+	  p {
+		  @include at-breakpoint(0 $first - 1) {
+		  	padding: 0 0 15px;
+		  }
+	  }
+	}
+
+	.flex-control-nav {
+	  bottom: inherit;
+		position: relative;
+		text-align: inherit;
+		width: auto;
+		height: 14px;
+
+		li {
+			a {
+		    background: url('../images/bg-slider-nav.png') no-repeat center right;
+		    width: 14px;
+		    height: 14px;
+				@include box-shadow(none);
+			  @include border-radius(0px);
+
+				&.flex-active,
+				&:hover {
+		      background: url('../images/bg-slider-nav.png') no-repeat center left;
+				}
+			}
+		}
+	}
+	
+	//-----------------------------------------
+	// promo
+	//-----------------------------------------
+	.view-promo-slideshow {
+		background: #fff;
+		padding: 21px 25px 25px;
+
+	  @include at-breakpoint($first) {
+			margin-bottom: 20px;
+			padding: 25px;
+	  }
+
+		h2,
+		p {
+			color: #252525;
+		}
+		h2 {
+			margin-bottom: 8px;
+			padding: 0;
+	  	@include font-size(25);
+
+		  @include at-breakpoint($first) {
+	  		margin-bottom: 15px;
+				@include font-size(35);
+		  }
+		}
+		p {
+	  	@include font-size(16);
+			padding: 0 0 15px;
+		}
+		.slides {
+			li {
+				min-height: 211px;
+
+			  @include at-breakpoint($first) {
+					min-height: 182px;
+			  }
+			}
+			a {
+			  padding: 7px 15px;
+			  float: left;
+			  @extend .button;
+
+			  &:hover {
+			  	text-decoration: none;
+			  }
+			}
+		}
+		.flex-control-nav {
+			float: right;
+		  margin-top: -14px;
+		  z-index: 9;
+
+			li {
+				margin: 0 0 0 6px;
+			}
+		}
+	}
+
+	//-----------------------------------------
+	// news
+	//-----------------------------------------
+	.view-news-slideshow {
+		color: #fff;
+		position: relative;
+	  @include font-size(12);
+
+	  .view-news-slideshow {
+	  	position: relative;
+	  }
+		.view-content {
+		  background: $jeevesBlue;
+		  overflow: hidden;
+			padding: 25px;
+
+		  @include at-breakpoint($first) {
+		  	background: url('../images/bg-slider-news-arrow.png') no-repeat center right $jeevesBlue;
+		  	margin-right: 96px;
+		  }
+		}
+		.slides li {
+			min-height: 71px;
+		}
+		.view-footer {
+			display: none;
+			background: url('../images/bg-slider-news.png') repeat;
+			width: 96px;
+			height: 100%;
+	    position: absolute;
+	    top: 0;
+	    right: 0;
+	    text-align: center;
+	    text-transform: uppercase;
+
+		  @include at-breakpoint($first) {
+				display: block;
+		  }
+		  a {
+		    position: absolute;
+		    top: 50%;
+		    left: 18px;
+		    line-height: 0;
+		    @include font-size(22); 
+		  }
+		}
+		a,
+		p {
+			color: #fff;
+	  	@include font-size(12);
+		}
+		.views-field-title a {
+			font-weight: 600;
+			float: left;
+			margin-right: 7px;
+	  	@include font-size(14);
+		}
+		.views-field-created {
+			float: left;
+			margin-top: 2px;
+			font-style: italic;
+	  	@include font-size(11);
+		}
+		.views-field-body {
+			margin-top: 5px;
+	    @include full-width;
+
+	    a {
+				text-decoration: underline;
+	    }
+		}
+		.flex-control-nav {
+			margin-top: 10px;
+
+			li {
+				margin: 0 6px 0 0;
+			}
+		}
+	}
+	
+	// News slideshow footer width in different languages
+  // nl
+	&.i18n-nl {
+    .view-news-slideshow {
+	    .view-content {
+	      @include at-breakpoint($first) {
+			  	margin-right: 116px;
+			  }
+	    }
+	    .view-footer {
+	      width: 116px;
+	    }
+	  }
+	}
+	// fi
+	&.i18n-fi {
+    .view-news-slideshow {
+	    .view-content {
+	      @include at-breakpoint($first) {
+			  	margin-right: 122px;
+			  }
+	    }
+	    .view-footer {
+	      width: 122px;
+	    }
+	  }
+	}
+  // fr
+	&.i18n-fr {
+    .view-news-slideshow {
+	    .view-content {
+	      @include at-breakpoint($first) {
+			  	margin-right: 157px;
+			  }
+	    }
+	    .view-footer {
+	      width: 157px;
+	    }
+	  }
+	}
+	// pl
+	&.i18n-pl {
+    .view-news-slideshow {
+	    .view-content {
+	      @include at-breakpoint($first) {
+			  	margin-right: 179px;
+			  }
+	    }
+	    .view-footer {
+	      width: 179px;
+	    }
+	  }
+	}
+	// sk
+	&.i18n-sk {
+    .view-news-slideshow {
+	    .view-content {
+	      @include at-breakpoint($first) {
+			  	margin-right: 111px;
+			  }
+	    }
+	    .view-footer {
+	      width: 111px;
+	    }
+	  }
+	}
+	// sv, no
+	&.i18n-sv,
+	&.i18n-no {
+    .view-news-slideshow {
+	    .view-content {
+	      @include at-breakpoint($first) {
+			  	margin-right: 129px;
+			  }
+	    }
+	    .view-footer {
+	      width: 129px;
+	    }
+	  }
+	}
+}
+
+//-----------------------------------------
+// learn more
+//-----------------------------------------
+.node-type-full-page {
+  .full-pages-element1 {
+ 	  @include font-size(20);
+	  text-align: right;
+    padding: 20px 15px 31px;
+	
+    @include at-breakpoint(0 $first - 1) {
+   	  padding: 20px 15px 31px;
+    }
+	
+  	@include at-breakpoint($first) {
+  	  padding: 20px 0 31px;
+	  }
+	
+		.content {
+			background: url('../images/bg-read-more-arrow.png') no-repeat top right #fff;
+			float: right;
+			height: 37px;
+			line-height: 35px;
+			opacity: 0.8;
+			
+			&:hover {
+				opacity: 0.9;
+			}
+			p {
+				padding: 0;
+			}
+			a {
+				color: $jeevesRed;
+				display: block;
+				padding: 0 35px 0 15px;
+			}
+		}
+  }
+}

@@ -1,0 +1,17 @@
+name = Wysiwyg
+description = Allows to edit content with client-side editors.
+package = User interface
+;dependencies[] = libraries
+;dependencies[] = ctools
+;dependencies[] = debug
+core = 7.x
+configure = admin/config/content/wysiwyg
+files[] = wysiwyg.module
+files[] = tests/wysiwyg.test
+
+
+; Information added by drush on 2016-03-23
+version = "8d32d738615f5d6b85b91146cb0032085e5b1789"
+project = "wysiwyg"
+datestamp = "1458729898"
+

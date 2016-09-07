@@ -1,0 +1,3 @@
+name = Custom actions
+description = "All custom alterations for the project"
+core = 7.x

@@ -1,0 +1,6 @@
+name = Floating bar
+description = Displays floating menu bar
+package = Lumi
+dependencies[] = block
+dependencies[] = colorbox
+core = 7.x

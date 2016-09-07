@@ -1,0 +1,457 @@
+<?php
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Holy long function names Batman.
+ */
+function field_weight_multiple_form_field_weight_display_overview_form_alter(&$form, &$form_state, $form_id) {
+  $node = $form_state['#node'];
+
+  $weight_instances_original = $weight_instances = $form['field_weight']['instances'] ? $form['field_weight']['instances']['#value'] : array();
+  $revision_weights = $form['field_weight']['revision_weights'];
+
+  $multi_fields = _field_weight_multiple_parse($weight_instances_original);
+
+  // We move old field wrappers here so that they don't appear in $weight_instances
+  // when displaying the form. We will need that information to save the weights, though.
+  $form['field_weight']['multi_fields'] = array(
+    '#type' => 'value',
+    '#value' => array(),
+  );
+  $multi_fields_value = &$form['field_weight']['multi_fields']['#value'];
+
+  $field_weights = field_weight_multiple_get_weight($node->vid);
+  $revision_field_weights = field_weight_multiple_get_revision_weight($node->vid);
+
+  // @todo: See below todo. This crazy refactor is why it needs a cleanup.
+  list($highest_weight, $weight_instances) = _field_weight_multiple_process_instances($form, $multi_fields_value, $field_weights, $revision_field_weights, $weight_instances_original, $multi_fields, $node, $weight_instances, $revision_weights);
+
+  // Build the form again.
+  // This is mostly the same code as in the form that's being altered.
+  // The field formatter part is omitted since the main code doesn't use it
+  // and since it wouldn't apply to what we're doing.
+
+  // Allow other modules to change the weight of the instances.
+  $context = array(
+    'highest weight' => &$highest_weight,
+    'original weights' => $field_weights,
+    'revision weights' => $revision_field_weights,
+    // Convenience reference to where we store information about multiple-value
+    // fields.
+    'form reference' => &$multi_fields_value,
+    'original instances' => $weight_instances_original,
+    // Multi-value field names
+    'field names' => $multi_fields,
+    'node' => $node,
+  );
+  drupal_alter('field_weight_multiple_display_overview_weights', $weight_instances, $form, $context);
+
+  // @todo: Add a pre_sort hook or something above and implement this using
+  // that and altering the Field Weight fields instead of regenerating the
+  // form here.
+
+  // Ensure the dropdown will contain an option for the highest possible weight.
+  // Otherwise, the order will get messed up on submit.
+  $weight_delta = $highest_weight;
+
+  // Pass hidden value to form submit so we can use instances
+  // already stored there.
+  $form['field_weight']['instances'] = array(
+    '#type' => 'value',
+    '#value' => $weight_instances,
+  );
+
+  $instances = $weight_instances;
+
+  // We've hacked things up a bit, but we've potentially lost instance labels in the process.
+  // Get original instances so we can get them if we need them.
+  $original_instances = field_info_instances('node', $node->type);
+
+  // Rebuild the form data, incorporating our new values.
+  // TODO: Refactor this; code is largely the same as field_weight.
+  foreach ($weight_instances as $field => $values) {
+    if (isset($instances[$field]) && !isset($instances[$field]['label'])) {
+      $instances[$field]['label'] = $original_instances[$field]['label'];
+    }
+
+    $form['field_weight'][$field]['field'] = array(
+      '#markup' => (isset($values['new']) && $values['new'] ? t("<strong>(unsaved)</strong>") . ' ' : '') . check_plain($instances[$field]['label']),
+    );
+    $form['field_weight'][$field]['weight'] = array(
+      '#type' => 'weight',
+      '#delta' => $weight_delta,
+      '#default_value' => isset($values['weight']) ? $values['weight'] : 0,
+      '#attributes' => array(
+        'class' => array('field-weight'),
+      ),
+    );
+    $form['field_weight'][$field]['hidden'] = array(
+      '#type' => 'checkbox',
+      '#default_value' => isset($values['hidden']) ? $values['hidden'] : 0,
+    );
+  }
+
+  array_unshift($form['#submit'], '_field_weight_multiple_before_field_weight_display_overview_form_submit');
+  array_unshift($form['continue']['#submit'], '_field_weight_multiple_before_field_weight_display_overview_form_submit');
+  $form['#submit'][] = '_field_weight_multiple_after_field_weight_display_overview_form_submit';
+  $form['continue']['#submit'][] = '_field_weight_multiple_after_field_weight_display_overview_form_submit';
+
+  // Resetting should also reset this module's entries.
+  $form['reset']['#submit'][] = '_field_weight_multiple_remove_weights';
+}
+
+/**
+ * @param $form
+ * @param $multi_fields_value
+ * @param $field_weights
+ * @param $revision_field_weights
+ * @param $weight_instances_original
+ * @param $multi_fields
+ * @param $node
+ * @param $weight_instances
+ * @param $revision_weights
+ * @return array
+ */
+function _field_weight_multiple_process_instances(&$form, &$multi_fields_value, $field_weights, $revision_field_weights, $weight_instances_original, $multi_fields, $node, $weight_instances, $revision_weights) {
+  $highest_weight = count($weight_instances_original);
+
+  // For each field, count how many instances there are on this node
+  foreach ($multi_fields as $multi_field) {
+    $node_multi_field = field_get_items('node', $node, $multi_field);
+
+    if ($node_multi_field === FALSE) {
+      $node_multi_field = array();
+    }
+
+    // Other modules shouldn't re-run this sort function, but they might.
+    // Don't double-unset in order to avoid errors and warnings..
+    if (!empty($weight_instances[$multi_field])) {
+      // Hide the main field from the form
+      $multi_fields_value[$multi_field] = $weight_instances[$multi_field];
+      unset($form['field_weight'][$multi_field]);
+      unset($weight_instances[$multi_field]);
+    }
+
+    // Add delta-specific keys to weight instances. After we've added them all,
+    // we'll re-sort it and
+    // regenerate the form.
+    foreach ($node_multi_field as $delta => $node_multi_field_data) {
+      // Is there anything in the database about this?
+      if (isset($field_weights["{$multi_field}_{$delta}"])) {
+        $weight_instances["{$multi_field}_{$delta}"] = $field_weights["{$multi_field}_{$delta}"];
+
+        if (!isset($revision_field_weights["{$multi_field}_{$delta}"])) {
+          $weight_instances["{$multi_field}_{$delta}"]['new'] = TRUE;
+        }
+      }
+      else {
+        // If the module has just been enabled, don't wipe out the value.
+        if ($delta == "0" && isset($weight_instances[$multi_field])) {
+          // Use (weight of field) + (delta) to determine
+          // the weight to put in here.
+          $weight_instances["{$multi_field}_{$delta}"] = array(
+            'weight' => $weight_instances_original[$multi_field]['weight'],
+            'hidden' => $weight_instances_original[$multi_field]['hidden'],
+          );
+        }
+        else {
+          $weight_instances["{$multi_field}_{$delta}"] = array(
+            'weight' => "0",
+            'hidden' => 0,
+            // Set a property so we can show the user this is unsaved later.
+            'new' => TRUE,
+          );
+        }
+      }
+
+      $highest_weight = max($highest_weight, $weight_instances["{$multi_field}_{$delta}"]['weight']);
+
+      // Make sure we always have a label
+      $multi_field_info_instance = field_info_instance('node', $multi_field, $node->type);
+      $human_delta = $delta + 1;
+      $weight_instances["{$multi_field}_{$delta}"]['label'] = "{$multi_field_info_instance['label']} (#{$human_delta})";
+
+      // Store the actual field name in case other modules need to know.
+      $weight_instances["{$multi_field}_{$delta}"]['field_name'] = $multi_field;
+      $weight_instances["{$multi_field}_{$delta}"]['module'] = 'field_weight_multiple';
+    }
+  }
+
+  // Re-sort $weight_instances.
+  uasort($weight_instances, 'drupal_sort_weight');
+  return array(
+    $highest_weight,
+    $weight_instances,
+  );
+}
+
+function _field_weight_multiple_parse($weight_instances) {
+  $multi_fields = array();
+
+  // Figure out which fields are multiple-value fields
+  foreach ($weight_instances as $field_name => $field) {
+    $field_info = field_info_field($field_name);
+    if ($field_info && $field_info['cardinality'] > 1 || $field_info['cardinality'] == FIELD_CARDINALITY_UNLIMITED) {
+      // Yes.
+      $multi_fields[] = $field_name;
+    }
+  }
+
+  return $multi_fields;
+}
+
+function _field_weight_multiple_before_field_weight_display_overview_form_submit(&$form, &$form_state) {
+  $node = $form_state['#node'];
+
+  // Put the field wrappers back into the values so that field_weight doesn't choke on saving them.
+  $values = &$form_state['values']['field_weight'];
+
+  $form_state['values']['field_weight_multiple'] = array();
+  $our_values = &$form_state['values']['field_weight_multiple'];
+
+  $old_multi_fields = &$values['multi_fields'];
+
+  // Put back the actual fields, and remove the virtual ones we added
+  foreach ($old_multi_fields as $old_multi_field => $old_multi_field_value) {
+    $node_old_multi_field_items = field_get_items('node', $node, $old_multi_field);
+
+    // And add back the parent field to $weight_instances. It won't have a weight, but that's OK
+    // since it'll never really be used with our module. If they disable our module, it won't break field_weight
+    // either.
+    $values[$old_multi_field] = $old_multi_field_value;
+    if ($node_old_multi_field_items) {
+      foreach ($node_old_multi_field_items as $delta => $node_old_multi_field) {
+          // Move the delta to our own value key
+          $our_values["{$old_multi_field}_{$delta}"] = $values["{$old_multi_field}_{$delta}"];
+          unset($values["{$old_multi_field}_{$delta}"]);
+      }
+    }
+  }
+}
+
+function _field_weight_multiple_after_field_weight_display_overview_form_submit(&$form, &$form_state) {
+  // Save the field delta information specifically into our table against nid, vid, type.
+  $node = $form_state['#node'];
+  $values = $form_state['values']['field_weight_multiple'];
+
+  $instances = array_keys($values);
+
+  $weights = array();
+
+  foreach ($instances as $field) {
+    $weights[$field] = array(
+      'weight' => $values[$field]['weight'],
+      'hidden' => $values[$field]['hidden'],
+    );
+  }
+
+  // If all weights are 0 (unchanged) will return empty.
+  $empty_check = array_filter($weights);
+
+  if (!empty($empty_check)) {
+    db_merge('field_weight_multiple')
+      ->key(array('vid' => $node->vid))
+      ->fields(array(
+        'nid' => $node->nid,
+        'vid' => $node->vid,
+        'type' => $node->type,
+        'field_weights' => serialize($weights),
+      ))
+      ->execute();
+  }
+  elseif (empty($empty_check)) {
+    // Remove entry if user manually sets all weights to 0.
+    _field_weight_multiple_remove_weights($form, $form_state);
+  }
+}
+
+/**
+ * Helper function to get weights from field_weight table for nids passed in.
+ */
+function field_weight_multiple_get_weight($vid) {
+  $weights = field_weight_multiple_get_revision_weight($vid);
+
+  if (empty($weights)) {
+
+  }
+
+  return $weights;
+}
+
+/**
+ * @param $vid
+ * @return mixed
+ */
+function field_weight_multiple_get_revision_weight($vid) {
+  $result = db_select('field_weight_multiple', 'fwm')
+    ->fields('fwm', array('field_weights'))
+    ->condition('vid', $vid)
+    ->execute()->fetchField();
+
+  $weights = unserialize($result);
+
+  if (!$weights) {
+    // See if the published node revision has weights, and fall back to these.
+    // This should not normally happen, but it can if, for example, the user
+    // has clicked Reset on a specific revision.
+
+    $node = node_load(NULL, $vid);
+    $node_result = db_select('field_weight_multiple', 'fwm')
+      ->fields('fwm', array('field_weights'))
+      ->condition('nid', $node->nid)
+      ->execute()->fetchField();
+  }
+
+  $weights = unserialize($node_result);
+  return $weights;
+}
+
+function _field_weight_multiple_remove_weights(&$form, &$form_state) {
+  $node = $form_state['#node'];
+
+  db_delete('field_weight_multiple')
+    ->condition('vid', $node->vid)
+    ->execute();
+}
+
+/**
+ * Implements hook_node_delete().
+ *
+ * Clean up field_weight_multiple table so we don't get any orphaned entries.
+ *
+ */
+function field_weight_multiple_node_delete($node) {
+  db_delete('field_weight_multiple')
+    ->condition('nid', $node->nid)
+    ->execute();
+}
+
+/**
+ * Implements hook_node_revision_delete().
+ *
+ * Clean up field_weight_multiple table so we don't get any orphaned entries.
+ */
+function field_weight_multiple_node_revision_delete($node) {
+  db_delete('field_weight_multiple')
+    ->condition('vid', $node->vid)
+    ->execute();
+}
+
+/**
+ * Implements hook_node_insert().
+ *
+ * If cloning a node, we want to copy the field weights as well.
+ */
+function field_weight_multiple_node_insert($node) {
+  if (isset($node->clone_from_original_nid)) {
+    $clone_source = node_load($node->clone_from_original_nid);
+
+    if ($clone_source) {
+      $field_weights = field_weight_multiple_get_weight($clone_source->vid);
+    }
+
+    if ($field_weights) {
+      // And just save it with the new vid
+      db_merge('field_weight_multiple')
+        ->key(array('vid' => $node->vid))
+        ->fields(array(
+          'nid' => $node->nid,
+          'vid' => $node->vid,
+          'type' => $node->type,
+          'field_weights' => serialize($field_weights),
+        ))
+        ->execute();
+    }
+  }
+}
+
+/**
+ * Implements hook_node_update().
+ *
+ * When we create a new revision, we want to copy the
+ * field_weight_multiple * definitions
+ * from the old revision if any exist.
+ */
+function field_weight_multiple_node_update($node) {
+  // Don't need to do anything if no new revision...
+  if ($node->original->vid !== $node->vid) {
+    $field_weights = field_weight_multiple_get_weight($node->original->vid);
+
+    // ...or if no field weights.
+    if ($field_weights) {
+      // And just save it with the new vid
+      db_merge('field_weight_multiple')
+        ->key(array('vid' => $node->vid))
+        ->fields(array(
+          'nid' => $node->nid,
+          'vid' => $node->vid,
+          'type' => $node->type,
+          'field_weights' => serialize($field_weights),
+        ))
+        ->execute();
+    }
+  }
+}
+
+/**
+ * Implements hook_entity_view_alter().
+ */
+function field_weight_multiple_entity_view_alter(&$build, $type) {
+  // So, we are engaging in some righteous evil surgery here. We're going to
+  // pull out the individual field items and put them in $build,
+  // along with #weight. Then we will remove the main field wrappers from $build.
+
+  // Similar logic to field_weight here
+  if ($type == 'node') { // May be replaced with option variables, if this expands to all entities.
+    // Check if the bundle type is enabled.
+    $enabled_node_types = variable_get('field_weight_node_types', array());
+    if (in_array($build['#bundle'], $enabled_node_types, TRUE)) {
+      // See if any field delta weights have been set.
+      $multi_weights = field_weight_multiple_get_weight($build['#node']->vid);
+      if ($multi_weights) {
+        // Unset all field wrappers from $build.
+        $fields = _field_weight_multiple_parse(field_info_instances('node', $build['#node']->type));
+
+        foreach ($fields as $field) {
+          if (isset($build[$field])) {
+            // Get a copy of the field
+            $field_structure = $build[$field];
+
+            // Add the deltas to $build
+            $node_multi_items = $build[$field]['#items'];
+
+            foreach ($node_multi_items as $delta => $node_multi) {
+              // Use the render array that's already in the $build array,
+              // for maximum predictability or something
+              // Put it underneath the existing field wrapper structure
+              // and fix up the IDs/contents
+              $build["{$field}_{$delta}"] = $field_structure;
+              $new_item = &$build["{$field}_{$delta}"];
+
+              // Unset deltas that aren't this one
+              foreach (element_children($new_item) as $element_delta) {
+                if ($element_delta !== $delta) {
+                  unset($new_item[$element_delta]);
+                  unset($new_item['#items'][$element_delta]);
+                }
+              }
+            }
+
+            unset($build[$field]);
+          }
+        }
+
+        // Apply weight/hidden settings.
+        foreach ($multi_weights as $key => $values) {
+          $build[$key]['#weight'] = $values['weight'];
+          if ($values['hidden'] == TRUE) {
+            // If field has been hidden set this to FALSE, therefore
+            // won't be displayed.
+            $build[$key]['#access'] = FALSE;
+          }
+        }
+      }
+    }
+  }
+}
+

@@ -1,0 +1,4 @@
+name = Site iFrame Field Formatter
+description = "Add a new field formatter to display Acton Iframes / file resources"
+package = Fields
+core = 7.x

@@ -1,0 +1,1243 @@
+<?xml version='1.0' encoding='utf-8'?>
+<items>
+<item id="bonnier-konserniin-kuuluva-porvoon-kirjakeskus-valitsi-jeevesin-toiminnanohjausjarjestelmakseen">
+ <metadata xmlns="http://plone.org/ns/archetypes/" xmlns:cmf="http://cmf.zope.org/namespaces/default/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xmp="adobe:ns:meta">
+  <dc:title>
+   Bonnier-konserniin kuuluva Porvoon Kirjakeskus valitsi Jeevesin toiminnanohjausjärjestelmäkseen
+  </dc:title>
+  <dc:description>
+   Suomen johtavien kustantamoiden logistiikkakumppani Porvoon Kirjakeskus tarvitsee toiminnanohjausjärjestelmän, joka tukee prosesseja yksityiskohtaisesti. Viime vuonna Bonnier osti Porvoon Kirjakeskuksen, joka nyt ottaa käyttöön Jeevesin parantaakseen logistiikkatoimintojaan sekä yhteistyötään asiakkaidensa kanssa.
+  </dc:description>
+  <dc:creator>
+   Tskjaergaard
+  </dc:creator>
+  <dc:language>
+   fi
+  </dc:language>
+  <xmp:createdate>
+   2013-01-28T08:12:41Z
+  </xmp:createdate>
+  <xmp:modifydate>
+   2013-01-28T08:13:33Z
+  </xmp:modifydate>
+  <field mimetype="text/plain" name="id">
+   bonnier-konserniin-kuuluva-porvoon-kirjakeskus-valitsi-jeevesin-toiminnanohjausjarjestelmakseen
+  </field>
+  <field mimetype="text/plain" name="effectiveDate">
+   2013/01/25 00:00:00 GMT+1
+  </field>
+  <uid>
+   2f7d6313-230e-4e5d-99ee-a09fcc3e661b
+  </uid>
+  <cmf:type>
+   Press Release
+  </cmf:type>
+  <cmf:workflow_history>
+   <cmf:workflow id="linguaflow">
+    <cmf:history>
+     <cmf:var id="action" type="None" value="None">
+     </cmf:var>
+     <cmf:var id="actor" type="str" value="Tskjaergaard">
+     </cmf:var>
+     <cmf:var id="comments" type="str" value="">
+     </cmf:var>
+     <cmf:var id="review_state" type="str" value="valid">
+     </cmf:var>
+     <cmf:var id="time" type="date" value="2013-01-28T09:12:41+01:00">
+     </cmf:var>
+    </cmf:history>
+   </cmf:workflow>
+   <cmf:workflow id="plone_workflow">
+    <cmf:history>
+     <cmf:var id="action" type="None" value="None">
+     </cmf:var>
+     <cmf:var id="actor" type="str" value="Tskjaergaard">
+     </cmf:var>
+     <cmf:var id="comments" type="str" value="">
+     </cmf:var>
+     <cmf:var id="review_state" type="str" value="private">
+     </cmf:var>
+     <cmf:var id="time" type="date" value="2013-01-28T09:12:41+01:00">
+     </cmf:var>
+    </cmf:history>
+   </cmf:workflow>
+  </cmf:workflow_history>
+  <cmf:security>
+  </cmf:security>
+  <cmf:security role="Owner" user_id="Tskjaergaard">
+  </cmf:security>
+ </metadata>
+</item>
+<item id="mepco-jeeves-toiminnanohjauksen-toimittajaksi-jatkamaan-accountor-groupin-edustusta">
+ <metadata xmlns="http://plone.org/ns/archetypes/" xmlns:cmf="http://cmf.zope.org/namespaces/default/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xmp="adobe:ns:meta">
+  <dc:title>
+   Mepco Jeeves-toiminnanohjauksen toimittajaksi jatkamaan Accountor Groupin edustusta
+  </dc:title>
+  <dc:description>
+   Mepco Oy on tehnyt yhteistyösopimuksen pienille ja keskisuurille yrityksille liiketoimintajärjestelmiä kehittävän ruotsalaisen Jeeves Information Systems AB:n kanssa.
+  </dc:description>
+  <dc:creator>
+   cecilia
+  </dc:creator>
+  <dc:language>
+   fi
+  </dc:language>
+  <xmp:createdate>
+   2012-01-10T08:55:10Z
+  </xmp:createdate>
+  <xmp:modifydate>
+   2012-01-10T10:05:46Z
+  </xmp:modifydate>
+  <field mimetype="text/plain" name="id">
+   mepco-jeeves-toiminnanohjauksen-toimittajaksi-jatkamaan-accountor-groupin-edustusta
+  </field>
+  <field mimetype="text/html" name="text">
+   &lt;p&gt;Jeeves on toimittanut joustavia ja elinkaarikustannuksiltaan matalia ERP-ratkaisuja yli 4 000 asiakkaalle yli 40 maassa. Mepcosta yhtiö saa vahvan kumppanin jatkamaan Accountor Groupin tähän asti hoitamaa edustusta Suomen markkinoilla.&lt;/p&gt;
+&lt;p&gt;Mepco tarjoaa Jeevesiä taloushallintoon ja toiminnanohjaukseen sekä asiakaskohtaisina toimituksina että huolettomina pilvipalveluina. Accountor Groupin kautta tuotetaan myös talouden ulkoistuspalveluja.&lt;/p&gt;
+&lt;p&gt;”Näemme Suomessa kasvavan kysynnän joustavalle ERP-järjestelmälle, joka mahdollistaa ripeän ja kustannustehokkaan käyttöönoton sekä jatkuvan kehittämisen. Mepcolla on tarvittavaa ammattitaitoa ja kompetensseja modernin ERP-ratkaisumme asiakastoimituksiin. Odotuksemme ovat korkealla ja olemme tyytyväisiä saadessamme Mepcosta Jeeves-kumppanin”, Vice President Nordic Sales Lars Dahlberg Jeeves Information Systems AB:sta sanoo.&lt;/p&gt;
+&lt;p&gt;”Jeeves-toiminnanohjauksella voimme palvella entistä paremmin myös pienempiä organisaatioita. Ratkaisun vahvuudet näkyvät nopeassa ja edullisessa käyttöönotossa sekä joustavassa ylläpidossa. Markkinoilla on selvä tilaus perinteisestä toiminnanohjauksesta poikkeavalle erittäin ketterälle ERP-ratkaisulle”, konsultointijohtaja Kari Tuomikoski Mepco Oy:stä toteaa.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Lisätiedot&lt;/strong&gt;&lt;br /&gt;Mepco: Kari Tuomikoski, konsultointijohtaja, &lt;br /&gt;puh. 040 772 2107, &lt;a class=&quot;email-link&quot; href=&quot;mailto:kari.tuomikoski@mepco.fi&quot; target=&quot;_self&quot; title=&quot;&quot;&gt;kari.tuomikoski@mepco.fi&lt;/a&gt;&lt;br /&gt;Jeeves Information Systems AB: Lars Dahlberg, Vice president Nordic Sales,&lt;br /&gt;puh. +46 8 587 099 68, &lt;a class=&quot;email-link&quot; href=&quot;mailto:lars.dahlberg@jeeves.se&quot; target=&quot;_self&quot; title=&quot;&quot;&gt;lars.dahlberg@jeeves.se&lt;/a&gt;&lt;br /&gt;&lt;br /&gt;&lt;em&gt;&lt;strong&gt;Jeeves Information Systems AB (Jeeves)&lt;/strong&gt; kehittää toiminnanohjausjärjestelmiä pienille ja keskisuurille yrityksille. Joka päivä yli 4 000 yritystä yli 40 maassa käyttää Jeeves Selected-, Jeeves Universal- tai Garp-ratkaisua. Kaikki tuotteet tarjoavat laajaa toiminnallisuutta markkinoiden pienimpiin kuuluvilla elinkaarikustannuksilla. Yhtiön pääkonttori on Tukholmassa ja Jeevesin osakkeet on listattu vuodesta 1999 alkaen NASDAQ OMX Nordic Exchangen Small Cap -listalla. Lisätiedot www.jeeves.se/fi.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;&lt;strong&gt;Mepco Oy&lt;/strong&gt; toimittaa ratkaisuja yritysten ja julkishallinnon asiakkuudenhallintaan, talouden- ja toiminnanohjaukseen sekä henkilöstönohjaukseen. Mepco on ansainnut Microsoftin kultakompetenssit kaikilla liiketoiminta-alueillaan. Lisäksi yhtiö on nimetty neljä kertaa maailman parhaiden Microsoft Dynamics  toimittajien joukkoon. Mepcon palveluksessa on noin 130 henkilöä Helsingissä, Tampereella, Turussa ja Vaasassa. Mepco on osa Accountor Groupia, joka on Pohjois-Euroopan suurin talous- ja palkkahallinnon palvelujen tuottaja. Lisätiedot &lt;a class=&quot;external-link&quot; href=&quot;http://www.mepco.fi&quot; target=&quot;_self&quot; title=&quot;&quot;&gt;www.mepco.fi&lt;/a&gt;.&lt;/em&gt;&lt;br /&gt;&lt;br /&gt;&lt;/p&gt;
+  </field>
+  <field mimetype="text/plain" name="effectiveDate">
+   2012/01/10 09:55:00 GMT+1
+  </field>
+  <uid>
+   e94750dc-5c0a-4699-8dfa-642c1a86905f
+  </uid>
+  <cmf:type>
+   Press Release
+  </cmf:type>
+  <cmf:workflow_history>
+   <cmf:workflow id="linguaflow">
+    <cmf:history>
+     <cmf:var id="action" type="None" value="None">
+     </cmf:var>
+     <cmf:var id="actor" type="str" value="cecilia">
+     </cmf:var>
+     <cmf:var id="comments" type="str" value="">
+     </cmf:var>
+     <cmf:var id="review_state" type="str" value="valid">
+     </cmf:var>
+     <cmf:var id="time" type="date" value="2012-01-10T09:55:10+01:00">
+     </cmf:var>
+    </cmf:history>
+   </cmf:workflow>
+   <cmf:workflow id="plone_workflow">
+    <cmf:history>
+     <cmf:var id="action" type="None" value="None">
+     </cmf:var>
+     <cmf:var id="actor" type="str" value="cecilia">
+     </cmf:var>
+     <cmf:var id="comments" type="str" value="">
+     </cmf:var>
+     <cmf:var id="review_state" type="str" value="private">
+     </cmf:var>
+     <cmf:var id="time" type="date" value="2012-01-10T09:55:10+01:00">
+     </cmf:var>
+    </cmf:history>
+    <cmf:history>
+     <cmf:var id="action" type="str" value="publish">
+     </cmf:var>
+     <cmf:var id="actor" type="str" value="cecilia">
+     </cmf:var>
+     <cmf:var id="comments" type="str" value="">
+     </cmf:var>
+     <cmf:var id="review_state" type="str" value="published">
+     </cmf:var>
+     <cmf:var id="time" type="date" value="2012-01-10T09:55:30+01:00">
+     </cmf:var>
+    </cmf:history>
+   </cmf:workflow>
+  </cmf:workflow_history>
+  <cmf:security>
+  </cmf:security>
+  <cmf:security role="Owner" user_id="cecilia">
+  </cmf:security>
+ </metadata>
+</item>
+<item id="okaria-oy-luottaa-jeeves-universal-toiminnanohjausjarjestelmaan">
+ <metadata xmlns="http://plone.org/ns/archetypes/" xmlns:cmf="http://cmf.zope.org/namespaces/default/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xmp="adobe:ns:meta">
+  <dc:title>
+   Okaria Oy luottaa Jeeves Universal –toiminnanohjausjärjestelmään
+  </dc:title>
+  <dc:description>
+   Okaria Oy luottaa Jeeves Universal –toiminnanohjausjärjestelmään ja Merit Consultingiin (Jeeves Kumppani) Suomessa.
+  </dc:description>
+  <dc:creator>
+   cecilia
+  </dc:creator>
+  <dc:language>
+   fi
+  </dc:language>
+  <xmp:createdate>
+   2011-03-16T13:08:38Z
+  </xmp:createdate>
+  <xmp:modifydate>
+   2011-09-21T09:24:13Z
+  </xmp:modifydate>
+  <field mimetype="text/plain" name="id">
+   okaria-oy-luottaa-jeeves-universal-toiminnanohjausjarjestelmaan
+  </field>
+  <field mimetype="text/html" name="text">
+   &lt;p&gt;Okaria Oy &lt;a href=&quot;http://www.okaria.fi/&quot; target=&quot;_blank&quot;&gt;(www.okaria.fi&lt;/a&gt;) kehittää ja myy betonivalutarvikkeita rakennusteollisuudelle. Okaria valitsi Jeeves Universal –toiminnanohjausjärjestelmän toimintansa tukijalaksi. Projekti on aloitettu syyskuussa 2011 ja se tullaan toteuttamaan Meritin omalla Merit Wise-projektimallilla. Käyttöönotto on ajoitettu tämän vuoden loppuun.&lt;strong&gt;&lt;br /&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;br /&gt;Lisätiedot:&lt;/strong&gt;&lt;br /&gt;Sampo Karjalainen +358 40&amp;nbsp;841 7771 (&lt;a class=&quot;external-link&quot; href=&quot;mailto:sampo.karjalainen@meritglobe.com&quot;&gt;sampo.karjalainen@meritglobe.com&lt;/a&gt;)&lt;br /&gt;Suvi Vesanen +358 44&amp;nbsp;354 6442 (&lt;a class=&quot;external-link&quot; href=&quot;mailto:suvi@okaria.fi&quot;&gt;suvi@okaria.fi&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;br /&gt;Jeeves in brief&lt;/strong&gt;&lt;br /&gt;&lt;em&gt;Jeeves Information
+Systems AB (Jeeves) develops ERP systems for small and midsized
+companies. Each day, more than 4,000 companies in more than 40 countries
+ use one of Jeeves’ ERP systems: Jeeves Selected, Jeeves Universal, or
+Garp. All products offer broad functionality at one of the lowest total
+costs of ownership in the market. The head office is located in
+Stockholm, Sweden, and Jeeves’ shares have been listed on the NASDAQ OMX
+ Nordic Exchange (Small Cap) since 1999. For more information, please
+visit www.jeeves.se/en .&lt;br /&gt;&lt;/em&gt;&lt;/p&gt;
+  </field>
+  <field mimetype="text/plain" name="effectiveDate">
+   2011/09/19 09:00:00 GMT+2
+  </field>
+  <uid>
+   9674660ad1df40ab397ce8cb41006eea
+  </uid>
+  <cmf:type>
+   Press Release
+  </cmf:type>
+  <cmf:workflow_history>
+   <cmf:workflow id="linguaflow">
+    <cmf:history>
+     <cmf:var id="action" type="None" value="None">
+     </cmf:var>
+     <cmf:var id="actor" type="str" value="cecilia">
+     </cmf:var>
+     <cmf:var id="comments" type="str" value="">
+     </cmf:var>
+     <cmf:var id="review_state" type="str" value="valid">
+     </cmf:var>
+     <cmf:var id="time" type="date" value="2011-03-16T14:08:38+01:00">
+     </cmf:var>
+    </cmf:history>
+    <cmf:history>
+     <cmf:var id="action" type="str" value="nochange">
+     </cmf:var>
+     <cmf:var id="actor" type="str" value="cecilia">
+     </cmf:var>
+     <cmf:var id="comments" type="str" value="Fields changed: text,id,title">
+     </cmf:var>
+     <cmf:var id="review_state" type="str" value="valid">
+     </cmf:var>
+     <cmf:var id="time" type="date" value="2011-03-16T14:08:39+01:00">
+     </cmf:var>
+    </cmf:history>
+    <cmf:history>
+     <cmf:var id="action" type="str" value="nochange">
+     </cmf:var>
+     <cmf:var id="actor" type="str" value="cecilia">
+     </cmf:var>
+     <cmf:var id="comments" type="str" value="Fields changed: text">
+     </cmf:var>
+     <cmf:var id="review_state" type="str" value="valid">
+     </cmf:var>
+     <cmf:var id="time" type="date" value="2011-03-16T14:09:37+01:00">
+     </cmf:var>
+    </cmf:history>
+    <cmf:history>
+     <cmf:var id="action" type="None" value="None">
+     </cmf:var>
+     <cmf:var id="actor" type="str" value="sampok">
+     </cmf:var>
+     <cmf:var id="comments" type="str" value="">
+     </cmf:var>
+     <cmf:var id="review_state" type="str" value="valid">
+     </cmf:var>
+     <cmf:var id="time" type="date" value="2011-09-20T12:39:20+02:00">
+     </cmf:var>
+    </cmf:history>
+    <cmf:history>
+     <cmf:var id="action" type="str" value="nochange">
+     </cmf:var>
+     <cmf:var id="actor" type="str" value="sampok">
+     </cmf:var>
+     <cmf:var id="comments" type="str" value="Fields changed: text,title">
+     </cmf:var>
+     <cmf:var id="review_state" type="str" value="valid">
+     </cmf:var>
+     <cmf:var id="time" type="date" value="2011-09-20T12:44:10+02:00">
+     </cmf:var>
+    </cmf:history>
+    <cmf:history>
+     <cmf:var id="action" type="str" value="nochange">
+     </cmf:var>
+     <cmf:var id="actor" type="str" value="cecilia">
+     </cmf:var>
+     <cmf:var id="comments" type="str" value="Fields changed: text">
+     </cmf:var>
+     <cmf:var id="review_state" type="str" value="valid">
+     </cmf:var>
+     <cmf:var id="time" type="date" value="2011-09-20T13:01:21+02:00">
+     </cmf:var>
+    </cmf:history>
+    <cmf:history>
+     <cmf:var id="action" type="str" value="nochange">
+     </cmf:var>
+     <cmf:var id="actor" type="str" value="cecilia">
+     </cmf:var>
+     <cmf:var id="comments" type="str" value="Fields changed: text">
+     </cmf:var>
+     <cmf:var id="review_state" type="str" value="valid">
+     </cmf:var>
+     <cmf:var id="time" type="date" value="2011-09-20T13:02:17+02:00">
+     </cmf:var>
+    </cmf:history>
+    <cmf:history>
+     <cmf:var id="action" type="str" value="nochange">
+     </cmf:var>
+     <cmf:var id="actor" type="str" value="cecilia">
+     </cmf:var>
+     <cmf:var id="comments" type="str" value="Fields changed: text">
+     </cmf:var>
+     <cmf:var id="review_state" type="str" value="valid">
+     </cmf:var>
+     <cmf:var id="time" type="date" value="2011-09-20T13:05:46+02:00">
+     </cmf:var>
+    </cmf:history>
+    <cmf:history>
+     <cmf:var id="action" type="str" value="nochange">
+     </cmf:var>
+     <cmf:var id="actor" type="str" value="cecilia">
+     </cmf:var>
+     <cmf:var id="comments" type="str" value="Fields changed: text">
+     </cmf:var>
+     <cmf:var id="review_state" type="str" value="valid">
+     </cmf:var>
+     <cmf:var id="time" type="date" value="2011-09-20T13:06:15+02:00">
+     </cmf:var>
+    </cmf:history>
+    <cmf:history>
+     <cmf:var id="action" type="str" value="nochange">
+     </cmf:var>
+     <cmf:var id="actor" type="str" value="cecilia">
+     </cmf:var>
+     <cmf:var id="comments" type="str" value="Fields changed: text">
+     </cmf:var>
+     <cmf:var id="review_state" type="str" value="valid">
+     </cmf:var>
+     <cmf:var id="time" type="date" value="2011-09-20T13:09:19+02:00">
+     </cmf:var>
+    </cmf:history>
+    <cmf:history>
+     <cmf:var id="action" type="str" value="nochange">
+     </cmf:var>
+     <cmf:var id="actor" type="str" value="cecilia">
+     </cmf:var>
+     <cmf:var id="comments" type="str" value="Fields changed: text">
+     </cmf:var>
+     <cmf:var id="review_state" type="str" value="valid">
+     </cmf:var>
+     <cmf:var id="time" type="date" value="2011-09-20T13:11:46+02:00">
+     </cmf:var>
+    </cmf:history>
+   </cmf:workflow>
+   <cmf:workflow id="plone_workflow">
+    <cmf:history>
+     <cmf:var id="action" type="None" value="None">
+     </cmf:var>
+     <cmf:var id="actor" type="str" value="cecilia">
+     </cmf:var>
+     <cmf:var id="comments" type="str" value="">
+     </cmf:var>
+     <cmf:var id="review_state" type="str" value="private">
+     </cmf:var>
+     <cmf:var id="time" type="date" value="2011-03-16T14:08:38+01:00">
+     </cmf:var>
+    </cmf:history>
+    <cmf:history>
+     <cmf:var id="action" type="str" value="publish">
+     </cmf:var>
+     <cmf:var id="actor" type="str" value="cecilia">
+     </cmf:var>
+     <cmf:var id="comments" type="str" value="">
+     </cmf:var>
+     <cmf:var id="review_state" type="str" value="published">
+     </cmf:var>
+     <cmf:var id="time" type="date" value="2011-03-16T14:10:15+01:00">
+     </cmf:var>
+    </cmf:history>
+    <cmf:history>
+     <cmf:var id="action" type="None" value="None">
+     </cmf:var>
+     <cmf:var id="actor" type="str" value="sampok">
+     </cmf:var>
+     <cmf:var id="comments" type="str" value="">
+     </cmf:var>
+     <cmf:var id="review_state" type="str" value="private">
+     </cmf:var>
+     <cmf:var id="time" type="date" value="2011-09-20T12:39:20+02:00">
+     </cmf:var>
+    </cmf:history>
+    <cmf:history>
+     <cmf:var id="action" type="str" value="publish">
+     </cmf:var>
+     <cmf:var id="actor" type="str" value="sampok">
+     </cmf:var>
+     <cmf:var id="comments" type="str" value="">
+     </cmf:var>
+     <cmf:var id="review_state" type="str" value="published">
+     </cmf:var>
+     <cmf:var id="time" type="date" value="2011-09-21T11:18:21+02:00">
+     </cmf:var>
+    </cmf:history>
+   </cmf:workflow>
+  </cmf:workflow_history>
+  <cmf:security>
+  </cmf:security>
+  <cmf:security role="Owner" user_id="sampok">
+  </cmf:security>
+ </metadata>
+</item>
+<item id="year-end-report-jan2013dec-2010">
+ <metadata xmlns="http://plone.org/ns/archetypes/" xmlns:cmf="http://cmf.zope.org/namespaces/default/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xmp="adobe:ns:meta">
+  <dc:title>
+   Year-end Report Jan–Dec 2010
+  </dc:title>
+  <dc:description>
+   Strong new sales in the Nordic region
+  </dc:description>
+  <dc:creator>
+   cecilia
+  </dc:creator>
+  <dc:language>
+   fi
+  </dc:language>
+  <xmp:createdate>
+   2011-03-16T12:36:44Z
+  </xmp:createdate>
+  <xmp:modifydate>
+   2011-03-16T12:40:14Z
+  </xmp:modifydate>
+  <field mimetype="text/plain" name="id">
+   year-end-report-jan2013dec-2010
+  </field>
+  <field mimetype="text/html" name="text">
+   &lt;span class=&quot;documentByLine&quot;&gt;&lt;/span&gt;
+&lt;div id=&quot;parent-fieldname-text&quot; class=&quot;plain&quot;&gt;
+&lt;ul&gt;&lt;li&gt;Revenue from continuing operations totaled SEK 177.0 million (180.4), down
+2% (+13)&lt;/li&gt;&lt;li&gt;Software revenues (licenses and maintenance) rose 7% (6)&lt;/li&gt;&lt;li&gt;Operating profit before depreciations and amortizations was SEK 27.7 million
+(28.4)&lt;/li&gt;&lt;li&gt;Operating profit was SEK 1.9 million (14.3), the operating margin 1% (8).
+Focusing the product strategy caused an impairment loss of SEK 11.1 million in
+R&amp;amp;D&lt;/li&gt;&lt;li&gt;Net profit totaled SEK 0.1 million (10.1), the profit margin 0% (6)&lt;/li&gt;&lt;li&gt;Earnings per share after tax equaled SEK 0.02 (3.54)&lt;/li&gt;&lt;li&gt;Cash flow was SEK -16.0 million (3.8), and cash, cash equivalents, and
+current investments totaled SEK 25.3 million (42.2). Redemption of Jeeves’
+convertible debentures has been made, SEK 12.6 million.&lt;/li&gt;&lt;li&gt;The equity/assets ratio was 34% (33)&lt;/li&gt;&lt;li&gt;The Board of Directors proposes a dividend of 1.50 per share
+(1.50)&lt;/li&gt;&lt;/ul&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;p&gt;The market has returned to normal levels, and Jeeves is expanding sales to
+new customers. Software revenues increased 7% during the period. EBITDA was SEK
+27.7 million, in line with last year. However, the operating profit of SEK 1.9
+million fell short of our expectations. We must note that fourth-quarter
+operating profit was charged impairment of SEK 11.1 million on capitalized
+research and development expenditure.&lt;/p&gt;
+&lt;p&gt;Sales for the full year ended at SEK 177.1 million, compared to SEK 181.4
+million the preceding year. Sales growth faltered as a result of the divestment
+of the business in Reveny. During the period, revenue for comparable units
+increased year on year.&lt;/p&gt;
+&lt;p&gt;Our Nordic operations are doing well, as sales of licenses to new customers
+expanded 32% during the year. New sales were robust primarily in Sweden and
+Norway, which means we are winning market share. Capacity utilization in our
+Norwegian consulting business improved but has yet to return to the desired
+level. At the same time, this year’s earnings were reduced by restructuring
+costs.&lt;/p&gt;
+&lt;p&gt;International sales grew, and about 40% of revenues come from customers
+outside Sweden. However, new sales by our international partners outside the
+Nordic region remained weak. Our international consultants had satisfactory
+capacity utilization in several international roll-out projects initiated during
+the year.&lt;/p&gt;
+&lt;p&gt;During this quarter we made the decision to focus our product strategy on the
+Microsoft-based platform that serves as the foundation for our current ERP
+systems. To date, we have enjoyed great success, and this expands our
+possibilities for leveraging the potential inherent in the platform.&lt;/p&gt;
+&lt;p&gt;I have great faith in Jeeves. We have won ground as an ERP system attractive
+to small and medium-sized enterprises. During the year, our partners developed
+several cutting-edge concepts and industry solutions. New sales are increasing,
+we are winning more major orders in the upper portion of the SME segment, and a
+growing number of customers are choosing to roll out Jeeves internationally.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;br /&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;For more&amp;nbsp;information:&lt;/strong&gt; &lt;br /&gt;CEO &lt;a class=&quot;external-link&quot; href=&quot;mailto:bengt-ake.algevik@jeeves.se&quot;&gt;&lt;u&gt;Bengt-Åke Älgevik&lt;/u&gt;&lt;/a&gt;, +46 8
+587 099 00 or CFO &lt;a class=&quot;external-link&quot; href=&quot;mailto:anna.salomon-sorensen@jeeves.se&quot;&gt;&lt;u&gt;Anna Salomon-Sörensen&lt;/u&gt;&lt;/a&gt;
++46 8 587 099 45.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;&lt;strong&gt;&lt;br /&gt;&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;&lt;strong&gt;About Jeeves Information Systems&lt;br /&gt;&lt;/strong&gt;Jeeves Information
+Systems AB (Jeeves) develops ERP systems for small and midsized companies. Every
+day, Jeeves' ERP solutions; Jeeves Universal, Jeeves Selected and Garp, are used
+by more than 4 000 companies in over 40 countries. All products offer wide
+functionality at one of the lowest total cost of ownership in the market. Head
+office is located in Stockholm, Sweden and Jeeves is listed on NASDAQ OMX Nordic
+Exchange (Small Cap) since 1999. For more information, please visit &lt;/em&gt;&lt;a href=&quot;../../../.&quot;&gt;&lt;em&gt;www.jeeves.se/en&lt;/em&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&quot;external-link&quot; href=&quot;http://www.jeeves.se/investors/en/investor-relations/financial-reports&quot; target=&quot;_blank&quot;&gt;Read entire report [...] &lt;/a&gt;&lt;br /&gt;&lt;a href=&quot;../../../.&quot;&gt;&lt;em&gt;&lt;/em&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+  </field>
+  <field mimetype="text/plain" name="effectiveDate">
+   2011/02/04 09:00:00 GMT+1
+  </field>
+  <uid>
+   e99553ae36eb3cff1e1789429dcf21bf
+  </uid>
+  <cmf:type>
+   Press Release
+  </cmf:type>
+  <cmf:workflow_history>
+   <cmf:workflow id="linguaflow">
+    <cmf:history>
+     <cmf:var id="action" type="None" value="None">
+     </cmf:var>
+     <cmf:var id="actor" type="str" value="cecilia">
+     </cmf:var>
+     <cmf:var id="comments" type="str" value="">
+     </cmf:var>
+     <cmf:var id="review_state" type="str" value="valid">
+     </cmf:var>
+     <cmf:var id="time" type="date" value="2011-03-16T13:36:44+01:00">
+     </cmf:var>
+    </cmf:history>
+    <cmf:history>
+     <cmf:var id="action" type="str" value="nochange">
+     </cmf:var>
+     <cmf:var id="actor" type="str" value="cecilia">
+     </cmf:var>
+     <cmf:var id="comments" type="str" value="Fields changed: text,id,title">
+     </cmf:var>
+     <cmf:var id="review_state" type="str" value="valid">
+     </cmf:var>
+     <cmf:var id="time" type="date" value="2011-03-16T13:36:46+01:00">
+     </cmf:var>
+    </cmf:history>
+   </cmf:workflow>
+   <cmf:workflow id="plone_workflow">
+    <cmf:history>
+     <cmf:var id="action" type="None" value="None">
+     </cmf:var>
+     <cmf:var id="actor" type="str" value="cecilia">
+     </cmf:var>
+     <cmf:var id="comments" type="str" value="">
+     </cmf:var>
+     <cmf:var id="review_state" type="str" value="private">
+     </cmf:var>
+     <cmf:var id="time" type="date" value="2011-03-16T13:36:44+01:00">
+     </cmf:var>
+    </cmf:history>
+    <cmf:history>
+     <cmf:var id="action" type="str" value="publish">
+     </cmf:var>
+     <cmf:var id="actor" type="str" value="cecilia">
+     </cmf:var>
+     <cmf:var id="comments" type="str" value="">
+     </cmf:var>
+     <cmf:var id="review_state" type="str" value="published">
+     </cmf:var>
+     <cmf:var id="time" type="date" value="2011-03-16T13:36:55+01:00">
+     </cmf:var>
+    </cmf:history>
+   </cmf:workflow>
+  </cmf:workflow_history>
+  <cmf:security>
+  </cmf:security>
+  <cmf:security role="Owner" user_id="cecilia">
+  </cmf:security>
+ </metadata>
+</item>
+<item id="rima-switches-to-jeeves2019-erp-system">
+ <metadata xmlns="http://plone.org/ns/archetypes/" xmlns:cmf="http://cmf.zope.org/namespaces/default/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xmp="adobe:ns:meta">
+  <dc:title>
+   RIMA switches to Jeeves’ ERP system
+  </dc:title>
+  <dc:description>
+   Swedish manufacturer RIMA has chosen the ERP system Jeeves Universal to support its operations. The transaction covers about 10 user licenses, and Jeeves’ partner Ninetech is responsible for implementation.
+  </dc:description>
+  <dc:creator>
+   cecilia
+  </dc:creator>
+  <dc:language>
+   fi
+  </dc:language>
+  <xmp:createdate>
+   2011-03-16T13:08:38Z
+  </xmp:createdate>
+  <xmp:modifydate>
+   2011-03-16T13:10:14Z
+  </xmp:modifydate>
+  <field mimetype="text/plain" name="id">
+   rima-switches-to-jeeves2019-erp-system
+  </field>
+  <field mimetype="text/html" name="text">
+   &lt;p&gt;RIMA, whose official name is Richard Magnusson AB, is a
+third-generation family business that manufactures and supplies gaskets,
+ packings, and maintenance products to various industrial segments. When
+ the company’s existing ERP system was put out to pasture, a new, modern
+ solution was needed.&lt;/p&gt;
+&lt;p&gt;“After evaluating numerous alternatives, we chose Jeeves Universal.
+We realize that now we’ll be able to streamline and improve our
+accounting functions and even our routines for orders, inventory, and
+invoicing. The final choice was easy, because we already had a
+relationship with Jeeves’ partner Ninetech, who has our complete
+confidence,” says Lars-Göran Magnusson, CEO of RIMA.&lt;/p&gt;
+&lt;p&gt;Jeeves’ partner Ninetech will implement the system during spring 2011.&lt;strong&gt;&lt;br /&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;br /&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;For more information:&lt;/strong&gt;&lt;br /&gt;Lars Dahlberg, Sales Director, Jeeves Information Systems&lt;br /&gt;+46-8-5870-9968,&lt;a class=&quot;external-link&quot; href=&quot;mailto:lars.dahlberg@jeeves.se&quot;&gt; lars.dahlberg@jeeves.se&lt;/a&gt;, &lt;a class=&quot;external-link&quot; href=&quot;../../../&quot;&gt;www.jeeves.se&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Lars-Göran Magnusson, CEO, RIMA&lt;br /&gt;+46-31-779-9892, &lt;a class=&quot;external-link&quot; href=&quot;mailto:lars-goran.magnusson@rima.se&quot;&gt;lars-goran.magnusson@rima.se&lt;/a&gt;, &lt;a class=&quot;external-link&quot; href=&quot;http://www.rima.se/&quot; target=&quot;_blank&quot;&gt;www.rima.se&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;em&gt;&lt;strong&gt;Jeeves in brief&lt;/strong&gt;&lt;br /&gt;Jeeves Information
+Systems AB (Jeeves) develops ERP systems for small and midsized
+companies. Each day, more than 4,000 companies in more than 40 countries
+ use one of Jeeves’ ERP systems: Jeeves Selected, Jeeves Universal, or
+Garp. All products offer broad functionality at one of the lowest total
+costs of ownership in the market. The head office is located in
+Stockholm, Sweden, and Jeeves’ shares have been listed on the NASDAQ OMX
+ Nordic Exchange (Small Cap) since 1999. For more information, please
+visit www.jeeves.se/en&lt;/em&gt;
+  </field>
+  <field mimetype="text/plain" name="effectiveDate">
+   2011/02/15 09:00:00 GMT+1
+  </field>
+  <uid>
+   c27627ea9e4e5af9f55f0c6b308bb2b9
+  </uid>
+  <cmf:type>
+   Press Release
+  </cmf:type>
+  <cmf:workflow_history>
+   <cmf:workflow id="linguaflow">
+    <cmf:history>
+     <cmf:var id="action" type="None" value="None">
+     </cmf:var>
+     <cmf:var id="actor" type="str" value="cecilia">
+     </cmf:var>
+     <cmf:var id="comments" type="str" value="">
+     </cmf:var>
+     <cmf:var id="review_state" type="str" value="valid">
+     </cmf:var>
+     <cmf:var id="time" type="date" value="2011-03-16T14:08:38+01:00">
+     </cmf:var>
+    </cmf:history>
+    <cmf:history>
+     <cmf:var id="action" type="str" value="nochange">
+     </cmf:var>
+     <cmf:var id="actor" type="str" value="cecilia">
+     </cmf:var>
+     <cmf:var id="comments" type="str" value="Fields changed: text,id,title">
+     </cmf:var>
+     <cmf:var id="review_state" type="str" value="valid">
+     </cmf:var>
+     <cmf:var id="time" type="date" value="2011-03-16T14:08:39+01:00">
+     </cmf:var>
+    </cmf:history>
+    <cmf:history>
+     <cmf:var id="action" type="str" value="nochange">
+     </cmf:var>
+     <cmf:var id="actor" type="str" value="cecilia">
+     </cmf:var>
+     <cmf:var id="comments" type="str" value="Fields changed: text">
+     </cmf:var>
+     <cmf:var id="review_state" type="str" value="valid">
+     </cmf:var>
+     <cmf:var id="time" type="date" value="2011-03-16T14:09:37+01:00">
+     </cmf:var>
+    </cmf:history>
+   </cmf:workflow>
+   <cmf:workflow id="plone_workflow">
+    <cmf:history>
+     <cmf:var id="action" type="None" value="None">
+     </cmf:var>
+     <cmf:var id="actor" type="str" value="cecilia">
+     </cmf:var>
+     <cmf:var id="comments" type="str" value="">
+     </cmf:var>
+     <cmf:var id="review_state" type="str" value="private">
+     </cmf:var>
+     <cmf:var id="time" type="date" value="2011-03-16T14:08:38+01:00">
+     </cmf:var>
+    </cmf:history>
+    <cmf:history>
+     <cmf:var id="action" type="str" value="publish">
+     </cmf:var>
+     <cmf:var id="actor" type="str" value="cecilia">
+     </cmf:var>
+     <cmf:var id="comments" type="str" value="">
+     </cmf:var>
+     <cmf:var id="review_state" type="str" value="published">
+     </cmf:var>
+     <cmf:var id="time" type="date" value="2011-03-16T14:10:15+01:00">
+     </cmf:var>
+    </cmf:history>
+   </cmf:workflow>
+  </cmf:workflow_history>
+  <cmf:security>
+  </cmf:security>
+  <cmf:security role="Owner" user_id="cecilia">
+  </cmf:security>
+ </metadata>
+</item>
+<item id="hl-display-opts-for-jeeves2019-erp-system-worldwide">
+ <metadata xmlns="http://plone.org/ns/archetypes/" xmlns:cmf="http://cmf.zope.org/namespaces/default/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xmp="adobe:ns:meta">
+  <dc:title>
+   HL Display opts for Jeeves’ ERP system worldwide
+  </dc:title>
+  <dc:description>
+   HL Display was looking for an ERP system that could support its global business model more efficiently and discovered that it already had the solution. HL Display is going to redeploy Jeeves Universal to support its operations in 34 countries. The number of users will increase, from 400, to 500. The transaction was arranged by Jeeves’ partner SYSteam.
+  </dc:description>
+  <dc:creator>
+   cecilia
+  </dc:creator>
+  <dc:language>
+   fi
+  </dc:language>
+  <xmp:createdate>
+   2011-03-16T12:38:42Z
+  </xmp:createdate>
+  <xmp:modifydate>
+   2011-03-16T12:40:46Z
+  </xmp:modifydate>
+  <field mimetype="text/plain" name="id">
+   hl-display-opts-for-jeeves2019-erp-system-worldwide
+  </field>
+  <field mimetype="text/html" name="text">
+   &lt;p&gt;This transaction entails a bundled product offering for HL Display’s global
+organization and includes orders, inventory, purchasing, invoicing, production,
+and more. The global business model also means that the internal logistics chain
+between production, distribution, and sales companies will be overhauled from
+the ground up, which will demand a redeployment.&lt;/p&gt;
+&lt;p&gt;“The purpose is to boost efficiency in every activity in the company. The
+choice of ERP system was crucial to us, because it is what enables us to execute
+our global business model. Jeeves Universal fulfills all the demands we’ve made
+and is an ERP system we’ve had great confidence in for some time,” says Fredrik
+Birkhammar, CIO, HL Display.&lt;/p&gt;
+&lt;div id=&quot;parent-fieldname-text&quot; class=&quot;plain&quot;&gt;
+&lt;p&gt;“As far back as in 1997, HL Display began to use Jeeves ERP systems, making
+them one of our oldest customers. Naturally, we’re extremely proud they’ve shown
+this renewed trust in us,” says Johan Krantz, Sales Director, Jeeves
+Universal.&lt;/p&gt;
+&lt;p&gt;HL Display is expert in merchandising and in-store communication and supplies
+products and solutions to customers in the food and non-food retail sectors as
+well as to brand manufacturers. The company has sales of approximately SEK 1.4
+billion (2009) and has operations in 34 countries with 1,100 employees.&lt;/p&gt;
+&lt;p&gt;The transaction was recognized in the accounts for the fourth quarter of
+2010.&lt;/p&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;For more information, please contact:&lt;br /&gt;&lt;/strong&gt;Johan Krantz, Sales
+Director, Jeeves Universal&lt;br /&gt;+46-704-801-867&lt;br /&gt;&lt;a href=&quot;mailto:johan.krantz@jeeves.se&quot;&gt;johan.krantz@jeeves.se&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Fredrik Birkhammar, CIO, HL Display&lt;br /&gt;+46-705-844-603&lt;br /&gt;&lt;a href=&quot;mailto:fredrik.birkhammar@hl-display.com&quot;&gt;fredrik.birkhammar@hl-display.com&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;&lt;strong&gt;Jeeves in brief&lt;br /&gt;&lt;/strong&gt;Jeeves Information Systems AB
+(Jeeves) develops ERP systems for small and midsized companies. Each day, more
+than 4,000 companies in more than 40 countries use one of Jeeves’ ERP systems:
+Jeeves Selected, Jeeves Universal, or Garp. All products offer broad
+functionality at one of the lowest total costs of ownership in the market. The
+head office is located in Stockholm, Sweden, and Jeeves’ shares have been listed
+on the NASDAQ OMX Nordic Exchange (Small Cap) since 1999. For more information,
+please visit &lt;/em&gt;&lt;a href=&quot;../../../../en&quot;&gt;&lt;em&gt;www.jeeves.se/en&lt;/em&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+  </field>
+  <field mimetype="text/plain" name="effectiveDate">
+   2011/02/07 09:00:00 GMT+1
+  </field>
+  <uid>
+   799183f8baaf2319960a4a62a8c24aca
+  </uid>
+  <cmf:type>
+   Press Release
+  </cmf:type>
+  <cmf:workflow_history>
+   <cmf:workflow id="linguaflow">
+    <cmf:history>
+     <cmf:var id="action" type="None" value="None">
+     </cmf:var>
+     <cmf:var id="actor" type="str" value="cecilia">
+     </cmf:var>
+     <cmf:var id="comments" type="str" value="">
+     </cmf:var>
+     <cmf:var id="review_state" type="str" value="valid">
+     </cmf:var>
+     <cmf:var id="time" type="date" value="2011-03-16T13:38:42+01:00">
+     </cmf:var>
+    </cmf:history>
+    <cmf:history>
+     <cmf:var id="action" type="str" value="nochange">
+     </cmf:var>
+     <cmf:var id="actor" type="str" value="cecilia">
+     </cmf:var>
+     <cmf:var id="comments" type="str" value="Fields changed: text,id,title">
+     </cmf:var>
+     <cmf:var id="review_state" type="str" value="valid">
+     </cmf:var>
+     <cmf:var id="time" type="date" value="2011-03-16T13:38:44+01:00">
+     </cmf:var>
+    </cmf:history>
+   </cmf:workflow>
+   <cmf:workflow id="plone_workflow">
+    <cmf:history>
+     <cmf:var id="action" type="None" value="None">
+     </cmf:var>
+     <cmf:var id="actor" type="str" value="cecilia">
+     </cmf:var>
+     <cmf:var id="comments" type="str" value="">
+     </cmf:var>
+     <cmf:var id="review_state" type="str" value="private">
+     </cmf:var>
+     <cmf:var id="time" type="date" value="2011-03-16T13:38:42+01:00">
+     </cmf:var>
+    </cmf:history>
+    <cmf:history>
+     <cmf:var id="action" type="str" value="publish">
+     </cmf:var>
+     <cmf:var id="actor" type="str" value="cecilia">
+     </cmf:var>
+     <cmf:var id="comments" type="str" value="">
+     </cmf:var>
+     <cmf:var id="review_state" type="str" value="published">
+     </cmf:var>
+     <cmf:var id="time" type="date" value="2011-03-16T13:38:50+01:00">
+     </cmf:var>
+    </cmf:history>
+   </cmf:workflow>
+  </cmf:workflow_history>
+  <cmf:security>
+  </cmf:security>
+  <cmf:security role="Owner" user_id="cecilia">
+  </cmf:security>
+ </metadata>
+</item>
+<item id="continued-rollout-and-strong-focus-on-service-and-aftermarket-for-scan-coin">
+ <metadata xmlns="http://plone.org/ns/archetypes/" xmlns:cmf="http://cmf.zope.org/namespaces/default/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xmp="adobe:ns:meta">
+  <dc:title>
+   Continued rollout and strong focus on &quot;service and aftermarket&quot; for SCAN COIN
+  </dc:title>
+  <dc:description>
+   SCAN COIN is a global leader in the manufacture and sale of coin and banknote handling machines.
+  </dc:description>
+  <dc:creator>
+   Tskjaergaard
+  </dc:creator>
+  <dc:language>
+   fi
+  </dc:language>
+  <xmp:createdate>
+   2013-04-19T10:50:41Z
+  </xmp:createdate>
+  <xmp:modifydate>
+   2013-04-19T10:50:46Z
+  </xmp:modifydate>
+  <field mimetype="text/plain" name="id">
+   continued-rollout-and-strong-focus-on-service-and-aftermarket-for-scan-coin
+  </field>
+  <field mimetype="text/html" name="text">
+   &lt;p&gt;SCAN COIN is a global leader in the manufacture and sale of coin and banknote handling machines. After successfully running Jeeves in Sweden and England since 2008, rollout is currently underway in Denmark and Norway with France being the next in line. Because service and aftermarket is an important focus at SCAN COIN, InfoCube has integrated Evatic, a global service management system, with Jeeves to run their business.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://marketing.jeeves.se/acton/ct/4567/p-0053/Bct/%7B%7BEnv.SrcId%7D%7D/%7B%7BEnv.RecId%7D%7D/ct9_0/1&quot; target=&quot;_blank&quot; title=&quot;Scancoin&quot;&gt;Read more about SCAN COIN here&lt;/a&gt;&lt;br /&gt;&lt;a href=&quot;http://marketing.jeeves.se/acton/ct/4567/p-0053/Bct/%7B%7BEnv.SrcId%7D%7D/%7B%7BEnv.RecId%7D%7D/ct10_0/1&quot; target=&quot;_blank&quot; title=&quot;Evatic&quot;&gt;Read more about Evatic here&lt;/a&gt;&lt;/p&gt;
+  </field>
+  <field mimetype="text/plain" name="effectiveDate">
+   2013/04/15 00:00:00 GMT+2
+  </field>
+  <uid>
+   1b0c0e79-e22f-4098-a2fd-9ce34a13e44c
+  </uid>
+  <cmf:type>
+   Press Release
+  </cmf:type>
+  <cmf:workflow_history>
+   <cmf:workflow id="linguaflow">
+    <cmf:history>
+     <cmf:var id="action" type="None" value="None">
+     </cmf:var>
+     <cmf:var id="actor" type="str" value="Tskjaergaard">
+     </cmf:var>
+     <cmf:var id="comments" type="str" value="">
+     </cmf:var>
+     <cmf:var id="review_state" type="str" value="valid">
+     </cmf:var>
+     <cmf:var id="time" type="date" value="2013-04-19T12:50:41+02:00">
+     </cmf:var>
+    </cmf:history>
+   </cmf:workflow>
+   <cmf:workflow id="plone_workflow">
+    <cmf:history>
+     <cmf:var id="action" type="None" value="None">
+     </cmf:var>
+     <cmf:var id="actor" type="str" value="Tskjaergaard">
+     </cmf:var>
+     <cmf:var id="comments" type="str" value="">
+     </cmf:var>
+     <cmf:var id="review_state" type="str" value="private">
+     </cmf:var>
+     <cmf:var id="time" type="date" value="2013-04-19T12:50:41+02:00">
+     </cmf:var>
+    </cmf:history>
+    <cmf:history>
+     <cmf:var id="action" type="str" value="publish">
+     </cmf:var>
+     <cmf:var id="actor" type="str" value="Tskjaergaard">
+     </cmf:var>
+     <cmf:var id="comments" type="str" value="">
+     </cmf:var>
+     <cmf:var id="review_state" type="str" value="published">
+     </cmf:var>
+     <cmf:var id="time" type="date" value="2013-04-19T12:50:46+02:00">
+     </cmf:var>
+    </cmf:history>
+   </cmf:workflow>
+  </cmf:workflow_history>
+  <cmf:security>
+  </cmf:security>
+  <cmf:security role="Owner" user_id="Tskjaergaard">
+  </cmf:security>
+ </metadata>
+</item>
+<item id="constructor2019s-rollout-of-jeeves-continues">
+ <metadata xmlns="http://plone.org/ns/archetypes/" xmlns:cmf="http://cmf.zope.org/namespaces/default/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xmp="adobe:ns:meta">
+  <dc:title>
+   Constructor’s rollout of Jeeves continues
+  </dc:title>
+  <dc:description>
+   Constructor, which manufactures storage, archiving and logistic solutions, continues its rollout of Jeeves Enterprise Financial with operations and implementation partner Infocube AB.
+  </dc:description>
+  <dc:creator>
+   Tskjaergaard
+  </dc:creator>
+  <dc:language>
+   fi
+  </dc:language>
+  <xmp:createdate>
+   2013-04-19T10:48:31Z
+  </xmp:createdate>
+  <xmp:modifydate>
+   2013-04-19T10:48:35Z
+  </xmp:modifydate>
+  <field mimetype="text/plain" name="id">
+   constructor2019s-rollout-of-jeeves-continues
+  </field>
+  <field mimetype="text/html" name="text">
+   &lt;p&gt;Constructor, which manufactures storage, archiving and logistic solutions, continues its rollout of Jeeves Enterprise Financial with operations and implementation partner Infocube AB.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://marketing.jeeves.se/acton/ct/4567/p-0053/Bct/%7B%7BEnv.SrcId%7D%7D/%7B%7BEnv.RecId%7D%7D/ct11_0/1&quot; target=&quot;_blank&quot; title=&quot;Constructor&quot;&gt;Read more about Constructor here&lt;/a&gt;&lt;/p&gt;
+  </field>
+  <field mimetype="text/plain" name="effectiveDate">
+   2013/02/13 00:00:00 GMT+1
+  </field>
+  <uid>
+   e38aa333-6a06-478f-b91d-1c977929bdfe
+  </uid>
+  <cmf:type>
+   Press Release
+  </cmf:type>
+  <cmf:workflow_history>
+   <cmf:workflow id="linguaflow">
+    <cmf:history>
+     <cmf:var id="action" type="None" value="None">
+     </cmf:var>
+     <cmf:var id="actor" type="str" value="Tskjaergaard">
+     </cmf:var>
+     <cmf:var id="comments" type="str" value="">
+     </cmf:var>
+     <cmf:var id="review_state" type="str" value="valid">
+     </cmf:var>
+     <cmf:var id="time" type="date" value="2013-04-19T12:48:31+02:00">
+     </cmf:var>
+    </cmf:history>
+   </cmf:workflow>
+   <cmf:workflow id="plone_workflow">
+    <cmf:history>
+     <cmf:var id="action" type="None" value="None">
+     </cmf:var>
+     <cmf:var id="actor" type="str" value="Tskjaergaard">
+     </cmf:var>
+     <cmf:var id="comments" type="str" value="">
+     </cmf:var>
+     <cmf:var id="review_state" type="str" value="private">
+     </cmf:var>
+     <cmf:var id="time" type="date" value="2013-04-19T12:48:31+02:00">
+     </cmf:var>
+    </cmf:history>
+    <cmf:history>
+     <cmf:var id="action" type="str" value="publish">
+     </cmf:var>
+     <cmf:var id="actor" type="str" value="Tskjaergaard">
+     </cmf:var>
+     <cmf:var id="comments" type="str" value="">
+     </cmf:var>
+     <cmf:var id="review_state" type="str" value="published">
+     </cmf:var>
+     <cmf:var id="time" type="date" value="2013-04-19T12:48:36+02:00">
+     </cmf:var>
+    </cmf:history>
+   </cmf:workflow>
+  </cmf:workflow_history>
+  <cmf:security>
+  </cmf:security>
+  <cmf:security role="Owner" user_id="Tskjaergaard">
+  </cmf:security>
+ </metadata>
+</item>
+<item id="lindex-owners-choose-jeeves-for-seppala">
+ <metadata xmlns="http://plone.org/ns/archetypes/" xmlns:cmf="http://cmf.zope.org/namespaces/default/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xmp="adobe:ns:meta">
+  <dc:title>
+   Lindex owners choose Jeeves for Seppälä
+  </dc:title>
+  <dc:description>
+   We are pleased to announce that Stockmann has chosen to implement Jeeves at Seppälä, another member of its fashion chain business unit.
+  </dc:description>
+  <dc:creator>
+   Tskjaergaard
+  </dc:creator>
+  <dc:language>
+   fi
+  </dc:language>
+  <xmp:createdate>
+   2013-04-19T10:47:38Z
+  </xmp:createdate>
+  <xmp:modifydate>
+   2013-04-19T10:47:41Z
+  </xmp:modifydate>
+  <field mimetype="text/plain" name="id">
+   lindex-owners-choose-jeeves-for-seppala
+  </field>
+  <field mimetype="text/html" name="text">
+   &lt;p&gt;For the past several years, Lindex, part of the Finnish Stockmann Group’s fashion chain business unit, has been using Jeeves ERP with Infocube AB as its operational and implementation partner. We are pleased to announce that Stockmann has chosen to implement Jeeves at Seppälä, another member of its fashion chain business unit.&lt;/p&gt;
+&lt;p&gt;For more information and contact:&lt;br /&gt;Marked and sales Manager Sami Aaraj; sami.aaraj@infocube.se&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://marketing.jeeves.se/acton/ct/4567/p-0053/Bct/%7B%7BEnv.SrcId%7D%7D/%7B%7BEnv.RecId%7D%7D/ct8_0/1&quot; target=&quot;_blank&quot; title=&quot;Lindex&quot;&gt;Read more about Lindex here&lt;/a&gt;&lt;/p&gt;
+  </field>
+  <field mimetype="text/plain" name="effectiveDate">
+   2013/01/18 00:00:00 GMT+1
+  </field>
+  <uid>
+   f6f9eda3-25de-4746-93e6-ca096dc1fb68
+  </uid>
+  <cmf:type>
+   Press Release
+  </cmf:type>
+  <cmf:workflow_history>
+   <cmf:workflow id="linguaflow">
+    <cmf:history>
+     <cmf:var id="action" type="None" value="None">
+     </cmf:var>
+     <cmf:var id="actor" type="str" value="Tskjaergaard">
+     </cmf:var>
+     <cmf:var id="comments" type="str" value="">
+     </cmf:var>
+     <cmf:var id="review_state" type="str" value="valid">
+     </cmf:var>
+     <cmf:var id="time" type="date" value="2013-04-19T12:47:38+02:00">
+     </cmf:var>
+    </cmf:history>
+   </cmf:workflow>
+   <cmf:workflow id="plone_workflow">
+    <cmf:history>
+     <cmf:var id="action" type="None" value="None">
+     </cmf:var>
+     <cmf:var id="actor" type="str" value="Tskjaergaard">
+     </cmf:var>
+     <cmf:var id="comments" type="str" value="">
+     </cmf:var>
+     <cmf:var id="review_state" type="str" value="private">
+     </cmf:var>
+     <cmf:var id="time" type="date" value="2013-04-19T12:47:38+02:00">
+     </cmf:var>
+    </cmf:history>
+    <cmf:history>
+     <cmf:var id="action" type="str" value="publish">
+     </cmf:var>
+     <cmf:var id="actor" type="str" value="Tskjaergaard">
+     </cmf:var>
+     <cmf:var id="comments" type="str" value="">
+     </cmf:var>
+     <cmf:var id="review_state" type="str" value="published">
+     </cmf:var>
+     <cmf:var id="time" type="date" value="2013-04-19T12:47:41+02:00">
+     </cmf:var>
+    </cmf:history>
+   </cmf:workflow>
+  </cmf:workflow_history>
+  <cmf:security>
+  </cmf:security>
+  <cmf:security role="Owner" user_id="Tskjaergaard">
+  </cmf:security>
+ </metadata>
+</item>
+<item id="jeeves-acquires-infocube-one-of-its-largest-partners-strengthening-jeeves2019-value-proposition-in-the-swedish-market">
+ <metadata xmlns="http://plone.org/ns/archetypes/" xmlns:cmf="http://cmf.zope.org/namespaces/default/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xmp="adobe:ns:meta">
+  <dc:title>
+   JEEVES ACQUIRES INFOCUBE, ONE OF ITS LARGEST PARTNERS, STRENGTHENING JEEVES’ VALUE PROPOSITION IN THE SWEDISH MARKET
+  </dc:title>
+  <dc:description>
+   Stockholm, Sweden, 12 June 2013. Jeeves Information Systems AB, a leading developer of ERP systems for small and medium businesses within the manufacturing, distribution and service industries, today announced that it has closed on its acquisition of Infocube AB, one of its largest partners. By acquiring Infocube, Jeeves moves to a dual distribution strategy in Sweden that now includes a direct channel.
+  </dc:description>
+  <dc:creator>
+   Tskjaergaard
+  </dc:creator>
+  <dc:language>
+   fi
+  </dc:language>
+  <xmp:createdate>
+   2013-06-12T10:58:55Z
+  </xmp:createdate>
+  <xmp:modifydate>
+   2013-06-12T11:00:19Z
+  </xmp:modifydate>
+  <field mimetype="text/plain" name="id">
+   jeeves-acquires-infocube-one-of-its-largest-partners-strengthening-jeeves2019-value-proposition-in-the-swedish-market
+  </field>
+  <field mimetype="text/html" name="text">
+   &lt;p&gt;Jeff Tognoni, CEO of Jeeves, said, “Jeeves has historically been an indirect software business sold primarily through partners. However, over the years, some of our customers and prospects have expressed an interest in having a direct relationship with us. While we will continue to offer a robust partner channel going forward, this acquisition provides Jeeves with a strong direct channel capability that was not available in Sweden in the past and offers a stronger value proposition to both new and existing customers. It significantly changes and accelerates our go-to-market strategy and expands our total addressable market (TAM).&lt;p&gt;
+
+&lt;p&gt;“With the acquisition of Infocube, Jeeves gains a successful, mature service organization with a culture of excellence and experienced resources to serve those customers who prefer to have a direct relationship with us. Infocube’s capabilities include broad implementation experience with a proven methodology, a skilled customer support team, and an effective sales organization,” said Tognoni.&lt;p&gt;
+
+&lt;p&gt;Henrik Engberg, CEO of Infocube, said; “This is a natural stage for Infocube to combine our two companies, offering growth and opportunities for our employees and increasing our capabilities to serve Jeeves customers. By combining the expertise of Jeeves’ product development force with Infocube’s implementation and customer development skills, the customer offerings are strengthened in all ways.”&lt;p&gt;
+
+&lt;p&gt;ABOUT JEEVES
+&lt;p&gt;Jeeves Information Systems AB (Jeeves) develops ERP systems for small and medium businesses within the manufacturing, distribution and service industries. Each day, more than 4,600 companies in over 40 countries use one of Jeeves ERP systems. Jeeves ERP has a base of comprehensive features along with extraordinary capabilities for extending the application to support customer’s strategic business initiatives and requirements. Jeeves is headquartered in Stockholm and is owned by U.S. investment firm Battery Ventures. For more information, see www.jeeves.se/us/.&lt;p&gt;
+
+&lt;p&gt;ABOUT INFOCUBE
+&lt;p&gt;Infocube has been a Jeeves Partner since 1999 with over 350 customers in 21 countries. Infocube has more than 100 employees and has offices in Gothenburg, Stockholm, Malmö, Jönköping, Karlstad and Chicago (USA). Infocube has focused on serving companies in manufacturing and logistics, as well as the fashion industry. Infocube is a full-suite ERP consulting company with sales, services and support.&lt;p&gt;
+
+&lt;p&gt;FOR MORE INFORMATION:&lt;p&gt;
+Media relations&lt;p&gt;
+Tore Skjærgård, Jeeves Information Systems
+&lt;p&gt;E-mail: tore.skjaergaard@jeeves.se
+&lt;p&gt;Phone: +47 916 83 409
+  </field>
+  <field mimetype="text/plain" name="effectiveDate">
+   2013/06/12 13:00:19.781080 GMT+2
+  </field>
+  <uid>
+   d05cc869-3ca8-4bdb-b7ba-514c5989b010
+  </uid>
+  <cmf:type>
+   Press Release
+  </cmf:type>
+  <cmf:workflow_history>
+   <cmf:workflow id="linguaflow">
+    <cmf:history>
+     <cmf:var id="action" type="None" value="None">
+     </cmf:var>
+     <cmf:var id="actor" type="str" value="Tskjaergaard">
+     </cmf:var>
+     <cmf:var id="comments" type="str" value="">
+     </cmf:var>
+     <cmf:var id="review_state" type="str" value="valid">
+     </cmf:var>
+     <cmf:var id="time" type="date" value="2013-06-12T12:58:55+02:00">
+     </cmf:var>
+    </cmf:history>
+   </cmf:workflow>
+   <cmf:workflow id="plone_workflow">
+    <cmf:history>
+     <cmf:var id="action" type="None" value="None">
+     </cmf:var>
+     <cmf:var id="actor" type="str" value="Tskjaergaard">
+     </cmf:var>
+     <cmf:var id="comments" type="str" value="">
+     </cmf:var>
+     <cmf:var id="review_state" type="str" value="private">
+     </cmf:var>
+     <cmf:var id="time" type="date" value="2013-06-12T12:58:55+02:00">
+     </cmf:var>
+    </cmf:history>
+    <cmf:history>
+     <cmf:var id="action" type="str" value="publish">
+     </cmf:var>
+     <cmf:var id="actor" type="str" value="Tskjaergaard">
+     </cmf:var>
+     <cmf:var id="comments" type="str" value="">
+     </cmf:var>
+     <cmf:var id="review_state" type="str" value="published">
+     </cmf:var>
+     <cmf:var id="time" type="date" value="2013-06-12T13:00:19+02:00">
+     </cmf:var>
+    </cmf:history>
+   </cmf:workflow>
+  </cmf:workflow_history>
+  <cmf:security>
+  </cmf:security>
+  <cmf:security role="Owner" user_id="Tskjaergaard">
+  </cmf:security>
+ </metadata>
+</item>
+<item id="sodastreams-business-is-bubbling-in-the-nordic-region">
+ <metadata xmlns="http://plone.org/ns/archetypes/" xmlns:cmf="http://cmf.zope.org/namespaces/default/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xmp="adobe:ns:meta">
+  <dc:title>
+   SodaStream's business is bubbling in the Nordic region
+  </dc:title>
+  <dc:description>
+   Beverage company SodaStream was facing the challenge to quickly coordinate purchases and sales in a completely new Nordic company.
+  </dc:description>
+  <dc:creator>
+   Tskjaergaard
+  </dc:creator>
+  <dc:language>
+   fi
+  </dc:language>
+  <xmp:createdate>
+   2013-04-19T10:49:23Z
+  </xmp:createdate>
+  <xmp:modifydate>
+   2013-04-19T10:49:28Z
+  </xmp:modifydate>
+  <field mimetype="text/plain" name="id">
+   sodastreams-business-is-bubbling-in-the-nordic-region
+  </field>
+  <field mimetype="text/html" name="text">
+   &lt;p&gt;Beverage company SodaStream was facing the challenge to quickly coordinate purchases and sales in a completely new Nordic company. Another challenge was to make the process as transparent as possible so that all four Nordic countries would be able to interact internally (e.g., move goods from one warehouse to another). The solution was to install Jeeves in Sweden and, in the space of four months, launch it in the rest of Scandinavia. Jeeves has worked from the start, lowering SodaStream’s inventory costs, reducing administration, and improving customer service. &lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://marketing.jeeves.se/acton/ct/4567/p-0053/Bct/%7B%7BEnv.SrcId%7D%7D/%7B%7BEnv.RecId%7D%7D/ct12_0/1&quot; target=&quot;_blank&quot; title=&quot;SodaStream&quot;&gt;Read more about SodaStream here&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;For more information and contact: &lt;br /&gt;Karin Rosenius Gahm; karin.roseniusgahm@evry.com&lt;/p&gt;
+  </field>
+  <field mimetype="text/plain" name="effectiveDate">
+   2013/03/17 00:00:00 GMT+1
+  </field>
+  <uid>
+   8125d338-2017-4d2f-b832-8fadc471aa00
+  </uid>
+  <cmf:type>
+   Press Release
+  </cmf:type>
+  <cmf:workflow_history>
+   <cmf:workflow id="linguaflow">
+    <cmf:history>
+     <cmf:var id="action" type="None" value="None">
+     </cmf:var>
+     <cmf:var id="actor" type="str" value="Tskjaergaard">
+     </cmf:var>
+     <cmf:var id="comments" type="str" value="">
+     </cmf:var>
+     <cmf:var id="review_state" type="str" value="valid">
+     </cmf:var>
+     <cmf:var id="time" type="date" value="2013-04-19T12:49:23+02:00">
+     </cmf:var>
+    </cmf:history>
+   </cmf:workflow>
+   <cmf:workflow id="plone_workflow">
+    <cmf:history>
+     <cmf:var id="action" type="None" value="None">
+     </cmf:var>
+     <cmf:var id="actor" type="str" value="Tskjaergaard">
+     </cmf:var>
+     <cmf:var id="comments" type="str" value="">
+     </cmf:var>
+     <cmf:var id="review_state" type="str" value="private">
+     </cmf:var>
+     <cmf:var id="time" type="date" value="2013-04-19T12:49:23+02:00">
+     </cmf:var>
+    </cmf:history>
+    <cmf:history>
+     <cmf:var id="action" type="str" value="publish">
+     </cmf:var>
+     <cmf:var id="actor" type="str" value="Tskjaergaard">
+     </cmf:var>
+     <cmf:var id="comments" type="str" value="">
+     </cmf:var>
+     <cmf:var id="review_state" type="str" value="published">
+     </cmf:var>
+     <cmf:var id="time" type="date" value="2013-04-19T12:49:28+02:00">
+     </cmf:var>
+    </cmf:history>
+   </cmf:workflow>
+  </cmf:workflow_history>
+  <cmf:security>
+  </cmf:security>
+  <cmf:security role="Owner" user_id="Tskjaergaard">
+  </cmf:security>
+ </metadata>
+</item>
+</items>

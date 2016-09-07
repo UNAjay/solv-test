@@ -1,0 +1,78 @@
+<?php
+/**
+ * @file
+ * Code for the Blogs feature.
+ */
+
+include_once 'blogs.features.inc';
+
+
+/**
+ * Implements hook_block_info().
+ */
+function blogs_block_info() {
+  $blocks = array(
+    'blog_tags' => array(
+      'info' => t('Blog Tags'),
+    ),
+  );
+
+  return $blocks;
+}
+
+
+/**
+ * Implements hook_block_view().
+ */
+function blogs_block_view($delta='') {
+  $block = array();
+
+  switch($delta) {
+
+    case 'blog_tags' :
+      $node = menu_get_object('node');
+      $tags_field = field_get_items('node', $node, 'field_tags');
+      if ($tags_field) {
+        foreach ($tags_field as $key => $value) {
+          $tags[] = $value['tid'];
+        }
+      }
+
+      $vocab = taxonomy_vocabulary_machine_name_load('tags');
+
+      $result = db_select('taxonomy_index', 'ti');
+      // $result->leftJoin('node', 'node', 'node.nid = ti.nid');
+      $result->leftJoin('taxonomy_term_data', 'data', 'data.tid = ti.tid');
+      $result->condition('data.vid', $vocab->vid, '=');
+      $result->condition('data.tid', $tags, 'IN');
+      $result->fields('ti', array('tid'));
+      $result->fields('data', array('name'));
+      $result->addExpression('COUNT(ti.nid)', 'term_count');
+      // $result->orderBY('t.name', 'ASC');
+      $result->groupBy('ti.tid');
+      $results = $result->execute()->fetchAll();
+
+      foreach ($results as $object) {
+        $tag = new TagadelicTag($object->tid, $object->name, $object->term_count);
+        $tag->set_link("taxonomy/term/{$object->tid}");
+        $cloud_tags[] = $tag;
+      }
+
+      drupal_add_css(drupal_get_path('module', 'tagadelic') . '/tagadelic.css');
+      $cloud = new TagadelicCloud('Tags', $cloud_tags);
+
+      $output = '<div class="tags">';
+      foreach($cloud->get_tags() as $tag) {
+        $data['items'][] = $tag;
+      }
+      $data['attributes'] = array('class' => array('tag-cloud'));
+      $output .= theme('item_list', $data);
+      $output .= '</div>';
+
+      $block['subject'] = t('Tags');
+      $block['content'] = $output;
+      break;
+  }
+
+  return $block;
+}

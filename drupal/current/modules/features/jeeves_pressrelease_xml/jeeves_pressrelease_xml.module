@@ -1,0 +1,268 @@
+<?php
+/**
+ * @file
+ * Code for the Jeeves_pressrelease_xml feature.
+ */
+
+include_once 'jeeves_pressrelease_xml.features.inc';
+
+/**
+ * Invoked before a feed item is saved.
+ *
+ * @param $source
+ *  FeedsSource object that describes the source that is being imported.
+ * @param $entity
+ *   The entity object.
+ * @param $item
+ *   The parser result for this entity.
+ */
+function jeeves_pressrelease_xml_feeds_presave(FeedsSource $source, $entity, $item) {
+  // check if importing news
+  if ($entity->type == 'news'
+  && $entity->feeds_item->entity_type == 'node'
+  && isset($entity->body['und'])) {
+    // we'll copy und body to language body (making it multilingual)
+    $entity->body[$entity->language] = $entity->body['und'];
+    unset($entity->body['und']);
+
+    // we unpublish node if body contains few invalid links we can detect
+    $strings = array(
+      'href="..', // href="../../../../.  href="../../../../.
+      'href="/',
+      'href="resolveuid', // class="internal-link" href="resolveuid/a546e4ed4993aacb2e5360cf0f2a4048
+      'internal-link', // class="internal-link" href="resolveuid/a546e4ed4993aacb2e5360cf0f2a4048
+      'image-inline', // class="image-inline" src="resolveuid/d90237aa53136044d2f021f2bf699490/image_preview"
+      'src="resolveuid', // src="resolveuid/d90237aa53136044d2f021f2bf699490/image_preview
+      'src="..', // src="../../../bilder/ikoner/icon_pdf.gif
+      'src="/'
+    );
+
+    foreach ($strings as $string) {
+      $pos = strpos($entity->body[$entity->language][0]['value'], $string);
+      if ($pos !== false) {
+        // unpublish
+        $entity->status = 0;
+        break;
+      }
+    }
+
+  }
+}
+
+
+/*
+function jeeves_pressrelease_xml_feeds_tamper_default() {
+  $export = array();
+
+  $suffixes = array('en', 'uk', 'nl', 'fi', 'fr', 'pl', 'sk', 'sv', 'no');
+  foreach ($suffixes as $suffix) {
+    $export = array_merge($export, jeeves_pressrelease_xml_feeds_tamper_generate($suffix));
+  }
+
+  return $export;
+}
+
+function jeeves_pressrelease_xml_feeds_tamper_generate($suffix) {
+  $export = array();
+  $langcode = $suffix;
+  if ($suffix == 'uk') $langcode = 'en-gb';
+
+  $feeds_tamper = new stdClass();
+  $feeds_tamper->disabled = FALSE;
+  $feeds_tamper->api_version = 2;
+  $feeds_tamper->id = 'pressreleasexml_'.$suffix.'-blank_source_1-default_value';
+  $feeds_tamper->importer = 'pressreleasexml_'.$suffix;
+  $feeds_tamper->source = 'Blank source 1';
+  $feeds_tamper->plugin_id = 'default_value';
+  $feeds_tamper->settings = array(
+    'default_value' => $langcode,
+  );
+  $feeds_tamper->weight = 0;
+  $feeds_tamper->description = 'Set default value';
+  $export['pressreleasexml_'.$suffix.'-blank_source_1-default_value'] = $feeds_tamper;
+
+  $feeds_tamper = new stdClass();
+  $feeds_tamper->disabled = FALSE;
+  $feeds_tamper->api_version = 2;
+  $feeds_tamper->id = 'pressreleasexml_'.$suffix.'-blank_source_2-default_value';
+  $feeds_tamper->importer = 'pressreleasexml_'.$suffix;
+  $feeds_tamper->source = 'Blank source 2';
+  $feeds_tamper->plugin_id = 'default_value';
+  $feeds_tamper->settings = array(
+    'default_value' => '110',
+  );
+  $feeds_tamper->weight = 0;
+  $feeds_tamper->description = 'Set default value';
+  $export['pressreleasexml_'.$suffix.'-blank_source_2-default_value'] = $feeds_tamper;
+
+  $feeds_tamper = new stdClass();
+  $feeds_tamper->disabled = FALSE;
+  $feeds_tamper->api_version = 2;
+  $feeds_tamper->id = 'pressreleasexml_'.$suffix.'-blank_source_3-default_value';
+  $feeds_tamper->importer = 'pressreleasexml_'.$suffix;
+  $feeds_tamper->source = 'Blank source 3';
+  $feeds_tamper->plugin_id = 'default_value';
+  $feeds_tamper->settings = array(
+    'default_value' => 'pressrelease',
+  );
+  $feeds_tamper->weight = 0;
+  $feeds_tamper->description = 'Set default value';
+  $export['pressreleasexml_'.$suffix.'-blank_source_3-default_value'] = $feeds_tamper;
+
+  $feeds_tamper = new stdClass();
+  $feeds_tamper->disabled = FALSE;
+  $feeds_tamper->api_version = 2;
+  $feeds_tamper->id = 'pressreleasexml_'.$suffix.'-blank_source_4-default_value';
+  $feeds_tamper->importer = 'pressreleasexml_'.$suffix;
+  $feeds_tamper->source = 'Blank source 4';
+  $feeds_tamper->plugin_id = 'default_value';
+  $feeds_tamper->settings = array(
+    'default_value' => '0',
+  );
+  $feeds_tamper->weight = 0;
+  $feeds_tamper->description = 'Set default value';
+  $export['pressreleasexml_'.$suffix.'-blank_source_4-default_value'] = $feeds_tamper;
+
+  $feeds_tamper = new stdClass();
+  $feeds_tamper->disabled = FALSE;
+  $feeds_tamper->api_version = 2;
+  $feeds_tamper->id = 'pressreleasexml_'.$suffix.'-blank_source_5-default_value';
+  $feeds_tamper->importer = 'pressreleasexml_'.$suffix;
+  $feeds_tamper->source = 'Blank source 5';
+  $feeds_tamper->plugin_id = 'default_value';
+  $feeds_tamper->settings = array(
+    'default_value' => '0',
+  );
+  $feeds_tamper->weight = 0;
+  $feeds_tamper->description = 'Set default value';
+  $export['pressreleasexml_'.$suffix.'-blank_source_5-default_value'] = $feeds_tamper;
+
+  $feeds_tamper = new stdClass();
+  $feeds_tamper->disabled = FALSE;
+  $feeds_tamper->api_version = 2;
+  $feeds_tamper->id = 'pressreleasexml_'.$suffix.'-xpathparser_0-strip_tags';
+  $feeds_tamper->importer = 'pressreleasexml_'.$suffix;
+  $feeds_tamper->source = 'xpathparser:0';
+  $feeds_tamper->plugin_id = 'strip_tags';
+  $feeds_tamper->settings = array(
+    'allowed_tags' => '',
+  );
+  $feeds_tamper->weight = 0;
+  $feeds_tamper->description = 'Strip tags';
+  $export['pressreleasexml_'.$suffix.'-xpathparser_0-strip_tags'] = $feeds_tamper;
+
+  $feeds_tamper = new stdClass();
+  $feeds_tamper->disabled = FALSE;
+  $feeds_tamper->api_version = 2;
+  $feeds_tamper->id = 'pressreleasexml_'.$suffix.'-xpathparser_0-trim';
+  $feeds_tamper->importer = 'pressreleasexml_'.$suffix;
+  $feeds_tamper->source = 'xpathparser:0';
+  $feeds_tamper->plugin_id = 'trim';
+  $feeds_tamper->settings = array(
+    'mask' => '',
+    'side' => 'trim',
+  );
+  $feeds_tamper->weight = 1;
+  $feeds_tamper->description = 'Trim';
+  $export['pressreleasexml_'.$suffix.'-xpathparser_0-trim'] = $feeds_tamper;
+
+  $feeds_tamper = new stdClass();
+  $feeds_tamper->disabled = FALSE;
+  $feeds_tamper->api_version = 2;
+  $feeds_tamper->id = 'pressreleasexml_'.$suffix.'-xpathparser_1-strip_tags';
+  $feeds_tamper->importer = 'pressreleasexml_'.$suffix;
+  $feeds_tamper->source = 'xpathparser:1';
+  $feeds_tamper->plugin_id = 'strip_tags';
+  $feeds_tamper->settings = array(
+    'allowed_tags' => '',
+  );
+  $feeds_tamper->weight = 0;
+  $feeds_tamper->description = 'Strip tags';
+  $export['pressreleasexml_'.$suffix.'-xpathparser_1-strip_tags'] = $feeds_tamper;
+
+  $feeds_tamper = new stdClass();
+  $feeds_tamper->disabled = FALSE;
+  $feeds_tamper->api_version = 2;
+  $feeds_tamper->id = 'pressreleasexml_'.$suffix.'-xpathparser_2-html_entity_decode';
+  $feeds_tamper->importer = 'pressreleasexml_'.$suffix;
+  $feeds_tamper->source = 'xpathparser:2';
+  $feeds_tamper->plugin_id = 'html_entity_decode';
+  $feeds_tamper->settings = array();
+  $feeds_tamper->weight = 0;
+  $feeds_tamper->description = 'HTML entity decode';
+  $export['pressreleasexml_'.$suffix.'-xpathparser_2-html_entity_decode'] = $feeds_tamper;
+
+  $feeds_tamper = new stdClass();
+  $feeds_tamper->disabled = FALSE;
+  $feeds_tamper->api_version = 2;
+  $feeds_tamper->id = 'pressreleasexml_'.$suffix.'-xpathparser_2-trim';
+  $feeds_tamper->importer = 'pressreleasexml_'.$suffix;
+  $feeds_tamper->source = 'xpathparser:2';
+  $feeds_tamper->plugin_id = 'trim';
+  $feeds_tamper->settings = array(
+    'mask' => '',
+    'side' => 'trim',
+  );
+  $feeds_tamper->weight = 1;
+  $feeds_tamper->description = 'Trim';
+  $export['pressreleasexml_'.$suffix.'-xpathparser_2-trim'] = $feeds_tamper;
+
+  $feeds_tamper = new stdClass();
+  $feeds_tamper->disabled = FALSE;
+  $feeds_tamper->api_version = 2;
+  $feeds_tamper->id = 'pressreleasexml_'.$suffix.'-xpathparser_3-strip_tags';
+  $feeds_tamper->importer = 'pressreleasexml_'.$suffix;
+  $feeds_tamper->source = 'xpathparser:3';
+  $feeds_tamper->plugin_id = 'strip_tags';
+  $feeds_tamper->settings = array(
+    'allowed_tags' => '',
+  );
+  $feeds_tamper->weight = 0;
+  $feeds_tamper->description = 'Strip tags';
+  $export['pressreleasexml_'.$suffix.'-xpathparser_3-strip_tags'] = $feeds_tamper;
+
+  $feeds_tamper = new stdClass();
+  $feeds_tamper->disabled = FALSE;
+  $feeds_tamper->api_version = 2;
+  $feeds_tamper->id = 'pressreleasexml_'.$suffix.'-xpathparser_3-trim';
+  $feeds_tamper->importer = 'pressreleasexml_'.$suffix;
+  $feeds_tamper->source = 'xpathparser:3';
+  $feeds_tamper->plugin_id = 'trim';
+  $feeds_tamper->settings = array(
+    'mask' => '',
+    'side' => 'trim',
+  );
+  $feeds_tamper->weight = 1;
+  $feeds_tamper->description = 'Trim';
+  $export['pressreleasexml_'.$suffix.'-xpathparser_3-trim'] = $feeds_tamper;
+
+  $feeds_tamper = new stdClass();
+  $feeds_tamper->disabled = FALSE;
+  $feeds_tamper->api_version = 2;
+  $feeds_tamper->id = 'pressreleasexml_'.$suffix.'-xpathparser_4-strtotime';
+  $feeds_tamper->importer = 'pressreleasexml_'.$suffix;
+  $feeds_tamper->source = 'xpathparser:4';
+  $feeds_tamper->plugin_id = 'strtotime';
+  $feeds_tamper->settings = array();
+  $feeds_tamper->weight = 1;
+  $feeds_tamper->description = 'String to Unix timestamp';
+  $export['pressreleasexml_'.$suffix.'-xpathparser_4-strtotime'] = $feeds_tamper;
+
+  $feeds_tamper = new stdClass();
+  $feeds_tamper->disabled = FALSE;
+  $feeds_tamper->api_version = 2;
+  $feeds_tamper->id = 'pressreleasexml_'.$suffix.'-xpathparser_4-trim';
+  $feeds_tamper->importer = 'pressreleasexml_'.$suffix;
+  $feeds_tamper->source = 'xpathparser:4';
+  $feeds_tamper->plugin_id = 'trim';
+  $feeds_tamper->settings = array(
+    'mask' => '',
+    'side' => 'trim',
+  );
+  $feeds_tamper->weight = 0;
+  $feeds_tamper->description = 'Trim';
+  $export['pressreleasexml_'.$suffix.'-xpathparser_4-trim'] = $feeds_tamper;
+
+  return $export;
+}
+*/

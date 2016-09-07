@@ -1,0 +1,20 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the Jail module.
+ */
+
+/**
+ * Implements hook_uninstall().
+ */
+function jail_uninstall() {
+  variable_del('jail_effect');
+  variable_del('jail_loader');
+  variable_del('jail_offset');
+  variable_del('jail_noscript');
+  variable_del('jail_place');
+  variable_del('jail_version');
+  variable_del('jail_users');
+}
+

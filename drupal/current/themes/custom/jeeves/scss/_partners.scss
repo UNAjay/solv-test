@@ -1,0 +1,67 @@
+//-----------------------------------------
+// partner-page
+//-----------------------------------------
+.node-type-partner {
+  .logo,
+  .type {
+    margin: 0 15px 15px;
+    @include full-width;
+
+    @include at-breakpoint($first) {
+      margin: 0 0 15px;
+    }
+  }
+	.logo {
+		text-align: center;
+		margin-top: 9px;
+		width: 100%;
+	}
+  .type {
+    color: $paragraphColor;
+    font-weight: 600;
+  }
+  .level .badges {
+    margin-left: 15px;
+
+    @include at-breakpoint($first) {
+      margin-left: 0;
+    }
+  }
+  .badges li {
+    float: left;
+    margin-right: 10px;
+  }
+  .numofcertconsulta,
+  .numofcerts {
+    color: $paragraphColor;
+    font-style: italic;
+    margin-right: 15px;
+    margin-left: 15px;
+    @include full-width;
+
+    @include at-breakpoint($first) {
+      margin-right: 0;
+      margin-left: 0;
+    }
+
+    .field-label {
+      float: left;
+    }
+  }
+  .numofcertconsulta {
+    margin-top: 15px;
+  }
+  .numofcerts {
+    margin-bottom: 15px;
+  }
+	.locations {
+    
+		&.closed {
+		  @extend %collapsed-link;
+	  }
+		
+		&.active {
+		  @extend %collapsible-link;
+	  }
+	}
+}

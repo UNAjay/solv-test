@@ -1,0 +1,118 @@
+.front .block-floatbar {
+  display: none;
+}
+
+.block-floatbar {
+  position:fixed;
+  top:715px;
+  right:0;
+  padding:0;
+  background:transparent;
+  z-index: 50;
+}
+
+.block-floatbar .content {
+  margin-top:0px;
+}
+
+.block-floatbar ul.floatbar-items {
+  padding:0;
+  list-style:none;
+  list-style-image:none;
+  margin: 0;
+}
+
+.block-floatbar .floatbar-items li {
+  height:25px;
+  width:25px;
+  overflow:hidden;
+  padding:0;
+  margin: 0 0 5px 0;
+  list-style: none;
+}
+.block-floatbar .floatbar-items li.last {
+  border-bottom: 0 none;
+}
+.block-floatbar .floatbar-items li a {
+  display:block;
+  background-color: #73797c;
+  background-image: url(side-buttons@2x.png);
+  background-size: 25px auto;
+  font-size: 0;
+  height:25px;
+  width:25px;
+  overflow:hidden;
+  padding:0px;
+}
+
+.block-floatbar .hidden {
+  display:none;
+}
+
+.block-floatbar .disabled,
+.block-floatbar .disabled a {
+  color:#888;
+}
+
+/* sorry but we're getting rid of these */
+#block-floatbar-floatbar .contextual-links-wrapper {
+  display:none;
+}
+
+/* scroll-to-top */
+.block-floatbar li.scroll-to-top a {
+  background-color: #ccc;
+  background-position: 0 -112px;
+}
+
+/* twitter */
+.block-floatbar li.twitter a {
+  background-position: 0 0;
+}
+
+/* facebook */
+.block-floatbar li.facebook a {
+  background-position: 0 -25px;
+}
+
+/* linkedin */
+.block-floatbar li.linkedin a {
+  background-position: 0 -50px;
+}
+
+/* feedback */
+.block-floatbar li.feedback a {
+  background-position: 0 -84px;
+}
+
+/* more */
+.block-floatbar li.more a {
+  background-position: 0 -75px;
+}
+
+div.modal-forms-modal-content {
+  font-size: inherit;
+  font-family: inherit;
+}
+div.modal-forms-modal-content .sbHolder {
+  font-size: 14px;
+  width: 260px;
+}
+div.modal-forms-modal-content .sbHolder .sbSelector {
+  width: 260px;
+}
+div.modal-forms-modal-content .sbHolder .sbOptions {
+  width: 260px;
+}
+
+div.modal-forms-modal-content .modal-header {
+  min-height: 0;
+  padding: 0;
+  margin: 0;
+}
+div.modal-forms-modal-content .modal-title {
+  display: none;
+}
+div.modal-forms-modal-content .popups-container {
+  overflow: auto;
+}

@@ -1,0 +1,40 @@
+<?php
+
+/**
+ * @file
+ * Install, update, and uninstall functions for Entity Translation Language Path.
+ *
+ * @ingroup et_language_path
+ */
+
+/**
+ * Implements hook_install().
+ */
+function et_language_path_install() {
+  // Set the weight to 2
+  db_update('system')
+    ->fields(array('weight' => 2))
+    ->condition('type', 'module')
+    ->condition('name', 'et_language_path')
+    ->execute();
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function et_language_path_uninstall() {
+  variable_del('language_path_update');
+}
+
+
+/**
+ * Set module weight heigher than pathauto, to 2
+ */
+function et_language_path_update_7000() {
+  // Set the weight to 2
+  db_update('system')
+    ->fields(array('weight' => 2))
+    ->condition('type', 'module')
+    ->condition('name', 'et_language_path')
+    ->execute();
+}

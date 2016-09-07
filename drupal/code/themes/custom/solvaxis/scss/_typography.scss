@@ -1,0 +1,27 @@
+//-----------------------------------------
+// general typography
+//-----------------------------------------
+html {
+  font-size: 62.5%;
+	line-height: 1.5;
+  // fix to keep same font-size in landscape mode
+  -webkit-text-size-adjust: none;
+}
+
+body {
+  @include font-family;
+}
+
+b,
+strong {
+	font-weight: 600;
+}
+
+i,
+em {
+	font-style: italic;
+}
+
+a {
+  text-decoration: none;
+}

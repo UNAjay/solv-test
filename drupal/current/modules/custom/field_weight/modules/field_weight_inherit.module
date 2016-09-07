@@ -1,0 +1,107 @@
+<?php
+/**
+ * Implements hook_field_weight_display_overview_weights_alter().
+ */
+function field_weight_inherit_field_weight_display_overview_weights_alter(&$weight_instances, &$context) {
+  // See if any field weights have been set.
+  if (empty($context['original weights'])) {
+    // OK, then we want to swap in the parent node's weights and
+    // resort the instances accordingly.
+    if (!empty($context['node']->tnid)) {
+      $parent = node_load($context['node']->tnid);
+      $weights = field_weight_get_node_weight($parent->vid);
+
+      if ($weights) {
+        list($weight_instances, $context['highest weight']) = field_weight_sort_instances($context['original instances'], $weights, $context['revision weights']);
+
+        // Go through the instances and add the 'new' key so that (unsaved)
+        // still shows up.
+        foreach ($weight_instances as &$weight_instance) {
+          $weight_instance['new'] = TRUE;
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_field_weight_multiple_display_overview_weights_alter().
+ */
+function field_weight_inherit_field_weight_multiple_display_overview_weights_alter(&$weight_instances, &$form, &$context) {
+  // See if any field weights have been set.
+  if (empty($context['original weights'])) {
+    // OK, then we want to swap in the parent node's weights and
+    // resort the instances accordingly.
+    if (!empty($context['node']->tnid)) {
+      $parent = node_load($context['node']->tnid);
+      $field_weights = field_weight_multiple_get_weight($parent->vid);
+
+      if ($field_weights) {
+        list($context['highest weight'], $weight_instances) = _field_weight_multiple_process_instances($form, $context['form reference'], $field_weights, $context['revision field weights'], $context['original instances'], $context['field names'], $context['node'], $weight_instances, FALSE);
+
+        // Go through the instances and add the 'new' key so that (unsaved)
+        // still shows up.
+        foreach ($weight_instances as &$weight_instance) {
+          $weight_instance['new'] = TRUE;
+        }
+      }
+    }
+  }
+}
+
+function field_weight_inherit_entity_view_alter(&$build, $type) {
+  if ($type == 'node') { // May be replaced with option variables, if this expands to all entities.
+    $enabled_node_types = variable_get('field_weight_node_types', array());
+    // Check if the bundle type is enabled.
+    if (in_array($build['#bundle'], $enabled_node_types, TRUE) && isset($build['#node']->tnid)) {
+      $original_build_node = $build['#node']; // no need to clone this
+      $original_build_bundle = $build['#bundle'];
+
+      // See if any field weights have been set.
+      $node_weights = field_weight_get_node_weight($build['#node']->vid);
+
+      // Are we missing field weights? If so, temporarily pretend
+      // that we are the source node, and then fix ourselves up before we finish.
+      if (!$node_weights) {
+        // Note: We don't actually have to ensure the source node has weights;
+        // the function we call will do that.
+
+        $source_node = node_load($build['#node']->tnid);
+
+        if ($source_node) {
+          // PURE EVIL ALERT. THIS IS COMPLETELY DEVIOUS. But we'll change them
+          // back.
+          $build['#node'] = $source_node;
+          $build['#bundle'] = $source_node->type;
+          field_weight_entity_view_alter($build, $type);
+        }
+      }
+
+      if (module_exists('field_weight_multiple')) {
+        // See if any field delta weights have been set.
+        // Use $original_build_node because we might already have changed
+        // $build.
+        $field_weights = field_weight_multiple_get_weight($original_build_node->vid);
+        if (!$field_weights) {
+          if (!isset($source_node)) {
+            $source_node = node_load($original_build_node->tnid);
+          }
+
+          if ($source_node) {
+            // PURE EVIL ALERT. THIS IS COMPLETELY DEVIOUS. But we'll change them
+            // back.
+            $build['#node'] = $source_node;
+            $build['#bundle'] = $source_node->type;
+            field_weight_multiple_entity_view_alter($build, $type);
+          }
+        }
+      }
+
+      // If we actually might have changed $build, change it back
+      if (isset($source_node)) {
+        $build['#node'] = $original_build_node;
+        $build['#bundle'] = $original_build_bundle;
+      }
+    }
+  }
+}

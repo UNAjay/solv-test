@@ -1,0 +1,43 @@
+//-----------------------------------------
+// webform
+//-----------------------------------------
+.node-type-webform {
+  .main-primary {
+		.body, 
+		form {
+			padding: 0 15px 20px;
+			@include full-width;
+		
+			@include at-breakpoint($first) {
+				padding: 0 0 20px;
+		  }
+	  }
+	  p {
+		  padding: 0 0 15px;
+		}
+	}	
+}
+
+//form 
+.main-primary > form {
+	h2 {
+    padding-bottom: 15px;
+    @include font-size(30);
+  }
+  .form-item {
+    margin-bottom: 10px;
+    @include full-width;
+  }
+  label {
+    @extend %custom-field-label;
+  }
+  input[type="text"],
+  input[type="email"],
+  textarea {
+    width: 100%;
+    @extend %textfield-textarea;
+  }
+  textarea {
+    float: left;
+  }
+}

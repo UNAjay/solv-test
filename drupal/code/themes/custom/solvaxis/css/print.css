@@ -1,0 +1,36 @@
+.skip-link,
+.header-primary,
+.region-header-secondary,
+#breadcrumb,
+.tabs,
+.mobile-submenu,
+.videos,
+.aside-primary,
+.footer {
+  display: none !important;
+}
+
+html,
+.header-secondary {
+  background: none !important;
+}
+
+#page {
+  background: #fff !important;
+  padding: 0 50px;
+}
+
+@media (min-width: 540px) {
+  #page {
+    padding: 0;
+  }
+
+  #content {
+    margin-top: 0;
+  }
+
+  .eleven-five .main-primary {
+    width: 100%;
+    margin-right: 0;
+  }
+}

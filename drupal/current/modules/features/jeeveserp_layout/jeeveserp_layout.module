@@ -1,0 +1,365 @@
+<?php
+/**
+ * @file
+ * Code for the Jeeves ERP Layout feature.
+ */
+
+include_once 'jeeveserp_layout.features.inc';
+
+function jeeveserp_layout_wysiwyg_editor_settings_alter(&$settings, $context) {
+
+//  krumo($settings);
+//  krumo($context);
+
+  // CKEditor - You can separate lines by using a multidimensional array,
+  // and by placing a "/" string in between arrays. "-" also counts as a separator just as in FCKEditor
+  if ($context['profile']->editor == 'ckeditor' && $context['profile']->format == 'full_html') {
+    $settings['toolbar'] = array(
+      array (
+        // 'Format',
+        // '-',
+        // 'CreateDiv',
+        // '-',
+        'JustifyLeft',
+        'JustifyCenter',
+        '-',
+        'Italic',
+        'Bold',
+        '-',
+        'PasteText',
+        'PasteFromWord',
+        '-',
+        'BulletedList',
+        'NumberedList',
+        // 'Outdent',
+        // 'Indent',
+        '-',
+        'Superscript',
+        // 'Subscript',
+        '-',
+        'RemoveFormat',
+        '-',
+        'Table',
+        'SpecialChar',
+        '-',
+        'linkit',
+        '-',
+        'media',
+        '-',
+        'Link',
+        '-',
+        'Styles',
+        '-',
+        'custom_link',
+        '-',
+        'icons'),
+    );
+  }
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function jeeveserp_layout_block_info() {
+  $blocks = array(
+    'jeeveserp_layout_phone' => array(
+      'info' => t('Contact - Phone'),
+    ),
+    'jeeveserp_layout_chat' => array(
+      'info' => t('Contact - Chat'),
+    ),
+    'jeeveserp_layout_username' => array(
+      'info' => t('Contact - Username'),
+    ),
+  );
+
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_configure().
+ */
+function jeeveserp_layout_block_configure($delta='') {
+  global $language;
+
+  $form = array();
+
+  switch($delta) {
+
+    case 'jeeveserp_layout_phone':
+      // Text field form element
+      $form['phone_no'] = array(
+        '#type' => 'textfield',
+        '#title' => t("Phone number"),
+        '#default_value' => variable_get('jeeveserp_layout_phone_'.$language->language, variable_get('jeeveserp_layout_phone_en', '')),
+      );
+
+      break;
+
+    case 'jeeveserp_layout_chat':
+      // Text field form element
+      $form['imbox_sid'] = array(
+        '#type' => 'textfield',
+        '#title' => t("ImBox chat widget id"),
+        '#description' => t("Value of _sid variable"),
+        '#default_value' => variable_get('jeeveserp_layout_chat_'.$language->language, variable_get('jeeveserp_layout_chat_en', '')),
+      );
+
+      break;
+  }
+  return $form;
+}
+
+/**
+ * Implements hook_block_save().
+ */
+function jeeveserp_layout_block_save($delta = '', $edit = array()) {
+  global $language;
+
+  switch($delta) {
+
+    case 'jeeveserp_layout_phone' :
+      // Save phone number
+      variable_set('jeeveserp_layout_phone_'.$language->language, $edit['phone_no']);
+      // we're pulling defaults from _en now instead of global
+      //variable_set('jeeveserp_layout_phone', $edit['phone_no']);
+
+      break;
+
+    case 'jeeveserp_layout_chat' :
+      // Save imbox sid value
+      variable_set('jeeveserp_layout_chat_'.$language->language, $edit['imbox_sid']);
+      // we're pulling defaults from _en now instead of global
+      //variable_set('jeeveserp_layout_chat', $edit['imbox_sid']);
+
+      break;
+  }
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function jeeveserp_layout_block_view($delta='') {
+  $block = array();
+
+  switch($delta) {
+
+    case 'jeeveserp_layout_phone' :
+      $block['content'] = jeeveserp_layout_phone_view();
+      break;
+    case 'jeeveserp_layout_chat' :
+      $block['content'] = jeeveserp_layout_chat_view();
+      break;
+    case 'jeeveserp_layout_username' :
+      $block['content'] = jeeveserp_layout_username_view();
+      break;
+  }
+
+  return $block;
+}
+
+/**
+ * Custom function to assemble renderable array for block content.
+ * Returns a renderable array with the block content.
+ * @return
+ *   returns a renderable array of block content.
+ */
+function jeeveserp_layout_phone_view() {
+
+  global $language;
+
+  $phone = variable_get('jeeveserp_layout_phone_'.$language->language, variable_get('jeeveserp_layout_phone_en', ''));
+
+  if ($phone == '') $markup = '&nbsp';
+  else $markup = t('Phone').': '. $phone;
+
+  // Block output in HTML with div wrapper
+  $block = array(
+    'message' => array(
+      '#type' => 'markup',
+      '#markup' => $markup,
+    ),
+  );
+
+  return $block;
+}
+
+/**
+ * Custom function to assemble renderable array for block content.
+ * Returns a renderable array with the block content.
+ * @return
+ *   returns a renderable array of block content.
+ */
+function jeeveserp_layout_chat_view() {
+
+  global $language;
+  if ($language->language != 'sv') return FALSE;
+
+  $markup = '';
+  $imbox_sid = variable_get('jeeveserp_layout_chat_'.$language->language, variable_get('jeeveserp_layout_chat_en', ''));
+
+  if (!empty($imbox_sid)) {
+
+    $markup = '';//l(t('Chat'),'javascript:open_imbox_chat()',array('fragment' => '','external'=>true));
+
+    // $imbox_chat_code = '
+    // var _sid = \''.$imbox_sid.'\';
+    // window.imbox_opened = 0;
+
+    // function open_imbox_chat() {
+    //   if (window.imbox_opened == 0) {
+    //     var se = document.createElement(\'script\'); se.type = \'text/javascript\'; se.async = true;
+    //     se.src = (\'https:\' == document.location.protocol ? \'https://ssl\' : \'http://www\') + \'.imbox.se/cd1/initWidget.js\';
+    //     var s = document.getElementsByTagName(\'script\')[0]; s.parentNode.insertBefore(se, s);
+
+    //     window.imbox_opened = 1;
+    //   }
+
+    //   var _imbox = _imbox || [];
+    //   _imbox.push([\'openChat\']);
+
+    // }';
+
+    $imbox_chat_code = '
+      var _sid = \''.$imbox_sid.'\';
+
+      (function() {
+        var se = document.createElement(\'script\'); se.type = \'text/javascript\'; se.async = true;
+        se.src = (\'https:\' == document.location.protocol ? \'https://ssl\' : \'http://www\') + \'.imbox.se/cd1/initWidget.js\';
+        var s = document.getElementsByTagName(\'script\')[0]; s.parentNode.insertBefore(se, s);
+      })();';
+
+      drupal_add_js($imbox_chat_code, 'inline');
+      drupal_add_css(
+        '#snapifyHidden {bottom: 30px !important;}',
+        array(
+          'group' => CSS_THEME,
+          'type' => 'inline',
+          'media' => 'screen',
+          'preprocess' => FALSE,
+          'weight' => '9999',
+        )
+      );
+
+    // Block output in HTML with div wrapper
+    $block = array(
+      'message' => array(
+        '#type' => 'markup',
+        '#markup' => $markup,
+      ),
+    );
+  }
+
+  return $block;
+}
+
+/**
+ * Custom function to assemble renderable array for block content.
+ * Returns a renderable array with the block content.
+ * @return
+ *   returns a renderable array of block content.
+ */
+function jeeveserp_layout_username_view() {
+
+  global $user;
+
+  if ($user->uid == 0 ) return FALSE;
+
+  else {
+    $username = $user->name;
+    $markup = l($username, 'user/'.$user->uid);
+
+    // Block output in HTML with div wrapper
+    $block = array(
+      'message' => array(
+        '#type' => 'markup',
+        '#markup' => $markup,
+      ),
+    );
+
+   return $block;
+ }
+}
+
+
+/**
+ * Implements hook_form_alter().
+ */
+function jeeveserp_layout_form_alter(&$form, $form_state, $form_id) {
+
+  // Translatable webform fields placholders
+  if (isset($form['#theme'][1]) && $form['#theme'][1] == 'webform_form') {
+    foreach ($form['submitted'] as $key => $submitted) {
+
+      if (is_array($submitted)) {
+        if ($submitted['#type'] == 'select') {
+          $form['submitted'][$key]['#empty_option'] = t($form['submitted'][$key]['#title']);
+        }
+        unset($form['submitted'][$key]['#title']);
+
+        if (isset($submitted['#attributes'])
+          && !empty($submitted['#attributes'])
+          && isset($submitted['#attributes']['placeholder'])) {
+            $placeholder = $submitted['#attributes']['placeholder'];
+            $form['submitted'][$key]['#attributes']['placeholder'] = t($placeholder);
+        }
+      }
+    }
+  }
+
+
+  if (!empty($form_state['inline_entity_form'])) {
+    if (!isset($form['#node']->nid)) {
+      $instances = field_info_instances('node', $form['#node']->type);
+      foreach ($instances as $key => $instance) {
+        if ($instance['widget']['type'] == 'inline_entity_form') {
+          $reference_fields[] = $key;
+        }
+      }
+      // dpm($instances);
+      foreach ($reference_fields as $reference_field) {
+        if (array_key_exists($reference_field, $form)) {
+          $form[$reference_field][LANGUAGE_NONE]['actions']['#access'] = FALSE;
+          $form[$reference_field][LANGUAGE_NONE][] = array(
+              '#prefix' => '<div class="messages warning">',
+              '#markup' => t('You need to save this page first in order to add references.'),
+              '#suffix' => '</div>',
+          );
+        }
+      }
+    }
+  }
+
+}
+
+
+/**
+ * Revert specified features.
+ *
+ * @TODO Check that it really is Forced features revert.  Currently an exact
+ * copy of the function initially placed in feature_projects.install.
+ *
+ * Code mostly taken from drush.
+ */
+function jeeveserp_features_revert($modules) {
+  module_load_include('inc', 'features', 'features.export');
+  features_include();
+  foreach ($modules as $module) {
+    if (($feature = feature_load($module, TRUE)) && module_exists($module)) {
+      $components = array();
+      // Forcefully revert all components of a feature.
+      foreach (array_keys($feature->info['features']) as $component) {
+        if (features_hook($component, 'features_revert')) {
+          $components[] = $component;
+        }
+      }
+    }
+    foreach ($components as $component) {
+      features_revert(array($module => array($component)));
+    }
+  }
+}
+
+
+
+

@@ -1,0 +1,36 @@
+/* =====================================
+	Frontpage
+	====================================== */
+//slideshows in frontpage
+.node-type-full-page {
+  .flex-control-nav {
+	  li {
+			a {
+		    background: url('../images/bg-slider-nav.png') no-repeat center right;
+		    
+				&.flex-active,
+				&:hover {
+		      background: url('../images/bg-slider-nav.png') no-repeat center left;
+				}
+			}
+		}
+	}
+	
+	//-----------------------------------------
+	// news
+	//-----------------------------------------
+	.view-news-slideshow {
+		.view-content {
+		  background: #55967a;
+
+		  @include at-breakpoint($first) {
+		  	background: url('../images/bg-slider-news-arrow.png') no-repeat center right #55967a;
+		  }
+		}
+		.view-footer {
+			background: url('../images/bg-slider-news.png') repeat;
+		}
+	}
+}	
+	
+

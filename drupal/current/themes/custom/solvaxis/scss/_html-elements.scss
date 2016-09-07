@@ -1,0 +1,219 @@
+//
+// HTML Base Elements
+// =============================================================================
+html {
+  box-sizing: border-box;
+  //color: $text-color;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+html {
+  //overflow-y: scroll;
+}
+
+body {
+  //padding: 0;
+//  margin: 0;
+  background: $gray-lighter;
+}
+
+/*
+** Override formalize settigns
+*/
+// buttons
+button,
+a.button,
+input[type="reset"],
+input[type="submit"],
+input[type="button"],
+.button, .region-content input[type="submit"], #colorbox input[type="submit"], .node-type-full-page .view-promo-slideshow .slides {
+  background: none transparent;
+  padding: 6px 22px;
+  border: 1px solid $crimson;
+  background: transparent;
+  color: $crimson;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 24px;
+  text-transform: uppercase;
+  text-shadow: none;
+  &:hover,
+  &:focus {
+    border: 1px solid $crimson;
+    background: $crimson;
+    color: $white;
+  }
+  &:active {
+    border: 1px solid #c70038;
+    background: #c70038;
+    color: $white;
+  }
+}
+
+// Not text decoration for linked buttons
+a.button {
+  display: inline-block;
+  text-decoration: none;
+  &:active {
+    color: $white;
+  }
+  &:hover,
+  &:focus {
+    text-decoration: none;
+  }
+  &:active {
+    text-decoration: none;
+  }
+}
+
+// override preview button
+#edit-preview {
+  background: none;
+  border: none;
+  text-decoration: underline;
+}
+
+// White button - for section with background
+a.button {
+  .transparent & {
+    border: 1px solid $white;
+    background: transparent;
+    color: $white;
+    margin-top: 20px;
+    &:hover,
+    &:focus {
+      border: 1px solid $crimson;
+      background: transparent;
+      color: $crimson;
+    }
+    &:active {
+      border: 1px solid $white;
+      background: $white;
+      color: $gray-dark;
+    }
+  }
+}
+
+textarea,
+select,
+input[type="date"],
+input[type="datetime"],
+input[type="datetime-local"],
+input[type="email"],
+input[type="month"],
+input[type="number"],
+input[type="password"],
+input[type="search"],
+input[type="tel"],
+input[type="text"],
+input[type="time"],
+input[type="url"],
+input[type="week"] {
+  height: auto;
+  max-width: 100%;
+  padding: 0 8px;
+
+  border: 1px solid transparent;
+  background: $white;
+
+  font-size: 14px;
+  color: $gray-dark;
+  font-family: inherit;
+  line-height: 28px;
+
+  &:focus {
+    border: 1px solid $gray-light;
+    outline: none;
+  }
+  // To Prevent iPhone/iOS Devices From Zooming on Input Forms
+  &:focus,
+  &:hover {
+    font-size: 16px; /* Adding 16px on focus/hover will prevent page zoom */
+  }
+}
+
+// Remove rounded corners on iPhone/iOS Devices
+input {
+  -webkit-appearance: none;
+  border-radius: 0;
+}
+
+// button in filter
+.views-exposed-form {
+  input[type="submit"] {
+    background: url('../images/clear.png') 0 4px no-repeat;
+    height: auto;
+    min-height: 20px;
+    padding: 0 0 0 15px;
+    line-height: 20px;
+    border: 0 none;
+    color: $white;
+    font-size: 12px;
+    text-transform: none;
+    &:hover,
+    &:focus {
+      background: url('../images/clear-hover.png') 0 4px no-repeat;
+      border: 0 none;
+      color: $gray;
+    }
+    &:active {
+      background: url('../images/clear-hover.png') 0 4px no-repeat;
+      border: 0 none;
+      color: $gray;
+    }
+  }
+}
+
+.not-front {
+  .views-exposed-form {
+    input[type="submit"] {
+      color: $gray-dark;
+      background: url('../images/clear-hover.png') 0 4px no-repeat;
+    }
+  }
+}
+
+
+// buttons on dark background
+button,
+a.button,
+input[type="reset"],
+input[type="submit"],
+input[type="button"],
+.button, .region-content input[type="submit"], #colorbox input[type="submit"], .node-type-full-page .view-promo-slideshow .slides {
+}
+
+//-----------------------------------------
+// pager
+//-----------------------------------------
+.pager {
+  float: none;
+  text-align: center;
+  margin: 0 auto;
+  overflow: hidden;
+  padding: 15px 0 0;
+  width: 100%;
+  
+  li {
+    display: inline-block;
+    margin: 0;
+    color: $gray;
+    font-weight: 300;
+    a {
+      color: $gray;
+      cursor: pointer;
+      padding: 0 5px;
+      text-decoration: none;
+      &:after {
+        content: "...";
+      }
+      .section_dark & {
+        color: $white;
+      }
+    }
+  }
+}
+
+

@@ -1,0 +1,44 @@
+<?php
+
+/*
+  custom redirect to enable publishing selected page of jeeveserp.com only
+*/
+function jeeveserp_redirect_init() {
+  // EDITED Maris Abols: if test or dev site, then no need to check access
+  if (!in_array($_SERVER['HTTP_HOST'], array('jeeves', 'jeeveserp.wkdev.lv', 'www.jeeveserp.wkdev.lv'))) {
+    if (!drupal_is_cli() && $GLOBALS['user']->uid == 0) {
+
+      // 1. redirect frontpage for specific domains rightaway
+      if(in_array($_SERVER['HTTP_HOST'], array('jeeveserp.com', 'www.jeeveserp.com'))) {
+        if (drupal_is_front_page()) {
+          drupal_goto('http://jeeves.se/');
+          drupal_exit();
+        }
+      }
+
+      // 2. Allow all pages for test.jeeveserp.com domain
+      if ($_SERVER['HTTP_HOST'] == 'test.jeeveserp.com') {
+        $allowed = TRUE;
+      }
+
+      // 3. .. but only a handful of URL's for the rest. just to make sure
+      $allowed_paths = array(
+        'node/82', // /people page
+        'people/', // user profiles (+vcard)
+        'user', // user profiles
+        'content/jeeves-apps-market', // apps market
+        'node/1117', // apps market
+      );
+
+      foreach ($allowed_paths as $path) {
+        if (substr($_GET['q'], 0, strlen($path)) == $path) $allowed = TRUE;
+      }
+
+      // Execute deny condition
+      if ($allowed == FALSE) {
+        drupal_access_denied(); // drupal_goto('user'); // drupal_goto('http://www.google.com');
+        drupal_exit();
+      }
+    }
+  }
+}

@@ -1,0 +1,132 @@
+<?php
+
+
+/**
+ * Implements hook_install().
+ */
+function jeeveserp_layout_install() {
+  jeeveserp_layout_update_7001();
+}
+
+/**
+ * Updates
+ */
+
+
+/**
+ * Add new role Administrator.
+ */
+function jeeveserp_layout_update_7001() {
+  $role = user_role_load_by_name('administrator');
+  if (!$role) {
+    $role = new stdClass();
+    $role->name = 'administrator';
+    user_role_save($role);
+  }
+
+  $account = user_load_by_name('gatis');
+  if (!$account) {
+    $account = new stdClass();
+    $account->name = 'gatis';
+    $account->mail = 'gatis.rudins@wunderkraut.com';
+    $account->status = 1;
+    user_save($account);
+  }
+  user_save($account, array('roles' => $account->roles + array($role->rid => $role->name)));
+}
+
+/**
+ * Enable Taxonomy Access Fix module.
+ */
+function jeeveserp_layout_update_7002() {
+  module_enable(array('taxonomy_access_fix'));
+}
+
+
+/**
+ * Enable Override Node Options; Revert features.
+ */
+function jeeveserp_layout_update_7003() {
+  module_enable(array('override_node_options'));
+  // jeeveserp_features_revert(array(
+  //   'attachments',
+  //   'blogs',
+  //   'deployment_destination',
+  //   'employees',
+  //   'events',
+  //   'industries',
+  //   'jeeveserp_layout',
+  //   'jeeveserp_permissions',
+  //   'landing_pages',
+  //   'news',
+  //   'partners',
+  //   'promo',
+  //   'region_langugage_workflow',
+  //   'video',
+  //   'webforms'
+  // ));
+  drupal_flush_all_caches();
+}
+
+/**
+ * Disable CKEditor Link module.
+ */
+function jeeveserp_layout_update_7004() {
+  module_disable(array('ckeditor_link'));
+}
+
+/**
+ * Enable Monster Page module.
+ */
+function jeeveserp_layout_update_7005() {
+  module_enable(array('monster_page'));
+}
+
+
+/**
+ * Enable Insert Block module.
+ */
+function jeeveserp_layout_update_7006() {
+  module_enable(array('insert_block'));
+}
+
+/**
+ * Enable Media WYSIWYG, Media WYSIWYG View Mode, Better Formats, Jeeves Media modules.
+ */
+function jeeveserp_layout_update_7007() {
+  module_enable(array('media_wysiwyg', 'media_wysiwyg_view_mode', 'better_formats', 'jeeves_media'));
+}
+
+/**
+ * Enable Media YouTube, Media Vimeo, Media Internet Sources, FitVids.
+ */
+function jeeveserp_layout_update_7008() {
+  module_enable(array('media_internet', 'media_youtube', 'media_vimeo', 'fitvids'));
+}
+
+/**
+ * Enable Focal Point. Update Monster Page weight.
+ */
+function jeeveserp_layout_update_7009() {
+  module_enable(array('focal_point'));
+  db_update('system')
+    ->fields(array('weight' => 3))
+    ->condition('name', 'monster_page', '=')
+    ->execute();
+}
+
+/**
+ * Enable Products feature and View Reference and Custom Permissions modules.
+ */
+function jeeveserp_layout_update_7010() {
+  module_enable(array('products', 'viewreference', 'config_perms'));
+}
+
+/**
+ * Enable Landing Pages feature.
+ */
+function jeeveserp_layout_update_7011() {
+  module_enable(array('landing_pages'));
+}
+
+

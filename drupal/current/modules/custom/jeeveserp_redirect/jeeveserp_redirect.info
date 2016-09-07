@@ -1,0 +1,3 @@
+name = Custom Jeeves ERP redirects (TEMP)
+description = "Temporal redirect for anonymous users away from the site except published pages (/people currently)"
+core = 7.x

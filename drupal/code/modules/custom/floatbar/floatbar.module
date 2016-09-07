@@ -1,0 +1,231 @@
+<?php
+
+/**
+ * Implements hook_block_info().
+ */
+function floatbar_block_info() {
+  $blocks = array();
+
+  $blocks['floatbar'] = array(
+      'info' => 'Floating menubar',
+      'cache' => DRUPAL_CACHE_PER_USER,
+  );
+
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function floatbar_block_view($delta = '') {
+
+  drupal_add_css(drupal_get_path('module', 'floatbar') .'/floatbar.css');
+  drupal_add_js(drupal_get_path('module', 'floatbar') .'/floatbar.js', array('type' => 'file', 'scope' => 'footer'));
+
+  $block = array();
+
+  $subject = "";
+
+  switch ($delta) {
+    case 'floatbar':
+      $content = '';
+      $block['content'] = array();
+
+      $items = array();
+      // invoke hook to inject items into menu
+      foreach (module_implements('floatbar_items') as $module) {
+        $items_alter = call_user_func_array($module . '_floatbar_items', array($items));
+        if ($items_alter) $items = $items_alter;
+      }
+
+      uasort($items, 'drupal_sort_weight');
+
+      if (sizeof($items) > 0) {
+        $item_list = array();
+        foreach ($items as $n => $item) {
+
+          if (isset($item['container_class'])) $container_class = $item['container_class'];
+          else $container_class = array();
+
+          if (isset($item['options'])) $item_options = $item['options'];
+          else $item_options = array();
+
+          $item_list[] = array(
+            'data' => l($item['text'], $item['path'], $item_options),
+            'class' => $container_class,
+          );
+        }
+        $content .= theme_item_list(array('items'=>$item_list, 'title' => NULL, 'type' => 'ul', 'attributes' => array('class'=>'floatbar-items')));
+
+      }
+
+      // put  content into block
+      $block['content'] = array(
+        '#type' => 'markup',
+        '#markup' => $content,
+      );
+
+      // block has no title
+      $block['subject'] = FALSE;
+
+    break;
+  }
+
+  return $block;
+}
+
+/*
+ * an example for hook_floatbar_items usage
+ *
+ * scroll to top whenever page has been scrolled down
+ */
+function floatbar_floatbar_items($items) {
+
+  // colorbox doc
+  // http://drupalcode.org/project/colorbox.git/blob/refs/heads/7.x-1.x:/README.txt
+  // "Load content in a Colorbox"
+
+  $js = "
+  (function ($) {
+    var win = $(window);
+
+    win.scroll(function () {
+      var scrolltotop = $('.block-floatbar .scroll-to-top');
+         if (win.scrollTop() == 0)
+           scrolltotop.addClass('scroll-to-top-disabled');
+         else {
+           if (scrolltotop.hasClass('scroll-to-top-disabled')) {
+             scrolltotop.removeClass('scroll-to-top-disabled');
+           }
+         }
+     });
+
+     $('.block-floatbar .scroll-to-top').click(function() {
+       var elem_top;
+
+        elem_top = $('#page').offset().top;
+
+       $('html, body').animate({
+           scrollTop: elem_top
+       }, 500);
+       return false;
+     });
+  })(jQuery);";
+
+  drupal_add_js($js, array('type' => 'inline', 'scope' => 'footer'));
+
+  // $items[] = array (
+  // 'text' => '', //t('Scroll to Top'),
+  // 'path' =>  current_path(),
+  // 'weight' => 1,
+  // 'container_class' => array(
+  // 'scroll-to-top',
+  // 'scroll-to-top-disabled'
+  //  ),
+  //);
+
+  // Social links
+  $path = current_path();
+  $url = url($path, array('absolute' => TRUE));
+  $turl = drupal_http_request('http://tinyurl.com/api-create.php?url=' . urlencode($url));
+  $turl = (isset($turl->data) && ($turl->code == 200)) ? $turl->data : $url;
+  $title = drupal_get_title();
+  $source = variable_get('site_name', 'Drupal');
+
+  $items[] = array(
+    'text' => 'Twitter',
+    'path' =>  'http://twitter.com/share?url='.urlencode($url).'&text='.$title,
+    'options' => array(
+      'html' => TRUE,
+      'attributes' => array(
+        'class' => array(
+          'twitter-button'
+        ),
+        'title' => t('Twitter'),
+        'id' => 'floatbar_twitter'
+      ),
+    ),
+    'container_class' => array(
+      'twitter',
+    ),
+    'weight' => 10
+  );
+
+  $items[] = array(
+    'text' => 'Facebook',
+    'path' =>  'http://www.faceblook.com/sharer.php?u='.urlencode($url).'&t='.$title,
+    'options' => array(
+      'html' => TRUE,
+      'attributes' => array(
+        'class' => array(
+          'facebook-button'
+        ),
+        'title' => t('Facebook'),
+        'id' => 'floatbar_facebook'
+      ),
+    ),
+    'container_class' => array(
+      'facebook',
+    ),
+    'weight' => 11
+  );
+
+  $items[] = array(
+    'text' => 'LinkedIn',
+    'path' =>  'http://www.linkedin.com/shareArticle?mini=true&url='.urlencode($url).'&title='.$title . '&source=' . $source,
+    'options' => array(
+      'html' => TRUE,
+      'attributes' => array(
+        'class' => array(
+          'linkedin-button'
+        ),
+        'title' => t('LinkedIn'),
+        'id' => 'floatbar_linkedin'
+      ),
+    ),
+    'container_class' => array(
+      'linkedin',
+    ),
+    'weight' => 12
+  );
+
+  // $items[] = array(
+  //   'text' => '',
+  //   'path' =>  'http://marketing.jeeves.se/acton/form/4567/0085:d-0001/0/index.htm?id=0085',
+  //   'options' => array(
+  //     'html' => TRUE,
+  //     'attributes' => array(
+  //       'class' => array(
+  //         'feedback-button'
+  //       ),
+  //       'id' => 'floatbar_feedback'
+  //     ),
+  //   ),
+  //   'container_class' => array(
+  //     'feedback',
+  //   ),
+  //   'weight' => 13
+  // );
+
+  $items[] = array(
+    'text' => 'More',
+    'path' =>  $path,
+    'options' => array(
+      'html' => TRUE,
+      'attributes' => array(
+        'class' => array(
+          'more-button'
+        ),
+        'title' => t('More'),
+        'id' => 'floatbar_more'
+      ),
+    ),
+    'container_class' => array(
+      'more',
+    ),
+    'weight' => 14
+  );
+
+
+  return $items;
+}

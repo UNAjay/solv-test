@@ -1,0 +1,26 @@
+//-----------------------------------------
+// susy settings
+//-----------------------------------------
+// this is the default number of columns
+// $total-columns: 12;
+$total-columns: 16;
+// width of each column
+// $column-width: 65px;
+$column-width: 44px;
+// space between columns
+$gutter-width: 20px;
+// space on the right and left of the grid
+$grid-padding: 0;
+
+// breakpoints
+$first: 600px;
+$second: 800px;
+$third: 1014px;
+
+//-----------------------------------------
+// general variables
+//-----------------------------------------
+$footerHeightMobile: 170px;
+$footerHeightDesktop: 46px;
+$jeevesRed: #e94e1b;
+$paragraphColor: #404040;

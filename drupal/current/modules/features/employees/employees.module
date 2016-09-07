@@ -1,0 +1,286 @@
+<?php
+/**
+ * @file
+ * Code for the Employees feature.
+ */
+
+include_once 'employees.features.inc';
+
+function employees_menu(){
+  $items['people/%/vcard'] = array(
+    'page callback' => 'employees_vcard_view',
+    'page arguments' => array(1),
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+/*
+  Expose user information in vcf file.
+  VCF itself works fine on Android, WM (WP) and Symbian, but we have to work around iOS devices.
+  This is solved by wrapping vcard into ical item withing vcalendar file.
+  Idea taken from this site: http://mobicontact.info/iphone/download-contact-from-web-page/
+*/
+function employees_vcard_view($username) {
+
+  // let's make a vcard
+  $vcard = employees_vcard_generate($username);
+
+  // classic version for all phones but ios
+  if(!employees_vcard_isIphone() || (employees_vcard_isiOS7() && employees_vcard_isMobileSafari())) {
+
+    // force download headers
+    // Alternatively: application/octet-stream
+    header("Content-type: text/x-vcard; charset=utf-8");
+    header('Content-Disposition: attachment; filename="'.$username.'.vcf"');
+    // header('Connection: close');
+
+    echo $vcard;
+    drupal_exit();
+  }
+
+  // unfortunately, only mobile safari supports vcalendar hack we're using
+  if(!employees_vcard_isMobileSafari()) {
+    drupal_goto('people/'.$username);
+  }
+
+  // - fallback -
+  // We're sending vcard wrapped in ical ics which in turn is wrapped into vcalendar item. it's almost an inception!
+
+  // Send correct headers
+  // Alternatively: application/octet-stream
+  header("Content-type: text/x-vcalendar; charset=utf-8");
+  header('Content-Disposition: attachment; filename="'.$username.'.ics"');
+
+
+  # Generate file contents - advanced version
+  # BEGIN:VCALENDAR
+  # VERSION:2.0
+  # BEGIN:VEVENT
+  # DTSTART;TZID=Europe/London:20120617T090000
+  # DTEND;TZID=Europe/London:20120617T100000
+  # SUMMARY:iPhone Contact
+  # DTSTAMP:20120617T080516Z
+  # ATTACH;VALUE=BINARY;ENCODING=BASE64;FMTTYPE=text/directory;
+  #  X-APPLE-FILENAME=iphonecontact.vcf:
+  #  QkVHSU46VkNBUkQNClZFUlNJT046My4wDQpOOkNvbnRhY3Q7aVBob25lOzs7DQpGTjppUGhvbm
+  #  UgQ29udGFjdA0KRU1BSUw7VFlQRT1JTlRFUk5FVDtUWVBFPVdPUks6aXBob25lQHRoZXNpbGlj
+  #  b25nbG9iZS5jb20NClRFTDtUWVBFPUNFTEw7VFlQRT1WT0lDRTtUWVBFPXByZWY6KzQ0MTIzND
+  #  U2Nzg5MA0KRU5EOlZDQVJE
+  # END:VEVENT
+  # END:VCALENDAR
+
+  echo "BEGIN:VCALENDAR\n";
+  echo "VERSION:2.0\n";
+  echo "BEGIN:VEVENT\n";
+  echo "SUMMARY:Click attached contact below to save to your contacts\n";
+  $dtstart = date("Ymd")."T".date("Hi")."00";
+  echo "DTSTART;TZID=Europe/London:".$dtstart."\n";
+  $dtend = date("Ymd")."T".date("Hi")."01";
+  echo "DTEND;TZID=Europe/London:".$dtend."\n";
+  echo "DTSTAMP:".$dtstart."Z\n";
+  echo "ATTACH;VALUE=BINARY;ENCODING=BASE64;FMTTYPE=text/directory;\n";
+  echo " X-APPLE-FILENAME=".$username.".vcf:\n";
+  $b64vcard = base64_encode($vcard);            # base64 encode it so that it can be used as an attachemnt to the "dummy" calendar appointment
+  $b64mline = chunk_split($b64vcard,74,"\n");       # chunk the single long line of b64 text in accordance with RFC2045 (and the exact line length determined from the original .ics file exported from Apple calendar
+  $b64final = preg_replace('/(.+)/', ' $1', $b64mline); # need to indent all the lines by 1 space for the iphone (yes really?!!)
+  echo $b64final;                     # output the correctly formatted encoded text
+  echo "END:VEVENT\n";
+  echo "END:VCALENDAR\n";
+
+  // do not print page headers or styles
+  drupal_exit();
+}
+
+
+// from demo code
+function employees_vcard_isIphone($user_agent=NULL) {
+  if(!isset($user_agent)) {
+    $user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
+  }
+      $result = (strpos($user_agent, 'iPhone') !== FALSE) || (strstr($_SERVER['HTTP_USER_AGENT'],'iPod')!== FALSE) || (strstr($_SERVER['HTTP_USER_AGENT'],'iPad')!== FALSE);
+
+  return $result;
+}
+
+function employees_vcard_isiOS7($user_agent=NULL) {
+    if(!isset($user_agent)) {
+        $user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
+    }
+    $result = (strpos($user_agent, 'OS 7') !== FALSE);
+
+    return $result;
+}
+
+function employees_vcard_isMobileSafari($user_agent=NULL) {
+  if(!isset($user_agent)) {
+    $user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
+  }
+
+      # Please note: Chrome for iPhone reports 'CriOS' instead of 'Version' in it's user agent string and as of Feb 2013 Chrome for iPhone
+      # does not support either vCard (.vcf) or vCalendar (.ics) file types - that's even worse than Mobile Safari - shame on you Google!!!
+  $result1 = strstr($user_agent, "AppleWebKit/");
+  $result2 = strstr($user_agent, "Mobile/");
+  $result3 = strstr($user_agent, "Safari/");
+  $result4 = strstr($user_agent, "Version/");
+      $result = $result1 && $result2 && $result3 && $result4;
+
+  return $result;
+}
+
+// -----
+
+
+
+
+
+
+/*
+  expose user data in vcard format
+*/
+function employees_vcard_generate($username){
+
+  // get actual user path (user/uid)
+  $user_url = drupal_lookup_path('source', 'people/'.$username);
+
+  // user not found for this alias
+  if (!$user_url) {
+    drupal_not_found();
+    return;
+  }
+
+  // split the user uid from path
+  $path = explode('/', $user_url);
+  $user = user_load($path[1]);
+
+  $output = array();
+  $output[] = 'BEGIN:VCARD';
+  $output[] = 'VERSION:3.0';
+  $output[] = 'PROFILE:VCARD';
+
+  // Full Name
+  $name = array();
+  $field = field_get_items('user', $user, 'field_acc_first_name');
+  foreach ($field as $key=>$value) {
+    $name[] = check_plain($field[$key]['value']);
+  }
+  $field = field_get_items('user', $user, 'field_acc_last_name');
+  foreach ($field as $key=>$value) {
+    $name[] = check_plain($field[$key]['value']);
+  }
+  $output[] = 'FN;ENCODING=8BIT:'.implode(' ', $name);
+  $output[] = 'NICKNAME;ENCODING=8BIT:'.implode(' ', $name);
+
+  // Name
+  $name = array();
+  $field = field_get_items('user', $user, 'field_acc_last_name');
+  foreach ($field as $key=>$value) {
+    $name[] = check_plain($field[$key]['value']);
+  }
+  $field = field_get_items('user', $user, 'field_acc_first_name');
+  foreach ($field as $key=>$value) {
+    $name[] = check_plain($field[$key]['value']);
+  }
+  $output[] = 'N;ENCODING=8BIT:'.implode(';', $name);
+
+  // phone
+  $field = field_get_items('user', $user, 'field_acc_phone');
+  foreach ($field as $key=>$value) {
+    $output[] = 'TEL;ENCODING=8BIT:'.check_plain($field[$key]['value']);
+  }
+
+  // e-mail
+  $output[] = 'EMAIL;ENCODING=8BIT:'.check_plain($user->mail);
+
+  // web
+  $field = field_get_items('user', $user, 'field_acc_link');
+  foreach ($field as $key=>$value) {
+    $output[] = 'URL;ENCODING=8BIT:'.check_plain($field[$key]['url']);
+  }
+
+  // profile image
+  $style_name = 'account_picture';
+  $field = field_get_items('user', $user, 'field_acc_photo');
+  foreach ($field as $key=>$value) {
+    $output[] = 'PHOTO;VALUE=URL;TYPE=GIF:'.image_style_url($style_name, check_plain($field[$key]['uri']));
+  }
+
+  // organisation
+  //$output[] = 'ORG;ENCODING=8BIT:ORG';
+
+  // EDITED Maris Abols: added address from office field
+  $field = field_get_items('user', $user, 'field_acc_office');
+  $office_tid = (int) $field[0]['tid'];
+  $office = taxonomy_term_load($office_tid);
+
+    if ($office) {
+      $office_line = array();
+
+      // EDITED Jānis Bebrītis: checking for newlines in address field
+      $office_line[] = str_replace(array("\r\n", "\r", "\n"), ", ", check_plain(strip_tags($office->name)));
+      $office_line[] = str_replace(array("\r\n", "\r", "\n"), ", ", check_plain(strip_tags($office->description)));
+
+      // office address
+      $output[] = 'ADR;ENCODING=8BIT:'.implode(';', $office_line);
+    }
+
+  $output[] = 'END:VCARD';
+
+  // BEGIN:VCARD
+  // VERSION;ENCODING=8BIT:3.0
+  // PROFILE:VCARD
+  // FN;ENCODING=8BIT:Janis Bebritis
+  // N;ENCODING=8BIT:Bebritis;Janis;;;
+  // NICKNAME;ENCODING=8BIT:Jānis Bebrītis
+  // BDAY;ENCODING=8BIT:2013-6-4
+  // ADR;ENCODING=8BIT:;;Purva 12a;Valmiera;;LV4201;Latvia
+  // TEL;ENCODING=8BIT:28287171
+  // EMAIL;ENCODING=8BIT:janis+test@prog.lv
+  // ORG;ENCODING=8BIT:ORG
+  // URL;ENCODING=8BIT:http://www.google.lv
+  // END:VCARD
+
+  // BEGIN:VCARD
+  // VERSION:3.0
+  // N:Gump;Forrest
+  // FN:Forrest Gump
+  // ORG:Bubba Gump Shrimp Co.
+  // TITLE:Shrimp Man
+  // PHOTO;VALUE=URL;TYPE=GIF:http://www.example.com/dir_photos/my_photo.gif
+  // TEL;TYPE=WORK,VOICE:(111) 555-1212
+  // TEL;TYPE=HOME,VOICE:(404) 555-1212
+  // ADR;TYPE=WORK:;;100 Waters Edge;Baytown;LA;30314;United States of America
+  // LABEL;TYPE=WORK:100 Waters Edge\nBaytown, LA 30314\nUnited States of America
+  // ADR;TYPE=HOME:;;42 Plantation St.;Baytown;LA;30314;United States of America
+  // LABEL;TYPE=HOME:42 Plantation St.\nBaytown, LA 30314\nUnited States of America
+  // EMAIL;TYPE=PREF,INTERNET:forrestgump@example.com
+  // REV:2008-04-24T19:52:43Z
+  // END:VCARD
+
+  // We need extra check for newlines in office address field. Probably other fields aswell.
+  // $office_line[] = str_replace(array("\r\n", "\r", "\n"), "<br />", check_plain($office->description));
+
+
+  // return output
+  $vcard = '';
+  foreach ($output as $line) $vcard .= $line . "\n";
+
+  return $vcard;
+}
+
+
+/*
+  hook_form_alter()
+  Override "- Any -" filter selection to be replaced with filter label
+*/
+function employees_form_alter(&$form, &$form_state, $form_id) {
+
+  // employee (people) filter form
+  if ($form['#id'] == 'views-exposed-form-employees-block-2') {
+    if (isset($form['field_acc_region_tid'])) $form['field_acc_region_tid']['#options']['All'] = $form['#info']['filter-field_acc_region_tid']['label'];
+    if (isset($form['field_acc_office_tid'])) $form['field_acc_office_tid']['#options']['All'] = $form['#info']['filter-field_acc_office_tid']['label'];
+    if (isset($form['field_acc_role_tid'])) $form['field_acc_role_tid']['#options']['All'] = $form['#info']['filter-field_acc_role_tid']['label'];
+  }
+}

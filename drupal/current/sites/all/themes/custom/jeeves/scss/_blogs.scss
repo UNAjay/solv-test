@@ -1,0 +1,100 @@
+.blog-list-view,
+.node-type-blog-post,
+.page-blogs {
+	.views-row {
+    float: left;
+    margin-top: 10px;
+		margin-bottom: 20px;
+	}
+	.views-field-created,
+	.post-date,
+	.views-field-name {
+		float: left;
+	}
+	.views-field-body {
+		padding: 0 15px;
+
+	  @include at-breakpoint($first) {
+	    padding: 0;
+	  }
+	}
+	.views-field-created,
+	.post-date {
+		margin-right: 15px;
+		margin-left: 15px;
+
+    @include at-breakpoint($first) {
+    	margin-left: 0;
+    }
+	}
+	.views-field-created {
+		margin-left: 0;
+	}
+	.views-field-field-add-this,
+	.field-add-this {
+		float: right;
+		margin-right: 15px;
+
+    @include at-breakpoint($first) {
+    	margin-right: 0;
+    }
+		a {
+			float: left;
+		}
+	}
+}
+// blog page
+.node-type-blog-post {
+	.image {
+		padding: 0 15px;
+
+    @include at-breakpoint($first) {
+			padding: 0;
+    }
+	}
+	.image,
+	.body {
+		margin-top: 10px;
+	}
+	.image,
+	.body,
+	.tags {
+  	@include full-width;
+	}
+	.tags {
+		margin-bottom: 10px;
+		padding: 0 15px;
+		
+    @include at-breakpoint($first) {
+			padding: 0;
+    }
+
+		.field-label,
+		.field-items {
+			float: left;
+		}
+		.field-item {
+			display: inline-block;
+    	margin-right: 5px;
+		}
+	}
+}
+
+// sidebar
+.tag-cloud,
+// TODO: replace the class .block-tagclouds with .tag-cloud on tag-page
+.block-tagclouds {
+	.content {
+		padding: 0 15px 15px;
+	}
+	a {
+	  color: $jeevesRed;
+
+	  &:hover {
+	  	text-decoration: underline;
+	  }
+	}
+	.tagclouds-term {
+		margin-right: 10px;
+	}
+}

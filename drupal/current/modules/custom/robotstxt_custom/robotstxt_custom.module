@@ -1,0 +1,47 @@
+<?php
+
+
+/**
+ * Implements hook_permission().
+ */
+function robotstxt_custom_permission() {
+  return array(
+    'administer robots.txt custom' => array(
+      'title' => t('Administer custom robots.txt file'),
+      'description' => t('Perform maintenance tasks for custom robots.txt file.'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function robotstxt_custom_menu() {
+  $items['admin/config/search/robotstxt_custom'] = array(
+    'title' => 'RobotsTxt file',
+    'description' => 'Manage your robots.txt file.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('robotstxt_custom_admin_settings'),
+    'access arguments' => array('administer robots.txt custom'),
+    'file' => 'robotstxt_custom.admin.inc',
+  );
+
+  return $items;
+}
+
+
+
+/**
+ * Retrieve contents of robots.txt from the database variable, site root, or
+ * module directory.
+ */
+function _robotstxt_custom_get_content() {
+  $content = variable_get('robotstxt_custom', FALSE);
+
+  $file = 'public://robots.txt';
+  if (file_exists($file) && is_readable($file)) {
+    $content = file_get_contents($file);
+  }
+
+  return $content;
+}

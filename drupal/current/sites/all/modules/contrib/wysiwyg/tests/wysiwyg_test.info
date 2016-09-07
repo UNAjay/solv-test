@@ -1,0 +1,14 @@
+name = Wysiwyg testing
+description = Tests Wysiwyg module functionality. Do not enable.
+core = 7.x
+package = Testing
+hidden = TRUE
+dependencies[] = wysiwyg
+files[] = wysiwyg_test.module
+
+
+; Information added by drush on 2016-03-23
+version = "8d32d738615f5d6b85b91146cb0032085e5b1789"
+project = "wysiwyg"
+datestamp = "1458729898"
+

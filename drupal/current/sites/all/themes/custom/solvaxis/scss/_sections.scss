@@ -1,0 +1,455 @@
+//-----------------------------------------
+// Sections
+//-----------------------------------------
+
+.node-section {
+  position: relative;
+  min-height: 200px;
+  padding: 0 35px;
+  width: 100%;
+  overflow: hidden;
+
+  @include at-breakpoint($bp-xl-2) {
+    padding: 0;
+  }
+
+  .region-holder {
+    @include container;
+    margin: 0 auto;
+    max-width: 1000px;
+    padding: 28px 0;
+    position: relative;
+  }
+
+  // sections with full width background
+  .bg-wrapper {
+    position: absolute;
+    width: 100%;
+    height: 140%;
+    left: 0;
+    bottom: 0;
+    // -webkit-transition: all 2s; // Chrome
+    // -moz-transition: all 2s; // Mozilla
+    // -o-transition: all 2s; // Opera
+    // transition: all 2s;
+  }
+
+  &.section_light {
+    background: transparent;
+    border-top: 1px solid $gray-light;
+    .bg-wrapper {
+      background: $gray-lighter;
+      //border-top: 1px solid $gray-light;
+      .transparent & {
+        background: transparent;
+      }
+    }
+  }
+  &.section_dark {
+     background: $gray-dark;
+     border-top: 1px solid $gray;
+     color: $white;
+     .bg-wrapper {
+       background: $gray-dark;
+       .transparent & {
+         background: transparent;
+       }
+     }
+   }
+
+  // Call to action section - with transparent overlay
+  &.transparent {
+    border-top: 0 none;
+    .bg-wrapper {
+      &:before {
+        content: '';
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: #4d4d4d;
+        @include opacity(0.7);
+      }
+    }
+    .region-holder {
+      //height: 320px;
+      padding: 28px 0;
+      @include at-breakpoint($bp-med-2) {
+        height: 320px;
+      }
+    }
+  }
+
+  //section with sidebar
+  &.with-sidebar {
+    .body,
+    .field-view {
+      width: 100%;
+      margin-bottom: 40px;
+      padding: 0;
+      @include at-breakpoint($bp-med-2) {
+        @include span-columns(8,12);
+        //padding: 0;
+        margin-bottom: 0;
+      }
+    }
+    .group-sidebar {
+      width: 100%;
+      padding: 0;
+      @include at-breakpoint($bp-med-2) {
+        @include span-columns(4 omega,12);
+        padding: 16px 0 0 10px;
+      }
+      @include at-breakpoint($bp-xl-2) {
+        padding: 16px 0 0 20px;
+      }
+      .field-sidebar-text {
+        p {
+          margin-top: 0;
+        }
+        h2 {
+          margin-top: -4px;
+        }
+        p + h2 {
+          margin-top: 12px;
+        }
+      }
+    }
+  }
+
+  .group-social {
+    @include span-columns(12);
+    padding-top: 20px;
+  }
+}
+
+// If light section below dark section or dark below light we don't need border-top
+.light + .dark,
+.dark + .light,
+.transparent_wrapper + .dark,
+.transparent_wrapper + .light {
+  .node-section {
+    border-top: 0 none;
+  }
+}
+
+// Remove border top from first section
+.not-front {
+  .field-items {
+    .field-item.dark {
+      &:first-child {
+        .node-section {
+          border-top: 0 none;
+        }
+      }
+    }
+  }
+}
+
+.front {
+  .field-items {
+    .field-item {
+      &:first-child {
+        .node-section {
+          border-top: 0 none;
+        }
+      }
+    }
+  }
+}
+
+.node-page {
+  .region-holder {
+    padding-bottom: 28px;
+  }
+}
+
+.with-sidebar.sidebar-position-right {
+  .body {
+    clear: both;
+    @include at-breakpoint($bp-med-2) {
+      clear: none;
+    }
+  }
+  .body,
+  .field-view {
+    width: 100%;
+    @include at-breakpoint($bp-med-2) {
+      @include span-columns(8 omega,12);
+      float: right;
+    }
+  }
+  .group-sidebar {
+    width: 100%;
+    padding: 0;
+    @include at-breakpoint($bp-med-2) {
+      @include span-columns(4,12);
+      float: left;
+      padding: 16px 10px 0 0;
+    }
+    @include at-breakpoint($bp-xl-2) {
+      padding: 16px 20px 0 0;
+    }
+  }
+}
+
+// social icons block
+.group-social {
+  @include full-width;
+  margin: 0;
+}
+
+.node-teaser {
+  margin: 20px 0;
+  border-bottom: 1px solid $gray-light;
+  padding-bottom: 10px;
+  .node-link {
+    float: right;
+    a {
+      text-transform: uppercase;
+      font-size: 12px;
+    }
+  }
+  .this {
+    margin-top: 0;
+  }
+}
+
+// section title, banner title
+.group-banner h2,
+.section-title {
+  margin: 0 0 33px;
+  padding-bottom: 0;
+  position: relative;
+  font-size: 20px;
+  font-weight: 300;
+  text-transform: uppercase;
+  clear: both;
+
+  &:before {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 0;
+    bottom: -8px;
+    width: 40px;
+    height: 1px;
+    background: $crimson;
+  }
+  .section_dark & {
+    color: $white;
+  }
+}
+.banner-style-red {
+  .group-banner h2 {
+    &:before {
+      background: $white;
+    }
+  }
+}
+
+.group-banner h2 {
+  @include at-breakpoint($bp-med-2) {
+    @include font-size(28);
+    margin-bottom: 38px;
+    &:before {
+      bottom: -10px;
+      width: 80px;
+    }
+  }
+}
+
+.group-banner h3 {
+  margin-top: 0;
+  margin-bottom: 38px;
+  padding-bottom: 0;
+  position: relative;
+  font-size: 14px;
+  font-weight: 300;
+  text-transform: uppercase;
+  &:before {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 0;
+    bottom: -16px;
+    width: 80px;
+    height: 1px;
+    background: $white;
+  }
+  @include at-breakpoint($bp-xl) {
+    margin-top: -6px;
+  }
+}
+
+.group-banner {
+  p {
+    @include font-size(14,16);
+    margin: 0;
+    position: relative;
+    &:first-child {
+      margin-top: 5px;
+      @include at-breakpoint($bp-med-2) {
+        margin-top: 0;
+      }
+      @include at-breakpoint($bp-xl) {
+        margin-top: -3px;
+        margin-bottom: 2px;
+      }
+    }
+  }
+  h2 + p {
+    @include at-breakpoint($bp-med-2) {
+      margin-top: -3px;
+    }
+  }
+  .external-link {
+    &:hover {
+      color: $crimson;
+    }
+  }
+}
+
+.banner-style-red {
+  .group-banner {
+    .external-link {
+      &:hover {
+        color: $white;
+      }
+    }
+  }
+}
+
+//-----------------------------------------
+// Banners
+//-----------------------------------------
+
+.group-banner {
+  & > .group-banner {
+    float: left;
+    margin: 0;
+    padding: 0;
+  }
+}
+// mobile
+.group-banner {
+  position: relative;
+  width: 100%;
+  min-height: 170px;
+  z-index: 2;
+  margin: 0 0 -45px;
+  margin: 0;
+  padding: 5px 10px;
+  overflow: hidden;
+
+  .banner-style-red & {
+    background-color: $crimson;
+    color: $white;
+  }
+  .banner-style-dark & {
+    background-color: $gray-dark;
+    color: $white;
+  }
+  .banner-style-light & {
+    background-color: $gray-lighter;
+    color: $gray;
+  }
+
+  a {
+    color: $white;
+  }
+
+  .image {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    img {
+      float: left;
+      width: 100%;
+    }
+  }
+
+  .banner-link {
+    a {
+      position: absolute;
+      display: block;
+      width: 100%;
+      height: 100%;
+      top: 0px;
+      left: 0px;
+      text-indent: -10000px;
+    }
+  }
+}
+
+// tablet
+.group-banner {
+  @include at-breakpoint($bp-med-2) {
+    float: right;
+    clear: right;
+    width: 461px;
+    min-height: 196px;
+    height: auto;
+    padding: 10px 15px;
+    margin: 20px 0 0;
+  }
+}
+
+// desktop
+.group-banner {
+  @include at-breakpoint($bp-xl) {
+    width: 690px;
+    min-height: 175px;
+    padding: 27px 30px 24px;
+  }
+  @include at-breakpoint($bp-xl-2) {
+    margin: 90px -30px 0 0;
+  }
+}
+
+.not-front {
+  .group-banner {
+    @include at-breakpoint($bp-xl-2) {
+      margin: 45px -30px 0 0;
+    }
+  }
+}
+
+// Styles in banners
+p {
+  &.italic {
+    font-family: Georgia, serif;
+    font-style: italic;
+    @include font-size(18,24);
+    margin-bottom: 5px;
+    @include at-breakpoint($bp-med-2) {
+      @include font-size(22,28);
+      margin-bottom: 5px;
+    }
+    @include at-breakpoint($bp-xl) {
+      margin-bottom: -3px;
+    }
+  }
+}
+
+.not-front {
+  .field-item {
+    &.with-banner + .field-item {
+      .region-holder {
+        padding-top: 90px;
+      }
+    }
+  }
+  .node-page > .region-holder {
+    &.with-banner + .group-footer {
+      .field-item:first-child {
+        .region-holder {
+          padding-top: 120px;
+        }
+      }
+    }
+  }
+}

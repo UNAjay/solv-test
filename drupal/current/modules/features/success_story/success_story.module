@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Success story feature.
+ */
+
+include_once 'success_story.features.inc';

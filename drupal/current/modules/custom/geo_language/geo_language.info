@@ -1,0 +1,4 @@
+name = Geo Language
+description = Geo (Region) Language conditionals
+package = Other
+core = 7.x

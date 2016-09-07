@@ -1,0 +1,31 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the robotstxt module.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function robotstxt_custom_install() {
+  $destination = 'public://';
+  if (file_exists(DRUPAL_ROOT . '/robots.txt')) {
+    variable_set('robotstxt_custom', file_get_contents(DRUPAL_ROOT . '/robots.txt'));
+    file_unmanaged_copy(DRUPAL_ROOT . '/robots.txt', $destination, FILE_EXISTS_REPLACE);
+  }
+  elseif (file_exists(drupal_get_path('module', 'robotstxt_custom') . '/robots.txt')) {
+    variable_set('robotstxt_custom', file_get_contents(drupal_get_path('module', 'robotstxt_custom') . '/robots.txt'));
+    file_unmanaged_copy(drupal_get_path('module', 'robotstxt_custom') . '/robots.txt', $destination, FILE_EXISTS_REPLACE);
+  }
+
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function robotstxt_custom_uninstall() {
+  variable_del('robotstxt_custom');
+}
+
+

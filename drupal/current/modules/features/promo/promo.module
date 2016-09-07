@@ -1,0 +1,34 @@
+<?php
+/**
+ * @file
+ * Code for the Promo feature.
+ */
+
+include_once 'promo.features.inc';
+
+
+/**
+ * Process variables for node.tpl.php.
+ */
+function promo_preprocess_node(&$variables) {
+  $variables['view_mode'] = $variables['elements']['#view_mode'];
+  $view_mode = $variables['elements']['#view_mode'];
+  $entity_type = $variables['elements']['#entity_type'];
+  $node = $variables['elements']['#node'];
+
+  if ($entity_type == 'node' && $node->type == 'page' && $view_mode == 'teaser') {
+    if (isset($variables['elements']['#groups']['group_description_container'])) {
+      $title = $variables['elements']['title_field'][0]['#markup'];
+      $body = $variables['elements']['body'][0]['#markup'];
+      if (isset($variables['elements']['field_promo']['#items'][0])) {
+        $promo_node = $variables['elements']['field_promo']['#items'][0]['target_id'];
+        $title = $variables['elements']['field_promo'][0]['node'][$promo_node]['title_field'][0]['#markup'];
+        $body = $variables['elements']['field_promo'][0]['node'][$promo_node]['body'][0]['#markup'];
+        unset($variables['content']['field_promo'][0]);
+      }
+      $title = l($title, 'node/' . $node->nid, array('html' => TRUE));
+    }
+    $variables['content']['title_field'][0]['#markup'] = $title;
+    $variables['content']['body'][0]['#markup'] = strip_tags($body);
+  }
+}
